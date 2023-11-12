@@ -15,17 +15,17 @@ namespace StructuralEmbodiment.Core.Visualisation
 {
     internal class ImageRequest
     {
-        private string url { get; set; }
-        private JObject payload { get; set; }
-        private List<Bitmap> images { get; set; }
-        private HttpClient client;
+        public string ServerUrl { get; set; }
+        public JObject Payload { get; set; }
+        public List<Bitmap> Images { get; set; }
+        public HttpClient Client { get; set; }
 
-        public ImageRequest(string url, JObject payload)
+        public ImageRequest(string url, JObject payload, HttpClient client)
         {
-            this.url = url;
-            this.payload = payload;
-            images = new List<Bitmap>();
-            client = new HttpClient();
+            this.ServerUrl = url;
+            this.Payload = payload;
+            Images = new List<Bitmap>();
+            this.Client = new HttpClient();
         }
         private async Task<HttpResponseMessage> SendRequestAsync(Enum genMode)
         {
@@ -38,8 +38,8 @@ namespace StructuralEmbodiment.Core.Visualisation
                 case GenerationMode.img2img:
                     break;
             }
-            StringContent content = new StringContent(payload.ToString(), Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync(url + apiTail, content);
+            StringContent content = new StringContent(Payload.ToString(), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync(ServerUrl + apiTail, content);
             return response;
         }
 
@@ -58,7 +58,7 @@ namespace StructuralEmbodiment.Core.Visualisation
                     using (MemoryStream ms = new MemoryStream(bytes))
                     {
                         Image image = Image.FromStream(ms);
-                        images.Add(new Bitmap(image));
+                        Images.Add(new Bitmap(image));
                     }
 
                 }

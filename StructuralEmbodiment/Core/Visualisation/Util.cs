@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Rhino;
+using Rhino.Display;
+using System.Windows.Forms;
 
 namespace StructuralEmbodiment.Core.Visualisation
 {
@@ -113,6 +116,41 @@ namespace StructuralEmbodiment.Core.Visualisation
                 });
             }
             return payload;
+        }
+
+        public static Bitmap CaptureView(int Height=-1, int Width = -1)
+        {
+            //Settng up viewport
+            RhinoDoc activeDoc = RhinoDoc.ActiveDoc;
+            RhinoView activeView = activeDoc.Views.ActiveView;
+            RhinoViewport activeViewport = activeView.ActiveViewport;
+
+            //Setting up view capture
+            var viewCapture = new ViewCapture();
+            if (Width <= 0)
+            {
+                viewCapture.Width = activeViewport.Size.Width;
+            }
+            else { viewCapture.Width = Width; }
+
+            if (Height <= 0)
+            {
+                viewCapture.Height = activeViewport.Size.Height;
+            }
+            else { viewCapture.Height = Height; }
+
+            viewCapture.ScaleScreenItems = false;
+            viewCapture.DrawAxes = false;
+            viewCapture.DrawGrid = false ;
+            viewCapture.DrawGridAxes = false ;
+            viewCapture.TransparentBackground = true;
+
+            var bitmap = viewCapture.CaptureToBitmap(activeView);
+            return bitmap;
+
+
+
+
         }
     }
 }

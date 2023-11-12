@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	
   <PropertyGroup>
-    <TargetFrameworks>net7</TargetFrameworks>
+    <TargetFrameworks>net7-windows</TargetFrameworks>
     <Version>1.0</Version>
     <Title>StructuralEmbodiment</Title>
     <Description>Description of StructuralEmbodiment</Description>
     <TargetExt>.gha</TargetExt>
+	<UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   
   <ItemGroup>
