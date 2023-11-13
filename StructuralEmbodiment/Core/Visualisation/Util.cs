@@ -145,11 +145,8 @@ namespace StructuralEmbodiment.Core.Visualisation
             viewCapture.DrawGridAxes = false ;
             viewCapture.TransparentBackground = true;
 
-            var bitmap = viewCapture.CaptureToBitmap(activeView);
-            return bitmap;
-
-
-
+            Bitmap capture = viewCapture.CaptureToBitmap(activeView);
+            return capture;
 
         }
     }
