@@ -148,9 +148,9 @@ namespace StructuralEmbodiment.Core.Visualisation
             var bitmap = viewCapture.CaptureToBitmap(activeView);
             return bitmap;
 
-
-
-
+        }
+        public static Bitmap CaptureDepthView() {
+            return null;
         }
     }
 }
