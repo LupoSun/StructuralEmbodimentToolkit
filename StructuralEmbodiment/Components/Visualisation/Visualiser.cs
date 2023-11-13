@@ -96,14 +96,16 @@ namespace StructuralEmbodiment.Components.Visualisation
                 {
                     return;
                 }
-                imageRequest = new ImageRequest(ImgGenSettings.ServerUrl, ImgGenSettings.Settings, ImgGenSettings.Client);
+                
                 if (Generate)
-                { 
+                {
+                    imageRequest = new ImageRequest(ImgGenSettings.ServerUrl, ImgGenSettings.Settings, ImgGenSettings.Client);
                     Task imageRequestTask = imageRequest.GenerateImage(GenerationMode.text2img);
                     imageRequestTask.Wait();
-                    
+                    this.Images.AddRange(imageRequest.Images);
+
                 }
-                this.Images.AddRange(imageRequest.Images);
+                
                 Done();
             }
             public override void SetData(IGH_DataAccess DA)

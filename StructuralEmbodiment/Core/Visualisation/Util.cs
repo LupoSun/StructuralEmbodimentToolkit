@@ -118,7 +118,7 @@ namespace StructuralEmbodiment.Core.Visualisation
             return payload;
         }
 
-        public static Bitmap CaptureView(int Height=-1, int Width = -1)
+        public static Bitmap CaptureView(int width = -1, int height = -1)
         {
             //Settng up viewport
             RhinoDoc activeDoc = RhinoDoc.ActiveDoc;
@@ -127,17 +127,16 @@ namespace StructuralEmbodiment.Core.Visualisation
 
             //Setting up view capture
             var viewCapture = new ViewCapture();
-            if (Width <= 0)
+            if (width <= 0 || height <=0)
             {
                 viewCapture.Width = activeViewport.Size.Width;
-            }
-            else { viewCapture.Width = Width; }
-
-            if (Height <= 0)
-            {
                 viewCapture.Height = activeViewport.Size.Height;
             }
-            else { viewCapture.Height = Height; }
+            else { 
+                viewCapture.Width = width;
+                viewCapture.Height = height;
+            }
+
 
             viewCapture.ScaleScreenItems = false;
             viewCapture.DrawAxes = false;
@@ -145,15 +144,51 @@ namespace StructuralEmbodiment.Core.Visualisation
             viewCapture.DrawGridAxes = false ;
             viewCapture.TransparentBackground = true;
 
-            var bitmap = viewCapture.CaptureToBitmap(activeView);
-            return bitmap;
-
-        }
-        public static Bitmap CaptureDepthView() {
-            return null;
             Bitmap capture = viewCapture.CaptureToBitmap(activeView);
             return capture;
 
+        }
+        public static Bitmap CaptureDepthView(int width = -1, int height = -1) {
+            //Settng up viewport
+            RhinoDoc activeDoc = RhinoDoc.ActiveDoc;
+            RhinoView activeView = activeDoc.Views.ActiveView;
+            RhinoViewport activeViewport = activeView.ActiveViewport;
+
+            //Setting up zbuffer capture
+            ZBufferCapture zBufferCapture = new ZBufferCapture(activeViewport);
+            zBufferCapture.ShowCurves(true);
+            zBufferCapture.ShowPoints(false);
+            zBufferCapture.ShowIsocurves(false);
+            zBufferCapture.ShowLights(false);
+
+            Bitmap sourceZBuffer = zBufferCapture.GrayscaleDib();
+
+            int targetWidth;
+            int targetHeight;
+            Bitmap resizedZBuffer;
+
+            if (width <= 0 || height <=0)
+            {
+                resizedZBuffer = sourceZBuffer;
+            }
+            else { 
+                targetWidth = width;
+                targetHeight = height;
+                resizedZBuffer = ResizeBitmap(sourceZBuffer, targetWidth, targetHeight);
+            }
+
+            return resizedZBuffer;
+        }
+
+        public static Bitmap ResizeBitmap (Bitmap sourceBitmap,int width, int height)
+        {
+            Bitmap resizedBitmap = new Bitmap(width, height);
+            using (Graphics g = Graphics.FromImage(resizedBitmap))
+            {
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.DrawImage(sourceBitmap, 0, 0, width, height);
+            }
+            return resizedBitmap;
         }
     }
 }

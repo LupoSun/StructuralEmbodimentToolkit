@@ -55,7 +55,8 @@ namespace StructuralEmbodiment.Core.Visualisation
                 batch_size = batchSize,
                 steps,
                 width,
-                height
+                height,
+                alwayson_scripts = new { }
             });
         }
 
@@ -72,7 +73,7 @@ namespace StructuralEmbodiment.Core.Visualisation
             }
             catch (Exception e)
             {
-                throw new Exception("Failed to fatch data from the given server url");
+                throw new Exception(e + "Failed to fatch data from the given server url");
             }
               
             return this;
@@ -86,10 +87,8 @@ namespace StructuralEmbodiment.Core.Visualisation
 
         public override string ToString()
         {
+            
             return "ServerURL: " + this.ServerUrl + "\n" + "\n" +
-                "ControlNetModules: " + String.Join("\n", this.controlNetModules) + "\n" + "\n" +
-                "ControlNetModels: " + String.Join("\n", this.controlNetModels) + "\n" + "\n" +
-                "SDModels: " + String.Join("\n", this.sdModels) + "\n" + "\n" +
                 "Prompt: " + this.prompt + "\n" + "\n" +
                 "NegativePrompt: " + this.nprompt + "\n" + "\n" +
                 "RandomSeed: " + this.seed + "\n" + "\n" +
@@ -97,7 +96,12 @@ namespace StructuralEmbodiment.Core.Visualisation
                 "BatchSize: " + this.batchSize + "\n" + "\n" +
                 "Steps: " + this.steps + "\n" + "\n" +
                 "Width: " + this.width + "\n" + "\n" +
-                "Height: " + this.height + "\n";
+                "Height: " + this.height + "\n" + "\n" +
+                "ControlNetModules: " +" \n "+ String.Join("\n", this.controlNetModules) + "\n" + "\n" +
+                "ControlNetModels: " + "\n" + String.Join("\n", this.controlNetModels) + "\n" + "\n" +
+                "SDModels: " + "\n" + String.Join("\n", this.sdModels) + "\n" + "\n" +
+                "Payload" + "\n" + this.Settings.ToString();
+            
         }
 
 
