@@ -9,7 +9,7 @@ namespace StructuralEmbodiment.Components.Visualisation
 {
     public class BuildImgGenGuides : GH_Component
     {
-        ControlNetSettings controlNetSettings;
+        ControlNetSetting controlNetSettings;
         List<Bitmap> images;
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace StructuralEmbodiment.Components.Visualisation
               "Building the guidances for the image generation",
               "Structural Embodiment", "Visualisation")
         {
-            this.controlNetSettings = new ControlNetSettings();
+            this.controlNetSettings = new ControlNetSetting();
             this.images = new List<Bitmap>();
         }
 
@@ -68,7 +68,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //clear the settings
                 this.images.Clear();
-                this.controlNetSettings = new ControlNetSettings();
+                this.controlNetSettings = new ControlNetSetting();
                 /*
                 this.controlNetSettings.CannySourceImage = null;
                 this.controlNetSettings.DepthMapSourceImage = null;

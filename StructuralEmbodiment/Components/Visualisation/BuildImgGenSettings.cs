@@ -103,7 +103,7 @@ namespace StructuralEmbodiment.Components.Visualisation
 
         private class ImgGenSettingsWorker: WorkerInstance 
         {
-            public ImageGenerationSettings ImgGenSettings { get; set; }
+            public ImageGenerationSetting ImgGenSettings { get; set; }
 
             string url = "http://127.0.0.1:7860";
 
@@ -135,8 +135,8 @@ namespace StructuralEmbodiment.Components.Visualisation
                 }
                 try
                 {
-                    Task<ImageGenerationSettings> imgSettingsTask = ImageGenerationSettings.CreateImageSettingsObject(url);
-                    ImageGenerationSettings imgSettings = imgSettingsTask.Result;
+                    Task<ImageGenerationSetting> imgSettingsTask = ImageGenerationSetting.CreateImageSettingsObject(url);
+                    ImageGenerationSetting imgSettings = imgSettingsTask.Result;
                     imgSettings.InitialiseSettings(Prompt, NegativePrompt, RandomSeed, Sampler, BatchSize, Steps, Width, Height);
                     this.ImgGenSettings = imgSettings;
                 } catch (Exception e)

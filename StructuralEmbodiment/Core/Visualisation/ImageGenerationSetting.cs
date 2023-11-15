@@ -9,7 +9,7 @@ using System.Net.Http;
 
 namespace StructuralEmbodiment.Core.Visualisation
 {
-    internal class ImageGenerationSettings
+    internal class ImageGenerationSetting
     {
         public string ServerUrl { get; set; }
         public HttpClient Client { get; set; }
@@ -29,7 +29,7 @@ namespace StructuralEmbodiment.Core.Visualisation
         public string sampler;
 
 
-        private ImageGenerationSettings(string url)
+        private ImageGenerationSetting(string url)
         {
             this.ServerUrl = url;
             Client = new HttpClient();
@@ -60,7 +60,7 @@ namespace StructuralEmbodiment.Core.Visualisation
             });
         }
 
-        public async Task<ImageGenerationSettings> InitialiseAsyncAttribute()
+        public async Task<ImageGenerationSetting> InitialiseAsyncAttribute()
         {
             try
             {
@@ -79,9 +79,9 @@ namespace StructuralEmbodiment.Core.Visualisation
             return this;
         }
 
-        public static async Task<ImageGenerationSettings> CreateImageSettingsObject(string url)
+        public static async Task<ImageGenerationSetting> CreateImageSettingsObject(string url)
         {
-            var imageSettingsObject = new ImageGenerationSettings(url);
+            var imageSettingsObject = new ImageGenerationSetting(url);
             return await imageSettingsObject.InitialiseAsyncAttribute();
         }
 

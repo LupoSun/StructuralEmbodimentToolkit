@@ -108,7 +108,7 @@ namespace StructuralEmbodiment.Components.Visualisation
 
         private class ImgGenSettingsWorker: WorkerInstance 
         {
-            public ImageGenerationSettings ImgGenSettings { get; set; }
+            public ImageGenerationSetting ImgGenSettings { get; set; }
 
             string url = "http://127.0.0.1:7860";
 
@@ -120,7 +120,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             public int Steps { get; set; }
             public int Width { get; set; }
             public int Height { get; set; }
-            public ControlNetSettings Guidances { get; set; }
+            public ControlNetSetting Guidances { get; set; }
             
 
 
@@ -141,8 +141,8 @@ namespace StructuralEmbodiment.Components.Visualisation
                 }
                 try
                 {
-                    Task<ImageGenerationSettings> imgSettingsTask = ImageGenerationSettings.CreateImageSettingsObject(url);
-                    ImageGenerationSettings imgSettings = imgSettingsTask.Result;
+                    Task<ImageGenerationSetting> imgSettingsTask = ImageGenerationSetting.CreateImageSettingsObject(url);
+                    ImageGenerationSetting imgSettings = imgSettingsTask.Result;
                     imgSettings.InitialiseSettings(Prompt, NegativePrompt, RandomSeed, Sampler, BatchSize, Steps, Width, Height);
                     this.ImgGenSettings = imgSettings;
                     if (this.Guidances != null)
@@ -186,7 +186,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 DA.GetData("Width", ref _width);
                 int _height = 512;
                 DA.GetData("Height", ref _height);
-                ControlNetSettings _guidances = null;
+                ControlNetSetting _guidances = null;
                 DA.GetData("Guidances", ref _guidances);
 
                 this.Prompt = _prompt;

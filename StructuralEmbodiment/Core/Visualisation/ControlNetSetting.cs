@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace StructuralEmbodiment.Core.Visualisation
 {
-    public class ControlNetSettings
+    public class ControlNetSetting
     {
         public Bitmap CannySourceImage { get; set; }
         public Bitmap DepthMapSourceImage { get; set; }
         public JObject CannySettings { get; set; }
         public JObject DepthMapSettings { get; set; }
 
-        public ControlNetSettings()
+        public ControlNetSetting()
         {
             
         }

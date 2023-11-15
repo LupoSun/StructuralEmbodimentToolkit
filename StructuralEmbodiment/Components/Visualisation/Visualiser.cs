@@ -79,7 +79,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         private class VisualiserWorker: WorkerInstance
         {
             List<Bitmap> Images;
-            public ImageGenerationSettings ImgGenSettings { get; set; }
+            public ImageGenerationSetting ImgGenSettings { get; set; }
 
             public ImageRequest imageRequest { get; set; }
             public bool Generate { get; set; }
@@ -114,7 +114,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             }
             public override void GetData(IGH_DataAccess DA, GH_ComponentParamServer Params)
             {
-                ImageGenerationSettings _imgGenSettings = null;
+                ImageGenerationSetting _imgGenSettings = null;
                 DA.GetData("Settings", ref _imgGenSettings);
                 bool _generate = false;
                 DA.GetData("Generate", ref _generate);
