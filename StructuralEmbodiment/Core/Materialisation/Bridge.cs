@@ -13,6 +13,9 @@ namespace StructuralEmbodiment.Core.Materialisation
 
         public Bridge(List<Member> members, List<Point3d> supports, List<Point3d> deckSupport, List<Point3d> nonDeckSupport) : base(members, supports)
         {
+            this.Members = members;
+            this.Supports = supports;
+
             this.DeckSupports = deckSupport;
             this.NonDeckSupports = nonDeckSupport;
 
@@ -43,14 +46,16 @@ namespace StructuralEmbodiment.Core.Materialisation
                 {
                     this.DeckOutlines[1].Reverse();
                 }
-            }
+            } else throw new System.Exception("Deck Outlines are not 2, try to increase the tolerance");
 
 
         }
 
+        
         public override string ToString()
         {
-            return this.DeckOutlines.Count.ToString();
+          
+        return this.GetType().ToString();
         }
 
     }
