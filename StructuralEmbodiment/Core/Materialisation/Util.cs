@@ -1,4 +1,5 @@
-﻿using Rhino.Geometry;
+﻿using Rhino;
+using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,5 +45,37 @@ namespace StructuralEmbodiment.Core.Materialisation
             const double tolerance = 0.1; // Define a suitable tolerance
             return dot > 1 - tolerance;
         }
+
+        public static bool IsPointConnectedToMember(Point3d point, Member member)
+        {
+            return member.EdgeAsPoints.Any(memberPoint => point.DistanceTo(memberPoint) < RhinoDoc.ActiveDoc.ModelAbsoluteTolerance);
+        }
+
+        public static Vector3d ComputePolylineTangentAt(Polyline polyline, int index)
+        {
+            Vector3d tangent;
+            if (index == 0)
+            {
+                // First point - use the first segment's tangent
+                tangent = polyline[1] - polyline[0];
+            }
+            else if (index == polyline.Count - 1)
+            {
+                // Last point - use the last segment's tangent
+                tangent = polyline[index] - polyline[index - 1];
+            }
+            else
+            {
+                // Middle points - average the tangents of adjacent segments
+                Vector3d tangent1 = polyline[index] - polyline[index - 1];
+                Vector3d tangent2 = polyline[index + 1] - polyline[index];
+                tangent = (tangent1 + tangent2) * 0.5;
+            }
+
+            tangent.Unitize();
+            return tangent;
+        }
+
+
     }
 }
