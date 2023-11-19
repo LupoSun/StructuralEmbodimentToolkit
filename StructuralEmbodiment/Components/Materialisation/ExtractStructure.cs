@@ -35,7 +35,8 @@ namespace StructuralEmbodiment.Components.Materialisation
         {
             pManager.AddGenericParameter("Members", "M", "Members of the structure", GH_ParamAccess.list);
             pManager.AddPointParameter("Supports", "S", "Supports of the structure", GH_ParamAccess.list);
-            pManager.AddNumberParameter("Force Range", "FR", "Force Range of the structure", GH_ParamAccess.list);
+            pManager.AddIntervalParameter("Force Range", "FR", "Force Range of the structure", GH_ParamAccess.item);
+            pManager.AddIntervalParameter("Force Range Unsigned", "FRU", "Force Range Unsigned of the structure", GH_ParamAccess.item);
 
             pManager.AddPointParameter("Deck Supports", "DS", "Deck Supports of the structure", GH_ParamAccess.list);
             pManager.AddPointParameter("Non Deck Supports", "NDS", "Non Deck Supports of the structure", GH_ParamAccess.list);
@@ -58,7 +59,8 @@ namespace StructuralEmbodiment.Components.Materialisation
             //Bridge structure = input as Bridge;
             DA.SetDataList("Members", structure.Members);
             DA.SetDataList("Supports", structure.Supports);
-            DA.SetDataList("Force Range", structure.ForceRange);
+            DA.SetData("Force Range", structure.ForceRange);
+            DA.SetData("Force Range Unsigned", structure.ForceRangeUnsigned);
             
             if (structure is Bridge) { 
                 DA.SetDataList("Deck Supports", ((Bridge)structure).DeckSupports);

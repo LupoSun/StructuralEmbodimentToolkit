@@ -10,7 +10,7 @@ namespace StructuralEmbodiment.Core.Materialisation
     {
         Deck,
         NonDeck,
-        Pylon,
+        Tower,
         Cabel
     }
 }

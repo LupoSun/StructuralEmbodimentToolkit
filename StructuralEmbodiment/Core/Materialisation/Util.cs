@@ -1,4 +1,5 @@
-﻿using Rhino;
+﻿using Grasshopper.Kernel.Types;
+using Rhino;
 using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
@@ -76,6 +77,15 @@ namespace StructuralEmbodiment.Core.Materialisation
             return tangent;
         }
 
+        public static double ValueRemap(double value, Interval from, Interval to)
+        {
+            if (from.Length == 0) return double.NaN; // Prevent division by zero
 
+            // Calculate the proportion of 'value' in the original interval
+            double proportion = (value - from.T0) / from.Length;
+
+            // Apply the proportion to the new interval
+            return to.T0 + (proportion * to.Length);
+        }
     }
 }

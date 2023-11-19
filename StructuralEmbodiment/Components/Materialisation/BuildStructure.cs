@@ -99,11 +99,12 @@ namespace StructuralEmbodiment.Components.Materialisation
             //remove the middle point
             List<Point3d> CEMsupports = nodes.Where((item, index) => supportLabels[index]).ToList();
             List<Point3d> DeckNodes = nodes.Where((item, index) => deckNodeLabels[index]).ToList();
-            Util.RemoveClosestToCenter(CEMsupports);
+            List<Point3d> supports = new List<Point3d>(CEMsupports);
+            Util.RemoveClosestToCenter(supports);
 
             //find the deck support points
-            List<Point3d> deckSupports = CEMsupports.Intersect(DeckNodes).ToList();
-            List<Point3d> nonDeckSupports = CEMsupports.Except(DeckNodes).ToList();
+            List<Point3d> deckSupports = supports.Intersect(DeckNodes).ToList();
+            List<Point3d> nonDeckSupports = supports.Except(DeckNodes).ToList();
 
             Bridge bridge = new Bridge(members, CEMsupports, deckSupports, nonDeckSupports);
 
