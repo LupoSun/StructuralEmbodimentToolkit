@@ -47,10 +47,11 @@ namespace StructuralEmbodiment.Core.Materialisation
             return dot > 1 - tolerance;
         }
 
-        public static bool IsPointConnectedToMember(Point3d point, Member member)
+        public static bool IsPointConnectedToMember(Point3d point, Member member,double tolerance)
         {
-            return member.EdgeAsPoints.Any(memberPoint => point.DistanceTo(memberPoint) < RhinoDoc.ActiveDoc.ModelAbsoluteTolerance);
+            return member.EdgeAsPoints.Any(memberPoint => point.DistanceTo(memberPoint) < tolerance);
         }
+
 
         public static Vector3d ComputePolylineTangentAt(Polyline polyline, int index)
         {
@@ -86,6 +87,21 @@ namespace StructuralEmbodiment.Core.Materialisation
 
             // Apply the proportion to the new interval
             return to.T0 + (proportion * to.Length);
+        }
+
+        public static bool AreMembersConnected(Member member1, Member member2, double tolerance)
+        {
+            // Check if the members are the same instance or have the same identity
+            if (ReferenceEquals(member1, member2))
+            {
+                return false; // The same member cannot be considered 'connected' to itself
+            }
+
+            // Check if any end point of member1 is close to any end point of member2
+            return member1.EdgeAsPoints[0].EpsilonEquals(member2.EdgeAsPoints[0], tolerance) ||
+                   member1.EdgeAsPoints[0].EpsilonEquals(member2.EdgeAsPoints[1], tolerance) ||
+                   member1.EdgeAsPoints[1].EpsilonEquals(member2.EdgeAsPoints[0], tolerance) ||
+                   member1.EdgeAsPoints[1].EpsilonEquals(member2.EdgeAsPoints[1], tolerance);
         }
     }
 }

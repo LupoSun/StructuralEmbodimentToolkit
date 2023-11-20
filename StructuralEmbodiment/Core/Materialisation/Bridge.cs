@@ -3,6 +3,8 @@ using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using static Rhino.DocObjects.PhysicallyBasedMaterial;
 
 namespace StructuralEmbodiment.Core.Materialisation
 {
@@ -45,9 +47,10 @@ namespace StructuralEmbodiment.Core.Materialisation
 
             if (this.DeckOutlines.Count == 2)
             {
+                //TODO Rework on this logic
                 if (!Util.HaveSameDirection(this.DeckOutlines[0], this.DeckOutlines[1]))
                 {
-                    this.DeckOutlines[1].Reverse();
+                    //this.DeckOutlines[1].Reverse();
                 }
             }
             else throw new System.Exception("Deck Outlines are not 2, try to increase the tolerance");
@@ -67,42 +70,44 @@ namespace StructuralEmbodiment.Core.Materialisation
             }
         }
 
-        public Dictionary<Point3d, List<Member>> FindConncectedTrails()
+        public static Dictionary<Point3d, List<Member>> FindConncectedTrails(List<Point3d>searchPoints,List<Member>members)
         {
 
             var connectedMembersDict = new Dictionary<Point3d, List<Member>>();
 
             // Initialize dictionary with support points
-            var supports = new List<Point3d>(this.Supports);
-            Util.RemoveClosestToCenter(supports);
+            var supports = new List<Point3d>(searchPoints);
+            //Util.RemoveClosestToCenter(supports);
+
             foreach (Point3d support in supports)
             {
                 var connectedMembers = new List<Member>();
-                FindConnectedMembersRecursive(support, this.Members, null, ref connectedMembers);
+                FindConnectedMembersRecursive(support, members, null, ref connectedMembers);
                 connectedMembersDict[support] = connectedMembers;
             }
 
             return connectedMembersDict;
         }
 
-        private void FindConnectedMembersRecursive(Point3d currentPoint, List<Member> membersPool, Member previousMember, ref List<Member> connectedMembers)
+        private static void FindConnectedMembersRecursive(Point3d currentPoint, List<Member> membersPool, Member previousMember, ref List<Member> connectedMembers)
         {
+            double tolerance = RhinoDoc.ActiveDoc.ModelAbsoluteTolerance;
             foreach (var member in membersPool)
             {
                 if (member.EdgeType == EdgeType.DeviationEdge) continue;
                 if (member == previousMember) continue;
 
-                if (Util.IsPointConnectedToMember(currentPoint, member))
+                if (Util.IsPointConnectedToMember(currentPoint, member,tolerance))
                 {
                     connectedMembers.Add(member);
-                    var nextPoint = member.EdgeAsPoints[0].EpsilonEquals(currentPoint, RhinoDoc.ActiveDoc.ModelAbsoluteTolerance) ? member.EdgeAsPoints[1] : member.EdgeAsPoints[0];
+                    var nextPoint = member.EdgeAsPoints[0].EpsilonEquals(currentPoint, tolerance) ? member.EdgeAsPoints[1] : member.EdgeAsPoints[0];
                     FindConnectedMembersRecursive(nextPoint, membersPool, member, ref connectedMembers);
                     break; // Assuming one member doesn't connect to multiple members at the same point
                 }
             }
         }
 
-        public List<Plane> ComputePerpendicularPlanesAtPoints(List<Member> connectedMembers)
+        public List<Plane> ComputePerpendicularPlanesAtPoints(List<Member> connectedMembers, double tolerance)
         {
             var points = new List<Point3d>();
             foreach (Member member in connectedMembers)
@@ -110,7 +115,9 @@ namespace StructuralEmbodiment.Core.Materialisation
                 points.Add(member.EdgeAsPoints[0]);
                 points.Add(member.EdgeAsPoints[1]);
             }
-            points = Point3d.SortAndCullPointList(points, RhinoDoc.ActiveDoc.ModelAbsoluteTolerance).ToList();
+            
+            // By increasing the tolerance by 10 times, we can remove the duplicate points as well as the ones in the middle
+            points = Point3d.SortAndCullPointList(points, tolerance).ToList();
 
             var polyline = new Polyline(points);
 
@@ -135,10 +142,16 @@ namespace StructuralEmbodiment.Core.Materialisation
 
         }
 
-        public List<Brep> LoftTrails(Dictionary<Point3d, List<Member>> connnectedMembersDict, int crossSection, double multiplier, Interval range, bool IncludeDeckTrails)
+        public List<Brep> LoftTrails(Dictionary<Point3d, List<Member>> connectedMembersDict, int crossSection, double multiplier, Interval range, bool IncludeDeckTrails,double tolerance)
         {
             var breps = new List<Brep>();
-            foreach (KeyValuePair<Point3d, List<Member>> kvp in connnectedMembersDict)
+            double trailThicknessCoeff = 0.7;
+
+            //Post processing the dictionary bridge the trail gap
+            Dictionary<Point3d, List<Member>> newDict = BridgeTrailGaps(connectedMembersDict,tolerance);
+            connectedMembersDict = newDict;
+
+            foreach (KeyValuePair<Point3d, List<Member>> kvp in connectedMembersDict)
             {
                 var crossSectinos = new List<Curve>();
                 var connectedMembers = kvp.Value;
@@ -146,14 +159,14 @@ namespace StructuralEmbodiment.Core.Materialisation
                 {
                     continue;
                 }
-                var planes = ComputePerpendicularPlanesAtPoints(connectedMembers);
+                var planes = ComputePerpendicularPlanesAtPoints(connectedMembers,tolerance);
                 var forces = ComputeConnectedMemberCrosssection(connectedMembers);
                 for (int i = 0; i < planes.Count; i++)
                 {
                     var plane = planes[i];
                     var force = forces[i];
                     //Remap the unsigned force from the unsigned force range to the new range
-                    double crossSectionSize = Util.ValueRemap(Math.Abs(force), this.ForceRangeUnsigned, range) * multiplier;
+                    double crossSectionSize = Util.ValueRemap(Math.Abs(force), this.ForceRangeUnsigned, range) * multiplier * trailThicknessCoeff;
                     if (crossSection == 0)
                     {
                         crossSectinos.Add(new Circle(plane, crossSectionSize / 2).ToNurbsCurve());
@@ -171,9 +184,73 @@ namespace StructuralEmbodiment.Core.Materialisation
             }
             return breps;
         }
-        public List<Brep> LoftDeviations(int crossSection, double multiplier, Interval range)
+
+       /*
+        * convert the connectivity dictionary of trail pairs into a dictionary of continuous trails
+        */
+        public Dictionary<Point3d,List<Member>> BridgeTrailGaps(Dictionary<Point3d, List<Member>> connectedMembersDict, double tolerance)
         {
-            var breps = new List<Brep>();
+            Dictionary<Point3d, List<Member>> newDict = new Dictionary<Point3d, List<Member>>();
+            List<Point3d> examined = new List<Point3d>();
+            foreach (KeyValuePair<Point3d, List<Member>> kvp in connectedMembersDict)
+            {
+                List<Member> toAdd = new List<Member>();
+                var startPt1 = kvp.Key;
+                var members1 = kvp.Value;
+                var endMember1 = members1.Last();
+                if(examined.Contains(startPt1)) continue;
+                else examined.Add(startPt1);
+
+                foreach (KeyValuePair<Point3d, List<Member>> kvp2 in connectedMembersDict)
+                {
+                    var startPt2 = kvp2.Key;
+                    var members2 = kvp2.Value;
+                    var endMember2 = members2.Last();
+                    if (Util.AreMembersConnected(endMember1, endMember2, tolerance * 10))
+                    {
+                        if (!examined.Contains(startPt2))
+                        {
+                            toAdd.AddRange(members1);
+                            var temp = new List<Member>(members2);
+                            temp.Reverse();
+                            toAdd.AddRange(temp);
+                            examined.Add(startPt2);
+                        }
+                    }
+                }
+                if (toAdd.Count > 0)
+                {
+                    newDict.Add(startPt1, toAdd);
+                }
+
+            }
+
+            //Second loop for the ending half of the outlines
+            foreach (Curve deckOutline in this.DeckOutlines)
+            {
+                var startPoint = deckOutline.PointAtStart;
+                var endPoint = deckOutline.PointAtEnd;
+                foreach (KeyValuePair<Point3d, List<Member>> kvp in connectedMembersDict)
+                {
+                    var connectedMembers = kvp.Value;
+                    var support = kvp.Key;
+                    if (endPoint.DistanceTo(support) < RhinoDoc.ActiveDoc.ModelAbsoluteTolerance)
+                    {
+                        List<Member> temp = new List<Member>(connectedMembers);
+                        temp.Reverse();
+                        newDict[startPoint].AddRange(temp);
+                    }
+
+                }
+
+            }
+            return newDict;
+        }
+
+        public List<List<Brep>> LoftDeviations(int crossSection, double multiplier, Interval range)
+        {
+            var cables = new List<Brep>();
+            var bars = new List<Brep>();
             double cableThicknessCoeff = 0.1;
             double compressionMemberCoeff = 3 * cableThicknessCoeff;
             foreach (Member m in this.Members)
@@ -188,6 +265,15 @@ namespace StructuralEmbodiment.Core.Materialisation
                         crossSectionSize = Util.ValueRemap(this.ForceRange.T1, this.ForceRangeUnsigned, range);
                         crossSectionSize *= (multiplier * cableThicknessCoeff);
 
+                        cables.Add(Brep.CreatePipe(
+                            new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1]),
+                            crossSectionSize / 2,
+                            false,
+                            PipeCapMode.Round,
+                            true,
+                            RhinoDoc.ActiveDoc.ModelAbsoluteTolerance,
+                            RhinoDoc.ActiveDoc.ModelAngleToleranceRadians)[0]);
+
                         //If a deviation edge is in compression
                     }
                     else
@@ -201,8 +287,7 @@ namespace StructuralEmbodiment.Core.Materialisation
 
                         crossSectionSize *= (multiplier * compressionMemberCoeff);
 
-                    }
-                    breps.Add(Brep.CreatePipe(
+                        bars.Add(Brep.CreatePipe(
                             new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1]),
                             crossSectionSize / 2,
                             false,
@@ -210,10 +295,12 @@ namespace StructuralEmbodiment.Core.Materialisation
                             true,
                             RhinoDoc.ActiveDoc.ModelAbsoluteTolerance,
                             RhinoDoc.ActiveDoc.ModelAngleToleranceRadians)[0]);
+                    }
+                    
 
                 }
             }
-            return breps;
+            return new List<List<Brep>>() {cables,bars};
         }
 
         public List<Brep> LoftDeck(double multiplier, Interval range)
@@ -257,6 +344,37 @@ namespace StructuralEmbodiment.Core.Materialisation
             return brepVolumes;
         }
 
+        public List<Brep> LoftTower(int crossSection, double multiplier, Interval range,double tolerance) { 
+            List<Brep> breps = new List<Brep>();
+            List<Member> towerMembers = this.Members.Where(m => m.MemberType == MemberType.Tower).ToList();
+            double towerThicknessCoeff = 1.5;
+
+            List<Plane> planes = ComputePerpendicularPlanesAtPoints(towerMembers,tolerance);
+            List<double> forces = ComputeConnectedMemberCrosssection(towerMembers);
+
+            List<Curve> crossSectinos = new List<Curve>();
+            for (int i = 0; i < planes.Count; i++)
+            {
+                var plane = planes[i];
+                var force = forces[i];
+                //Remap the unsigned force from the unsigned force range to the new range
+                double crossSectionSize = Util.ValueRemap(Math.Abs(force), this.ForceRangeUnsigned, range) * multiplier * towerThicknessCoeff;
+                if (crossSection == 0)
+                {
+                    crossSectinos.Add(new Circle(plane, crossSectionSize / 2).ToNurbsCurve());
+                }
+                else if (crossSection == 1)
+                {
+                    crossSectinos.Add(new Rectangle3d(plane, new Interval(-crossSectionSize / 2, crossSectionSize / 2), new Interval(-crossSectionSize / 2, crossSectionSize / 2)).ToNurbsCurve());
+                }
+            }
+
+            var brep = Brep.CreateFromLoft(crossSectinos, Point3d.Unset, Point3d.Unset, LoftType.Tight, false)[0];
+            breps.Add(brep.CapPlanarHoles(RhinoDoc.ActiveDoc.ModelAbsoluteTolerance));
+
+            return breps;
+        }
+
         /*
          * <summary>
          * [Needs to go private]Computes the cross-sectional forces for each member in the connected members list.
@@ -289,10 +407,9 @@ namespace StructuralEmbodiment.Core.Materialisation
             // Add the force of the last member
             crossSectionalForces.Add(connectedMembers.Last().Force);
 
+            
             return crossSectionalForces;
         }
-
-
 
 
         public override string ToString()
