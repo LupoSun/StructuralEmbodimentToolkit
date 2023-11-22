@@ -52,7 +52,6 @@ namespace StructuralEmbodiment.Core.Materialisation
             return member.EdgeAsPoints.Any(memberPoint => point.DistanceTo(memberPoint) < tolerance);
         }
 
-
         public static Vector3d ComputePolylineTangentAt(Polyline polyline, int index)
         {
             Vector3d tangent;
@@ -102,6 +101,19 @@ namespace StructuralEmbodiment.Core.Materialisation
                    member1.EdgeAsPoints[0].EpsilonEquals(member2.EdgeAsPoints[1], tolerance) ||
                    member1.EdgeAsPoints[1].EpsilonEquals(member2.EdgeAsPoints[0], tolerance) ||
                    member1.EdgeAsPoints[1].EpsilonEquals(member2.EdgeAsPoints[1], tolerance);
+        }
+
+        public static Point3d AveragePoint(List<Point3d> points)
+        {
+            if (points == null || !points.Any())
+                return Point3d.Unset;
+
+            Point3d sum = new Point3d(0,0,0);
+            foreach (var pt in points)
+            {
+                sum += pt;
+            }
+            return sum / points.Count;
         }
     }
 }

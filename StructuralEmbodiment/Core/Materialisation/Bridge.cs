@@ -251,7 +251,7 @@ namespace StructuralEmbodiment.Core.Materialisation
         {
             var cables = new List<Brep>();
             var bars = new List<Brep>();
-            double cableThicknessCoeff = 0.1;
+            double cableThicknessCoeff = 0.2;
             double compressionMemberCoeff = 3 * cableThicknessCoeff;
             foreach (Member m in this.Members)
             {
