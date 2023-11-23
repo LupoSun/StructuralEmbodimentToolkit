@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Security.Cryptography;
 using Grasshopper.Kernel;
 using Rhino;
 using Rhino.Geometry;
@@ -81,35 +83,27 @@ namespace StructuralEmbodiment.Components.Materialisation
                 deck.AddRange(((Bridge)structure).LoftDeck(multiplier, range));
                 DA.SetDataList("Deck", deck);
 
-                List<List<Brep>> devs = ((Bridge)structure).LoftDeviations(crossSection, multiplier, range);
+                List<Brep> trails = ((Bridge)structure).LoftTrails(connectedMembersDict, crossSection, multiplier, range, includeDeckEdges, tolerance * 10);
+                DA.SetDataList("Arches", trails);
+
+                List<List<Brep>> devs = ((Bridge)structure).LoftDeviations(crossSection, multiplier, range, tolerance * 10);
                 List<Brep> cables = devs[0];
                 List<Brep> bars = devs[1];
                 DA.SetDataList("Cables", cables);
                 DA.SetDataList("Bars", bars);
-
-                List<Brep> trails = ((Bridge)structure).LoftTrails(connectedMembersDict, crossSection, multiplier, range, includeDeckEdges, tolerance * 10);
-                DA.SetDataList("Arches", trails);
 
                 List<Brep> tower = new List<Brep>();
                 if (((Bridge)structure).TowerSupports != null) {
                     tower = ((Bridge)structure).LoftTower(crossSection, multiplier, range, tolerance);
                 }
                 DA.SetDataList("Towers", tower);
-                //Dictionary<Point3d, List<Member>> newDict = ((Bridge)structure).BridgeTrailGaps(connectedMembersDict,tolerance*10);
-                //connectedMembersDict = newDict;
-                //breps.AddRange(((Bridge)structure).LoftTrails(connectedMembersDict, crossSection, multiplier, range, includeDeckEdges, tolerance * 10));
-                //List<Plane> pls = ((Bridge)structure).ComputePerpendicularPlanesAtPoints(newDict.First().Value,tolerance*10);
-                //List<double> crss = ((Bridge)structure).ComputeConnectedMemberCrosssection(newDict.First().Value);
-                //List<Plane> pls = ((Bridge)structure).ComputePerpendicularPlanesAtPoints(connectedMembersDict.First().Value);
-                //List<double> cs = ((Bridge)structure).ComputeConnectedMemberCrosssection(connectedMembersDict.Last().Value);
 
+                
+                List<LineCurve> lcrv = new List<LineCurve>();
+              
 
-                //var tower = ((Bridge)structure).Members.Where(m=>m.MemberType==MemberType.Tower);
-                
-     
-                
-                DA.SetDataList("(test)", new int[]{connectedMembersDict.Count });
-                DA.SetDataList("(test2)", tower);
+                DA.SetDataList("(test)", lcrv);
+                DA.SetDataList("(test2)", ((Bridge)structure).DeckOutlines);
             }
 
 

@@ -114,7 +114,7 @@ namespace StructuralEmbodiment.Core.Materialisation
 
         public void LoftTerrain(Vector3d downDistance, double tolerance)
         {
-            this.TerrainBreps = Brep.CreateFromLoft(this.TerrainSections, Point3d.Unset, Point3d.Unset, LoftType.Normal, false).ToList();
+            this.TerrainBreps = Brep.CreateFromLoft(this.TerrainSections, Point3d.Unset, Point3d.Unset, LoftType.Straight, false).ToList();
 
             /***
             LineCurve l1 = new LineCurve(this.TerrainSections[0].PointAtStart, this.TerrainSections[1].PointAtStart);

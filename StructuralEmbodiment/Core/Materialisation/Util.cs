@@ -115,5 +115,32 @@ namespace StructuralEmbodiment.Core.Materialisation
             }
             return sum / points.Count;
         }
+
+        public static bool IsMemberConnectingOutlines(Member member, List<Curve> deckOutlines, double tolerance)
+        {
+            if (member.EdgeAsPoints.Count < 2) return false; // Check for at least 2 points
+
+            // Assuming the member's start and end points are the first and last in EdgeAsPoints
+            Point3d startPoint = member.EdgeAsPoints.First();
+            Point3d endPoint = member.EdgeAsPoints.Last();
+
+            bool startOnOutline1 = IsPointOnCurve(startPoint, deckOutlines.First(),tolerance);
+            bool endOnOutline2 = IsPointOnCurve(endPoint, deckOutlines.Last(), tolerance);
+            bool startOnOutline2 = IsPointOnCurve(startPoint, deckOutlines.Last(), tolerance);
+            bool endOnOutline1 = IsPointOnCurve(endPoint, deckOutlines.First(),tolerance);
+
+            return (startOnOutline1 && endOnOutline2) || (startOnOutline2 && endOnOutline1);
+        }
+
+        public static bool IsPointOnCurve(Point3d point, Curve curve, double tolerance)
+        {
+            
+                PolylineCurve polylineCurve = (PolylineCurve)curve;
+                Polyline polyline = polylineCurve.ToPolyline();
+                var pts = polyline.ToArray();
+                return pts.Any(pt => pt.DistanceTo(point) < tolerance);
+            
+            
+        }
     }
 }

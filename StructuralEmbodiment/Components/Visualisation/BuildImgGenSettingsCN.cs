@@ -39,7 +39,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             pManager.AddIntegerParameter("Steps", "S", "Number of sampling steps", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Width", "W", "Pixel width of the image", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Height", "H", "Pixel height of the image", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Guidances", "G","Guidances for generation", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Guides", "G","Guidances for generation", GH_ParamAccess.item);
             
             pManager[1].Optional = true;
             pManager[2].Optional = true;

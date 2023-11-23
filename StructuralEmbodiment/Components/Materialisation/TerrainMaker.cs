@@ -114,7 +114,7 @@ namespace StructuralEmbodiment.Components.Materialisation
 
                 sections.AddRange(terrain.GenerateTerrain(deckStartPoints, deckEndPoints, nonDeckStartPoints, nonDeckEndPoints,
                     width, length, depth, slope, Vector3d.XAxis, Vector3d.YAxis, Vector3d.ZAxis));
-                terrain.LoftTerrain((-Vector3d.ZAxis * depth * 2), tolerance);
+                terrain.LoftTerrain((-Vector3d.ZAxis * depth * 6), tolerance);
 
                 DA.SetDataList("Terrain", Brep.JoinBreps(terrain.TerrainBreps, tolerance));
             }
