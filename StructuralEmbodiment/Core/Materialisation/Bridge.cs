@@ -223,6 +223,7 @@ namespace StructuralEmbodiment.Core.Materialisation
 
             }
 
+            /* to be deleted after checking running
             //Second loop for the ending half of the outlines
             foreach (Curve deckOutline in this.DeckOutlines)
             {
@@ -232,16 +233,26 @@ namespace StructuralEmbodiment.Core.Materialisation
                 {
                     var connectedMembers = kvp.Value;
                     var support = kvp.Key;
-                    if (endPoint.DistanceTo(support) < RhinoDoc.ActiveDoc.ModelAbsoluteTolerance)
+                    if (endPoint.DistanceTo(support) < tolerance)
                     {
                         List<Member> temp = new List<Member>(connectedMembers);
                         temp.Reverse();
-                        newDict[startPoint].AddRange(temp);
+
+                        foreach(Point3d pt in connectedMembersDict.Keys)
+                        {
+                            if (pt.DistanceTo(startPoint) < tolerance)
+                            {
+                                newDict[pt].AddRange(temp);
+                            }
+                        }
+
+                        //newDict[startPoint].AddRange(temp);
                     }
 
                 }
 
             }
+            */
             return newDict;
         }
 
@@ -258,7 +269,7 @@ namespace StructuralEmbodiment.Core.Materialisation
                 //if the member is connecting the deck outlines, skip it
                 if (Util.IsMemberConnectingOutlines(m, this.DeckOutlines, tolerance)) continue;
 
-                if (m.EdgeType == EdgeType.DeviationEdge)
+                if (m.EdgeType == EdgeType.DeviationEdge && m.EdgeAsPoints[0].DistanceTo(m.EdgeAsPoints[1])>tolerance*10)
                 {
                     //If a deviation edge is in tension
                     double crossSectionSize;
@@ -277,8 +288,8 @@ namespace StructuralEmbodiment.Core.Materialisation
                             RhinoDoc.ActiveDoc.ModelAbsoluteTolerance,
                             RhinoDoc.ActiveDoc.ModelAngleToleranceRadians)[0]);
 
-                        //If a deviation edge is in compression
-                    }
+
+                    } //If a deviation edge is in compression
                     else
                     {
 
@@ -321,14 +332,62 @@ namespace StructuralEmbodiment.Core.Materialisation
 
             //Move and loft the deck
             Transform move = Transform.Translation(0, 0, (crossSectionSize / 2));
+            List<Curve> outlines = new List<Curve>();
             foreach (Curve outline in this.DeckOutlines)
             {
-                
-                outline.Transform(move);
+                Curve copy = outline.DuplicateCurve();
+                copy.Transform(move);
+                outlines.Add(copy);
             }
             List<Brep> brepVolumes = new List<Brep>();
             // Convert polylines to curves
-            var loftCurves = this.DeckOutlines.Select(polyline => polyline.ToNurbsCurve()).ToList();
+            var loftCurves = outlines.Select(polyline => polyline.ToNurbsCurve()).ToList();
+
+            // Create the lofted surface
+            var loftedSurface = Brep.CreateFromLoft(loftCurves, Point3d.Unset, Point3d.Unset, LoftType.Normal, false);
+
+            // Check if loft was successful
+            if (loftedSurface == null || loftedSurface.Length == 0)
+                return brepVolumes;
+
+            // Extrude the loft surface
+            var extrusionPath = new LineCurve(new Point3d(0, 0, 0), new Point3d(0, 0, (-crossSectionSize)));
+            foreach (var face in loftedSurface[0].Faces)
+            {
+                Brep faceBrep = face.DuplicateFace(false);
+                Brep extrudedBrep = faceBrep.Faces[0].CreateExtrusion(extrusionPath, true);
+                brepVolumes.Add(extrudedBrep);
+            }
+
+            return brepVolumes;
+        }
+
+        public List<Brep> LoftDeckSmooth(double multiplier, Interval range)
+        {
+            //Compute the cross section value
+            double deckThicknessCoeff = 0.5;
+            double absMaxForce = this.Members
+                .Where(m => m.MemberType == MemberType.Deck)
+                .Select(m => Math.Abs(m.Force))
+                .DefaultIfEmpty(0) // This ensures a default value if the collection is empty
+                .Max();
+            double crossSectionSize = Util.ValueRemap(absMaxForce, this.ForceRangeUnsigned, range);
+            crossSectionSize *= (multiplier * deckThicknessCoeff);
+
+            //Move and loft the deck
+            Transform move = Transform.Translation(0, 0, (crossSectionSize / 2));
+            List<Curve> outlines = new List<Curve>();
+            foreach (Curve outline in this.DeckOutlines)
+            {
+                Curve copy = outline.DuplicateCurve();
+                copy.Transform(move);
+                List<Point3d> pts = new List<Point3d>(((PolylineCurve)copy).ToPolyline());
+                Curve smooth = Curve.CreateInterpolatedCurve(pts, 3);
+                outlines.Add(smooth);
+            }
+            List<Brep> brepVolumes = new List<Brep>();
+            // Convert polylines to curves
+            var loftCurves = outlines.Select(polyline => polyline.ToNurbsCurve()).ToList();
 
             // Create the lofted surface
             var loftedSurface = Brep.CreateFromLoft(loftCurves, Point3d.Unset, Point3d.Unset, LoftType.Normal, false);

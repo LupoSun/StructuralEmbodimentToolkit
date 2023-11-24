@@ -79,10 +79,6 @@ namespace StructuralEmbodiment.Components.Materialisation
                 Util.RemoveClosestToCenter(supports);
                 Dictionary<Point3d, List<Member>> connectedMembersDict = Bridge.FindConncectedTrails(supports,((Bridge)structure).Members);
 
-                List<Brep> deck = new List<Brep>();
-                deck.AddRange(((Bridge)structure).LoftDeck(multiplier, range));
-                DA.SetDataList("Deck", deck);
-
                 List<Brep> trails = ((Bridge)structure).LoftTrails(connectedMembersDict, crossSection, multiplier, range, includeDeckEdges, tolerance * 10);
                 DA.SetDataList("Arches", trails);
 
@@ -98,7 +94,12 @@ namespace StructuralEmbodiment.Components.Materialisation
                 }
                 DA.SetDataList("Towers", tower);
 
-                
+                List<Brep> deck = new List<Brep>();
+                //deck.AddRange(((Bridge)structure).LoftDeck(multiplier, range));
+                deck.AddRange(((Bridge)structure).LoftDeckSmooth(multiplier, range));
+                DA.SetDataList("Deck", deck);
+
+
                 List<LineCurve> lcrv = new List<LineCurve>();
               
 
