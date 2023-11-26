@@ -30,7 +30,7 @@ namespace StructuralEmbodiment.Core.Materialisation
             }
         }
 
-        public static bool HaveSameDirection(Curve curve1, Curve curve2)
+        public static bool HaveSameDirectionVect(Curve curve1, Curve curve2)
         {
             // Get normalized tangent vectors at the start of the curves
             Vector3d tan1 = curve1.TangentAtStart;
@@ -45,6 +45,15 @@ namespace StructuralEmbodiment.Core.Materialisation
             // Check if dot product is close to 1 (same direction) or -1 (opposite direction)
             const double tolerance = 0.1; // Define a suitable tolerance
             return dot > 1 - tolerance;
+        }
+
+        public static bool HaveSameDirection(Curve curve1, Curve curve2)
+        {
+            var curve1Start = curve1.PointAtStart;
+            var curve1End = curve1.PointAtEnd;
+            var curve2Start = curve2.PointAtStart;
+
+            return curve1End.DistanceTo(curve2Start) > curve1Start.DistanceTo(curve2Start);
         }
 
         public static bool IsPointConnectedToMember(Point3d point, Member member,double tolerance)
@@ -142,5 +151,7 @@ namespace StructuralEmbodiment.Core.Materialisation
             
             
         }
+
+        
     }
 }

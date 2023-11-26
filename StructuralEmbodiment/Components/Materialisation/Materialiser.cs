@@ -45,6 +45,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
+            pManager.AddGenericParameter("Structure", "S", "Materialised structure", GH_ParamAccess.item);
             pManager.AddBrepParameter("Cables", "C", "Cables of a structure", GH_ParamAccess.list);
             pManager.AddBrepParameter("Bars","B","Bars of a structure",GH_ParamAccess.list);
             pManager.AddBrepParameter("Deck", "D", "Deck of a bridge", GH_ParamAccess.list);
@@ -95,7 +96,6 @@ namespace StructuralEmbodiment.Components.Materialisation
                 DA.SetDataList("Towers", tower);
 
                 List<Brep> deck = new List<Brep>();
-                //deck.AddRange(((Bridge)structure).LoftDeck(multiplier, range));
                 deck.AddRange(((Bridge)structure).LoftDeckSmooth(multiplier, range));
                 DA.SetDataList("Deck", deck);
 
@@ -105,6 +105,7 @@ namespace StructuralEmbodiment.Components.Materialisation
 
                 DA.SetDataList("(test)", lcrv);
                 DA.SetDataList("(test2)", ((Bridge)structure).DeckOutlines);
+                DA.SetData("Structure", structure);
             }
 
 

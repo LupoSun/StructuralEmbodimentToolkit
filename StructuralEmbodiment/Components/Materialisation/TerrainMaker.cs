@@ -31,12 +31,14 @@ namespace StructuralEmbodiment.Components.Materialisation
             pManager.AddNumberParameter("Length", "L", "Length of the terrain", GH_ParamAccess.item);
             pManager.AddNumberParameter("Depth", "D", "Depth of the trench", GH_ParamAccess.item);
             pManager.AddNumberParameter("Slope", "SL", "Slope of the trench", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Base Thickness", "BT", "Thickness of the base plate", GH_ParamAccess.item);
 
             //pManager[0].Optional = true;
             pManager[1].Optional = true;
             pManager[2].Optional = true;
             pManager[3].Optional = true;
-            pManager[4].Optional = true;  
+            pManager[4].Optional = true;
+            pManager[5].Optional = true;
         }
 
         /// <summary>
@@ -45,7 +47,9 @@ namespace StructuralEmbodiment.Components.Materialisation
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddBrepParameter("Terrain", "T", "Terrain for the structure", GH_ParamAccess.list);
-            
+            pManager.AddGenericParameter("(Test)", "t", "", GH_ParamAccess.list);
+            pManager.AddGenericParameter("(Test2)", "t2", "", GH_ParamAccess.list);
+            pManager.AddGenericParameter("(Test3)", "t3", "", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -63,6 +67,7 @@ namespace StructuralEmbodiment.Components.Materialisation
             double length; 
             double depth;
             double slope;
+            double baseThickness;
     
 
             if (structure != null && structure is Bridge)
@@ -97,30 +102,33 @@ namespace StructuralEmbodiment.Components.Materialisation
 
                 }
 
-                
 
                 //Setting the optional parameters
                 width = Util.AveragePoint(deckStartPoints).DistanceTo(Util.AveragePoint(deckEndPoints));
                 length = width;
                 depth = width / 2;
                 slope = width / 4;
+                baseThickness = width / 10;
                 DA.GetData("Width", ref width);
                 DA.GetData("Length", ref length);
                 DA.GetData("Depth", ref depth);
                 DA.GetData("Slope", ref slope);
-
-                //Point3d midPoint = (Util.AveragePoint(deckStartPoints) + Util.AveragePoint(deckEndPoints)) / 2;
-                //midPoint += (-Vector3d.ZAxis * depth*2);
+                DA.GetData("Base Thickness", ref baseThickness);
 
                 sections.AddRange(terrain.GenerateTerrain(deckStartPoints, deckEndPoints, nonDeckStartPoints, nonDeckEndPoints,
                     width, length, depth, slope, Vector3d.XAxis, Vector3d.YAxis, Vector3d.ZAxis));
-                terrain.LoftTerrain((-Vector3d.ZAxis * depth * 6), tolerance);
+                terrain.LoftTerrain(baseThickness, tolerance);
 
-                DA.SetDataList("Terrain", Brep.JoinBreps(terrain.TerrainBreps, tolerance));
+                List<Brep> breps = new List<Brep>();
+                breps.AddRange(terrain.TerrainBreps);
+                if (terrain.TerrainType == TerrainType.Valley) {
+                    breps.AddRange(terrain.BridgeNonDeckExtension((Bridge)structure, tolerance));
+                }
+
+                DA.SetDataList("Terrain", breps);
+
+                DA.SetDataList("(Test)",breps);
             }
-
-            
-
 
             //DA.SetDataList("(Sections)", new Point3d[]{ deckStartPoints[0], Point3d.Unset, averageNotDeckStart});
         }

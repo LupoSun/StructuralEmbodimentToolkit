@@ -1,6 +1,10 @@
 ﻿using Rhino.Geometry;
+using StructuralEmbodiment.Components.Materialisation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Rhino.Geometry.Intersect;
 
 namespace StructuralEmbodiment.Core.Materialisation
 {
@@ -8,10 +12,14 @@ namespace StructuralEmbodiment.Core.Materialisation
     {
         public List<Brep> TerrainBreps { get; set; }
         public List<Curve> TerrainSections { get; set; }
+        public TerrainType TerrainType { get; set; }
+
         public Terrain()
         {
             this.TerrainBreps = new List<Brep>();
             this.TerrainSections = new List<Curve>();
+            this.TerrainType = TerrainType.Unset;
+
         }
 
         public List<Curve> GenerateTerrain(
@@ -45,12 +53,15 @@ namespace StructuralEmbodiment.Core.Materialisation
             PolylineCurve section;
             if (terrainType == 1)
             {
+                this.TerrainType = TerrainType.Platau;
                 var pt1 = new Point3d(averageDeckStart);
                 pt1.Transform(Transform.Translation(x * terrainWidth));
 
                 var pt2 = new Point3d(averageDeckStart);
 
+                double zOffset = Math.Abs(averageDeckStart.Z - averageNotDeckStart.Z);
                 var pt3 = new Point3d(averageNotDeckStart);
+                pt3.Transform(Transform.Translation(-z * zOffset ));
 
                 var pt4 = new Point3d(averageNotDeckStart);
                 pt4.Transform(Transform.Translation(-z * trenchDepth - x * trenchSlope));
@@ -72,11 +83,11 @@ namespace StructuralEmbodiment.Core.Materialisation
             }
             else
             {
-
+                this.TerrainType = TerrainType.Valley;
                 var pt3 = new Point3d(averageDeckStart);
-                var pt2 = pt3 + (x * terrainWidth / 7);
-                var pt1 = pt2 + (2 * (averageNotDeckStart - averageDeckStart) + x * terrainWidth / 10);
-                var pt4 = pt3 + (-z * trenchDepth * 5);
+                var pt2 = pt3 + (x * terrainWidth / 5);
+                var pt1 = pt2 + (4 * (averageNotDeckStart - averageDeckStart) + x * terrainWidth / 10);
+                var pt4 = pt3 + (-z * trenchDepth );
                 var pt0 = pt1 + (x * terrainWidth / 7);
 
                 var pt5 = new Point3d(pt4);
@@ -112,18 +123,17 @@ namespace StructuralEmbodiment.Core.Materialisation
             return new List<Curve> { section1, section2 };
         }
 
-        public void LoftTerrain(Vector3d downDistance, double tolerance)
+        public void LoftTerrain(double baseThickness, double tolerance)
         {
+            if (this.TerrainSections.Count == 0) throw new System.Exception("No terrain sections to begin with");
+            
             this.TerrainBreps = Brep.CreateFromLoft(this.TerrainSections, Point3d.Unset, Point3d.Unset, LoftType.Straight, false).ToList();
+            List<Point3d> sectionPts = new List<Point3d>(((PolylineCurve)this.TerrainSections[0]).ToPolyline());
+            Point3d lowestPt = sectionPts.MinBy(pt=> pt.Z);
+            Point3d highestpt = sectionPts.MaxBy(pt => pt.Z);
+            Vector3d downDistance = -Vector3d.ZAxis * (highestpt.Z - lowestPt.Z + baseThickness);
 
-            /***
-            LineCurve l1 = new LineCurve(this.TerrainSections[0].PointAtStart, this.TerrainSections[1].PointAtStart);
-            LineCurve l2 = new LineCurve(this.TerrainSections[0].PointAtEnd, this.TerrainSections[1].PointAtEnd);
-            Curve closedCurve = Curve.JoinCurves(new List<Curve> { l1, l2, this.TerrainSections[0], this.TerrainSections[1] }, 0.1, false)[0];
-            Curve projectedCurve = Curve.ProjectToPlane(closedCurve, projectionPlane);
-            this.TerrainBreps.AddRange(Brep.CreateFromLoft(new Curve[] { closedCurve, projectedCurve }, Point3d.Unset, Point3d.Unset, LoftType.Normal, false).ToList());
-            this.TerrainBreps.Add(Brep.CreatePlanarBreps(projectedCurve, tolerance)[0]);
-            ***/
+
 
             Point3d t1 = this.TerrainSections[0].PointAtStart;
             Point3d t2 = this.TerrainSections[1].PointAtStart;
@@ -151,12 +161,83 @@ namespace StructuralEmbodiment.Core.Materialisation
             Curve l3 = Curve.JoinCurves(new List<Curve> { t4t3, t4b4, t3b3, b3b4 }, tolerance, false)[0];
             Curve l4 = Curve.JoinCurves(new List<Curve> { this.TerrainSections[1], t2b2, t3b3, b2b3 }, tolerance, false)[0];
             Curve l5 = Curve.JoinCurves(new List<Curve> { b1b2, b2b3, b3b4, b1b4 }, tolerance, false)[0];
-            this.TerrainBreps.AddRange(Brep.CreatePlanarBreps(l1,tolerance));
+            this.TerrainBreps.AddRange(Brep.CreatePlanarBreps(l1, tolerance));
             this.TerrainBreps.AddRange(Brep.CreatePlanarBreps(l2, tolerance));
             this.TerrainBreps.AddRange(Brep.CreatePlanarBreps(l3, tolerance));
             this.TerrainBreps.AddRange(Brep.CreatePlanarBreps(l4, tolerance));
             this.TerrainBreps.AddRange(Brep.CreatePlanarBreps(l5, tolerance));
+
         }
 
+        public List<Brep> BridgeNonDeckExtension(Bridge bridge, double tolerance)
+        {
+            var breps = new List<Brep>();
+
+            //TESTING
+            //nonDeckOutlines = new List<Curve>();
+            //pts = new List<Point3d>();
+            //vects = new List<Vector3d>();
+            
+
+            foreach(KeyValuePair<Point3d, List<Member>> kvp in bridge.NonDeckConnectedMembersDict)
+            {
+                var crossSectionBreps = Brep.CreateFromLoft(this.TerrainSections, Point3d.Unset, Point3d.Unset, LoftType.Straight, false).ToList();
+
+                Point3d pt = kvp.Key;
+                List<Member> nonDeckMembers = kvp.Value;
+                List<Plane> planes = bridge.NonDeckPlanesDict[pt];
+                List<Curve> crossSections = bridge.NonDeckCrossSectionsDict[pt];
+
+                var lines = new List<LineCurve>();
+                //Connect the individual members to form continuous outlines
+                foreach (Member member in nonDeckMembers)
+                {
+                    LineCurve line = new LineCurve(member.EdgeAsPoints[0], member.EdgeAsPoints[1]);
+                    lines.Add(line);
+                }
+                List<Curve> nonDeckOutline = Curve.JoinCurves(lines, tolerance * 10).ToList();
+                if (nonDeckOutline.Count > 1)
+                {
+                    throw new Exception("Non deck outline is not continuous, please increase the tolerance");
+                }
+                PolylineCurve nonDeckPolyline = (PolylineCurve)nonDeckOutline[0];
+
+                //TESTING
+                //nonDeckOutlines.Add(nonDeckPolyline);
+
+                // Get the first and last points of the polyline
+                var firstPoint = nonDeckMembers.First().EdgeAsPoints.Last();
+                var lastPoint = nonDeckMembers.Last().EdgeAsPoints.Last();
+
+                // Get the second and the second-to-last points to calculate the tangents
+                var secondPoint = nonDeckMembers.First().EdgeAsPoints.First();
+                var secondToLastPoint = nonDeckMembers.Last().EdgeAsPoints.First();
+
+                // Calculate tangent vectors
+                var startTangent = firstPoint - secondPoint;
+                startTangent.Unitize();
+                var endTangent = lastPoint - secondToLastPoint;
+                endTangent.Unitize();
+
+                var firstPointEnd = Intersection.ProjectPointsToBreps(crossSectionBreps, new Point3d[] { firstPoint }, -startTangent, tolerance)[0];
+                var lastPointEnd = Intersection.ProjectPointsToBreps(crossSectionBreps, new Point3d[] { lastPoint }, -endTangent, tolerance)[0];
+                double fistExtensionLength = firstPoint.DistanceTo(firstPointEnd);
+                double lastExtensionLength = lastPoint.DistanceTo(lastPointEnd);
+                var firstCrossSection = crossSections.First();
+                var lastCrossSection = crossSections.Last();
+
+                //TESTING
+                //pts.Add(firstPoint);
+                //pts.Add(lastPoint);
+                //vects.Add(startTangent);
+                //vects.Add(endTangent);
+
+                breps.Add(Extrusion.Create(firstCrossSection,new Plane(firstPoint,startTangent),fistExtensionLength,true).ToBrep());
+                breps.Add(Extrusion.Create(lastCrossSection, new Plane(lastPoint, endTangent), lastExtensionLength, true).ToBrep());
+
+            }   
+
+            return breps;
+        }
     }
 }

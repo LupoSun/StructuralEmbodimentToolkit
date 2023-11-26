@@ -2,6 +2,7 @@
 using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace StructuralEmbodiment.Core.Materialisation
@@ -13,6 +14,10 @@ namespace StructuralEmbodiment.Core.Materialisation
         public List<Point3d> NonDeckSupports { get; set; }
         public List<Point3d> TowerSupports { get; set; }
 
+        public Dictionary<Point3d, List<Member>> NonDeckConnectedMembersDict { get; set; }
+        public Dictionary<Point3d, List<Plane>> NonDeckPlanesDict { get; set; }
+        public Dictionary<Point3d, List<Curve>> NonDeckCrossSectionsDict { get; set; }
+
         public Bridge(List<Member> members, List<Point3d> supports, List<Point3d> deckSupport, List<Point3d> nonDeckSupport) : base(members, supports)
         {
             this.Members = members;
@@ -20,6 +25,10 @@ namespace StructuralEmbodiment.Core.Materialisation
 
             this.DeckSupports = deckSupport;
             this.NonDeckSupports = nonDeckSupport;
+
+            this.NonDeckConnectedMembersDict = new Dictionary<Point3d, List<Member>>();
+            this.NonDeckPlanesDict = new Dictionary<Point3d, List<Plane>>();
+            this.NonDeckCrossSectionsDict = new Dictionary<Point3d, List<Curve>>();
 
             if (supports.Count - deckSupport.Count - nonDeckSupport.Count == 1)
             {
@@ -48,7 +57,7 @@ namespace StructuralEmbodiment.Core.Materialisation
                 //TODO Rework on this logic
                 if (!Util.HaveSameDirection(this.DeckOutlines[0], this.DeckOutlines[1]))
                 {
-                    //this.DeckOutlines[1].Reverse();
+                    this.DeckOutlines[1].Reverse();
                 }
             }
             else throw new System.Exception("Deck Outlines are not 2, try to increase the tolerance");
@@ -175,7 +184,15 @@ namespace StructuralEmbodiment.Core.Materialisation
                     }
                 }
 
-                var brep = Brep.CreateFromLoft(crossSectinos, Point3d.Unset, Point3d.Unset, LoftType.Tight, false)[0];
+                // Register the planes and cross sections in to the object's attributes
+                if(connectedMembers.First().MemberType != MemberType.Deck) {
+                    this.NonDeckConnectedMembersDict[kvp.Key] = connectedMembers;
+                    this.NonDeckPlanesDict[kvp.Key] = planes;
+                    this.NonDeckCrossSectionsDict[kvp.Key] = crossSectinos;
+                }
+                
+
+                var brep = Brep.CreateFromLoft(crossSectinos, Point3d.Unset, Point3d.Unset, LoftType.Loose, false)[0];
                 breps.Add(brep.CapPlanarHoles(RhinoDoc.ActiveDoc.ModelAbsoluteTolerance));
 
 
@@ -385,6 +402,13 @@ namespace StructuralEmbodiment.Core.Materialisation
                 Curve smooth = Curve.CreateInterpolatedCurve(pts, 3);
                 outlines.Add(smooth);
             }
+
+            // Make the deck wider
+            var Pt1 = outlines[0].PointAtStart;
+            var Pt2 = outlines[1].PointAtStart;
+            outlines[0].Transform(Transform.Translation(((Pt1 - Pt2)/((Pt1-Pt2).Length)) * crossSectionSize));
+            outlines[1].Transform(Transform.Translation(-((Pt1 - Pt2) / ((Pt1 - Pt2).Length)) * crossSectionSize));
+
             List<Brep> brepVolumes = new List<Brep>();
             // Convert polylines to curves
             var loftCurves = outlines.Select(polyline => polyline.ToNurbsCurve()).ToList();
