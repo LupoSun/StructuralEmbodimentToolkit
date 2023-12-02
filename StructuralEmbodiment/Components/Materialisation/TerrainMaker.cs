@@ -125,7 +125,7 @@ namespace StructuralEmbodiment.Components.Materialisation
                     breps.AddRange(terrain.BridgeNonDeckExtension((Bridge)structure, tolerance));
                 }
 
-                DA.SetDataList("Terrain", breps);
+                DA.SetDataList("Terrain", Brep.JoinBreps(breps, tolerance));
 
                 DA.SetDataList("(Test)",breps);
             }
