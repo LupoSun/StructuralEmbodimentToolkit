@@ -26,7 +26,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Structure", "S", "Structure to be embeded with the terrain", GH_ParamAccess.item);
+            pManager.AddGenericParameter("• Structure", "S", "Structure to be embeded with the terrain", GH_ParamAccess.item);
             pManager.AddNumberParameter("Width", "W", "Width of the terrain", GH_ParamAccess.item);
             pManager.AddNumberParameter("Length", "L", "Length of the terrain", GH_ParamAccess.item);
             pManager.AddNumberParameter("Depth", "D", "Depth of the trench", GH_ParamAccess.item);
@@ -47,7 +47,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddBrepParameter("Terrain", "T", "Terrain for the structure", GH_ParamAccess.list);
-            pManager.AddGenericParameter("(Test)", "t", "", GH_ParamAccess.list);
+            pManager.AddBrepParameter("Auxiliary Strucutre", "AS", "Auxiliary structure to embed the structure to the terrain", GH_ParamAccess.list);
             pManager.AddGenericParameter("(Test2)", "t2", "", GH_ParamAccess.list);
             pManager.AddGenericParameter("(Test3)", "t3", "", GH_ParamAccess.list);
         }
@@ -61,7 +61,7 @@ namespace StructuralEmbodiment.Components.Materialisation
             double tolerance = RhinoDoc.ActiveDoc.ModelAbsoluteTolerance;
 
             Structure structure = null;
-            DA.GetData("Structure", ref structure);
+            DA.GetData("• Structure", ref structure);
 
             double width; 
             double length; 
@@ -78,7 +78,6 @@ namespace StructuralEmbodiment.Components.Materialisation
                 List<Point3d> nonDeckEndPoints = new List<Point3d>();
 
                 List<Curve> sections = new List<Curve>();
-                List<Brep> terrains = new List<Brep>();
                 Terrain terrain = new Terrain();
 
                 Dictionary<Point3d, List<Member>> connectedMembersDict = Bridge.FindConncectedTrails(((Bridge)structure).Supports, ((Bridge)structure).Members);
@@ -119,15 +118,17 @@ namespace StructuralEmbodiment.Components.Materialisation
                     width, length, depth, slope, Vector3d.XAxis, Vector3d.YAxis, Vector3d.ZAxis));
                 terrain.LoftTerrain(baseThickness, tolerance);
 
-                List<Brep> breps = new List<Brep>();
-                breps.AddRange(terrain.TerrainBreps);
+                List<Brep> brepsStructure = new List<Brep>();
+                List<Brep> brepsAuxStructure = new List<Brep>();
+
+                brepsStructure.AddRange(terrain.TerrainBreps);
                 if (terrain.TerrainType == TerrainType.Valley) {
-                    breps.AddRange(terrain.BridgeNonDeckExtension((Bridge)structure, tolerance));
+                    brepsAuxStructure.AddRange(terrain.BridgeNonDeckExtension((Bridge)structure, tolerance));
                 }
 
-                DA.SetDataList("Terrain", Brep.JoinBreps(breps, tolerance));
+                DA.SetDataList("Terrain", Brep.JoinBreps(brepsStructure, tolerance));
 
-                DA.SetDataList("(Test)",breps);
+                DA.SetDataList("Auxiliary Strucutre", Brep.JoinBreps(brepsAuxStructure, tolerance));
             }
 
             //DA.SetDataList("(Sections)", new Point3d[]{ deckStartPoints[0], Point3d.Unset, averageNotDeckStart});

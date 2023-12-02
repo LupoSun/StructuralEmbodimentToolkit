@@ -26,11 +26,13 @@ namespace StructuralEmbodiment.Components.Visualisation
             pManager.AddGeometryParameter("• Geometry", "G", "Geometry to be visualised", GH_ParamAccess.list);
             pManager.AddTextParameter("Material Name", "MN", "Name of the material", GH_ParamAccess.item);
             pManager.AddBooleanParameter("• Visualise", "V", "Visualise the geometries", GH_ParamAccess.item);
+            pManager.AddIntegerParameter("Mapping Size", "MS", "Size of the mapping", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Clear", "C", "Clean up the visualisation layers from Rhino", GH_ParamAccess.item);
 
             pManager[1].Optional = true;
             //pManager[2].Optional = true;
             pManager[3].Optional = true;
+            pManager[4].Optional = true;
         }
 
         /// <summary>
@@ -53,7 +55,11 @@ namespace StructuralEmbodiment.Components.Visualisation
             bool run = false;
             DA.GetData(2, ref run);
             bool clear = false;
-            DA.GetData(3, ref clear);
+            int mappingSize = 1;
+            DA.GetData(3, ref mappingSize);
+            DA.GetData(4, ref clear);
+            
+            
 
             // Access the Rhino document
             var doc = Rhino.RhinoDoc.ActiveDoc;
@@ -115,8 +121,9 @@ namespace StructuralEmbodiment.Components.Visualisation
                     }
                     layerFound = newLayer;
                     layerIndex = doc.Layers.Add(layerFound);
-                    
-                } else
+
+                }
+                else
                 {
                     layerIndex = layerFound.Index;
                 }
@@ -136,18 +143,53 @@ namespace StructuralEmbodiment.Components.Visualisation
                 {
                     if (geo != null)
                     {
+                        // Create a new object attributes holder
                         var attributes = new Rhino.DocObjects.ObjectAttributes
                         {
                             LayerIndex = layerIndex
                         };
 
-                        if (geo is Brep) doc.Objects.AddBrep((Brep)geo, attributes);
-                        else if (geo is Mesh) doc.Objects.AddMesh((Mesh)geo, attributes);
-                        else if (geo is Curve) doc.Objects.AddCurve((Curve)geo, attributes);
-                        else if (geo is NurbsCurve) doc.Objects.AddCurve((NurbsCurve)geo, attributes);
-                        else if (geo is Surface) doc.Objects.AddSurface((Surface)geo, attributes);
-                        else if (geo is Extrusion) doc.Objects.AddExtrusion((Extrusion)geo, attributes);
-                        else if (geo is SubD) doc.Objects.AddSubD((SubD)geo, attributes);
+
+
+                        Guid brepId = Guid.Empty;
+                        if (geo is Brep) { brepId = doc.Objects.AddBrep((Brep)geo, attributes); }
+                        else if (geo is Mesh)
+                        {
+                            brepId = doc.Objects.AddMesh((Mesh)geo, attributes);
+                        }
+                        else if (geo is Curve)
+                        {
+                            brepId = doc.Objects.AddCurve((Curve)geo, attributes);
+                        }
+                        else if (geo is NurbsCurve)
+                        {
+                            brepId = doc.Objects.AddCurve((NurbsCurve)geo, attributes);
+                        }
+                        else if (geo is Surface)
+                        {
+                            brepId = doc.Objects.AddSurface((Surface)geo, attributes);
+                        }
+                        else if (geo is Extrusion)
+                        {
+                            brepId = doc.Objects.AddExtrusion((Extrusion)geo, attributes);
+                        }
+                        else if (geo is SubD)
+                        {
+                            brepId = doc.Objects.AddSubD((SubD)geo, attributes);
+                        }
+
+                        if (brepId != Guid.Empty)
+                        {
+                            // Create and set the mapping to box mapping
+                            var boxMapping = Rhino.Render.TextureMapping.CreateBoxMapping(
+                                Rhino.Geometry.Plane.WorldXY,
+                                new Rhino.Geometry.Interval(0, mappingSize),
+                                new Rhino.Geometry.Interval(0, mappingSize),
+                                new Rhino.Geometry.Interval(0, mappingSize),
+                                true
+                                ); 
+                            doc.Objects.ModifyTextureMapping(brepId, 1, boxMapping);
+                        }
 
                     }
                 }

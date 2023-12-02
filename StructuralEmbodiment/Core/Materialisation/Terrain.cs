@@ -172,11 +172,6 @@ namespace StructuralEmbodiment.Core.Materialisation
         public List<Brep> BridgeNonDeckExtension(Bridge bridge, double tolerance)
         {
             var breps = new List<Brep>();
-
-            //TESTING
-            //nonDeckOutlines = new List<Curve>();
-            //pts = new List<Point3d>();
-            //vects = new List<Vector3d>();
             
 
             foreach(KeyValuePair<Point3d, List<Member>> kvp in bridge.NonDeckConnectedMembersDict)
@@ -202,9 +197,7 @@ namespace StructuralEmbodiment.Core.Materialisation
                 }
                 PolylineCurve nonDeckPolyline = (PolylineCurve)nonDeckOutline[0];
 
-                //TESTING
-                //nonDeckOutlines.Add(nonDeckPolyline);
-
+               
                 // Get the first and last points of the polyline
                 var firstPoint = nonDeckMembers.First().EdgeAsPoints.Last();
                 var lastPoint = nonDeckMembers.Last().EdgeAsPoints.Last();
@@ -226,11 +219,6 @@ namespace StructuralEmbodiment.Core.Materialisation
                 var firstCrossSection = crossSections.First();
                 var lastCrossSection = crossSections.Last();
 
-                //TESTING
-                //pts.Add(firstPoint);
-                //pts.Add(lastPoint);
-                //vects.Add(startTangent);
-                //vects.Add(endTangent);
 
                 breps.Add(Extrusion.Create(firstCrossSection,new Plane(firstPoint,startTangent),fistExtensionLength,true).ToBrep());
                 breps.Add(Extrusion.Create(lastCrossSection, new Plane(lastPoint, endTangent), lastExtensionLength, true).ToBrep());

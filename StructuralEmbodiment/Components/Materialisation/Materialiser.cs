@@ -28,7 +28,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Structure", "S", "The Structure to materialise", GH_ParamAccess.item);
+            pManager.AddGenericParameter("• Structure", "S", "The Structure to materialise", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Cross Section", "CS", "Cross Section of the members. O=Circular, 1=Rectangular", GH_ParamAccess.item);
             pManager.AddNumberParameter("Multiplier", "M", "Multiplier for the cross section", GH_ParamAccess.item);
             pManager.AddIntervalParameter("Range", "R", "Range of the cross section", GH_ParamAccess.item);
@@ -63,7 +63,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             Structure structure = null;
-            DA.GetData("Structure", ref structure);
+            DA.GetData("• Structure", ref structure);
             int crossSection = 1;
             DA.GetData("Cross Section", ref crossSection);
             double multiplier = 1.0;

@@ -192,7 +192,7 @@ namespace StructuralEmbodiment.Core.Materialisation
                 }
                 
 
-                var brep = Brep.CreateFromLoft(crossSectinos, Point3d.Unset, Point3d.Unset, LoftType.Loose, false)[0];
+                var brep = Brep.CreateFromLoft(crossSectinos, Point3d.Unset, Point3d.Unset, LoftType.Tight, false)[0];
                 breps.Add(brep.CapPlanarHoles(RhinoDoc.ActiveDoc.ModelAbsoluteTolerance));
 
 

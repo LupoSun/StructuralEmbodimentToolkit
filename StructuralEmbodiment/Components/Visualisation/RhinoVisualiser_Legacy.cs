@@ -30,7 +30,6 @@ namespace StructuralEmbodiment.Components.Visualisation
             pManager.AddBooleanParameter("Clear", "C", "Clean up the visualisation layers from Rhino", GH_ParamAccess.item);
 
             pManager[1].Optional = true;
-            //pManager[2].Optional = true;
             pManager[3].Optional = true;
         }
 

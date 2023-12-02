@@ -24,7 +24,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Structure", "S", "The Structure to extract information from", GH_ParamAccess.item);
+            pManager.AddGenericParameter("• Structure", "S", "The Structure to extract information from", GH_ParamAccess.item);
 
         }
 
