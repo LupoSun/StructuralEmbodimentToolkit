@@ -53,7 +53,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             Structure structure = null;
-            DA.GetData("Structure", ref structure);
+            DA.GetData("• Structure", ref structure);
 
             
             //Bridge structure = input as Bridge;

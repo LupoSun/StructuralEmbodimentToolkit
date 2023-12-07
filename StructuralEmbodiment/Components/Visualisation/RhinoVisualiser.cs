@@ -98,7 +98,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                         if (m.Name.Equals(materialName, StringComparison.OrdinalIgnoreCase))
                         {
                             mat = m;
-                            layerName += materialName;
+                            layerName += "_"+materialName;
                             break;
                         }
                     }

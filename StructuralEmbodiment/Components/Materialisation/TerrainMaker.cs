@@ -48,8 +48,8 @@ namespace StructuralEmbodiment.Components.Materialisation
         {
             pManager.AddBrepParameter("Terrain", "T", "Terrain for the structure", GH_ParamAccess.list);
             pManager.AddBrepParameter("Auxiliary Strucutre", "AS", "Auxiliary structure to embed the structure to the terrain", GH_ParamAccess.list);
-            pManager.AddGenericParameter("(Test2)", "t2", "", GH_ParamAccess.list);
-            pManager.AddGenericParameter("(Test3)", "t3", "", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Tree Area", "TA", "Areas for tree assets", GH_ParamAccess.list);
+            pManager.AddGenericParameter("River", "R", "Geometry describing the river", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -129,6 +129,10 @@ namespace StructuralEmbodiment.Components.Materialisation
                 DA.SetDataList("Terrain", Brep.JoinBreps(brepsStructure, tolerance));
 
                 DA.SetDataList("Auxiliary Strucutre", Brep.JoinBreps(brepsAuxStructure, tolerance));
+
+                terrain.AddTerrainAssets((Bridge)structure, tolerance);
+                DA.SetDataList("Tree Area", terrain.TreeArea);
+                DA.SetDataList("River", terrain.River);
             }
 
             //DA.SetDataList("(Sections)", new Point3d[]{ deckStartPoints[0], Point3d.Unset, averageNotDeckStart});

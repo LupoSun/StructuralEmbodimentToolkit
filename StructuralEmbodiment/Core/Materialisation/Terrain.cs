@@ -1,10 +1,9 @@
 ﻿using Rhino.Geometry;
+using Rhino.Geometry.Intersect;
 using StructuralEmbodiment.Components.Materialisation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Rhino.Geometry.Intersect;
 
 namespace StructuralEmbodiment.Core.Materialisation
 {
@@ -13,12 +12,16 @@ namespace StructuralEmbodiment.Core.Materialisation
         public List<Brep> TerrainBreps { get; set; }
         public List<Curve> TerrainSections { get; set; }
         public TerrainType TerrainType { get; set; }
+        public List<Brep> TreeArea { get; set; }
+        public List<Brep> River { get; set; }
 
         public Terrain()
         {
             this.TerrainBreps = new List<Brep>();
             this.TerrainSections = new List<Curve>();
             this.TerrainType = TerrainType.Unset;
+            this.TreeArea = new List<Brep>();
+            this.River = new List<Brep>();
 
         }
 
@@ -61,7 +64,7 @@ namespace StructuralEmbodiment.Core.Materialisation
 
                 double zOffset = Math.Abs(averageDeckStart.Z - averageNotDeckStart.Z);
                 var pt3 = new Point3d(averageNotDeckStart);
-                pt3.Transform(Transform.Translation(-z * zOffset ));
+                pt3.Transform(Transform.Translation(-z * zOffset));
 
                 var pt4 = new Point3d(averageNotDeckStart);
                 pt4.Transform(Transform.Translation(-z * trenchDepth - x * trenchSlope));
@@ -87,7 +90,7 @@ namespace StructuralEmbodiment.Core.Materialisation
                 var pt3 = new Point3d(averageDeckStart);
                 var pt2 = pt3 + (x * terrainWidth / 5);
                 var pt1 = pt2 + (4 * (averageNotDeckStart - averageDeckStart) + x * terrainWidth / 10);
-                var pt4 = pt3 + (-z * trenchDepth );
+                var pt4 = pt3 + (-z * trenchDepth);
                 var pt0 = pt1 + (x * terrainWidth / 7);
 
                 var pt5 = new Point3d(pt4);
@@ -104,6 +107,10 @@ namespace StructuralEmbodiment.Core.Materialisation
 
                 var pt9 = new Point3d(pt0);
                 pt9.Transform(transformMirror);
+
+                //readjust the river bed to have the slope on the sides
+                pt4 += (pt3 - pt2);
+                pt5 += (pt6 - pt7);
 
                 var points = new List<Point3d> { pt0, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, pt9 };
                 section = new PolylineCurve(points);
@@ -126,10 +133,10 @@ namespace StructuralEmbodiment.Core.Materialisation
         public void LoftTerrain(double baseThickness, double tolerance)
         {
             if (this.TerrainSections.Count == 0) throw new System.Exception("No terrain sections to begin with");
-            
+
             this.TerrainBreps = Brep.CreateFromLoft(this.TerrainSections, Point3d.Unset, Point3d.Unset, LoftType.Straight, false).ToList();
             List<Point3d> sectionPts = new List<Point3d>(((PolylineCurve)this.TerrainSections[0]).ToPolyline());
-            Point3d lowestPt = sectionPts.MinBy(pt=> pt.Z);
+            Point3d lowestPt = sectionPts.MinBy(pt => pt.Z);
             Point3d highestpt = sectionPts.MaxBy(pt => pt.Z);
             Vector3d downDistance = -Vector3d.ZAxis * (highestpt.Z - lowestPt.Z + baseThickness);
 
@@ -172,9 +179,9 @@ namespace StructuralEmbodiment.Core.Materialisation
         public List<Brep> BridgeNonDeckExtension(Bridge bridge, double tolerance)
         {
             var breps = new List<Brep>();
-            
 
-            foreach(KeyValuePair<Point3d, List<Member>> kvp in bridge.NonDeckConnectedMembersDict)
+
+            foreach (KeyValuePair<Point3d, List<Member>> kvp in bridge.NonDeckConnectedMembersDict)
             {
                 var crossSectionBreps = Brep.CreateFromLoft(this.TerrainSections, Point3d.Unset, Point3d.Unset, LoftType.Straight, false).ToList();
 
@@ -197,7 +204,7 @@ namespace StructuralEmbodiment.Core.Materialisation
                 }
                 PolylineCurve nonDeckPolyline = (PolylineCurve)nonDeckOutline[0];
 
-               
+
                 // Get the first and last points of the polyline
                 var firstPoint = nonDeckMembers.First().EdgeAsPoints.Last();
                 var lastPoint = nonDeckMembers.Last().EdgeAsPoints.Last();
@@ -220,12 +227,143 @@ namespace StructuralEmbodiment.Core.Materialisation
                 var lastCrossSection = crossSections.Last();
 
 
-                breps.Add(Extrusion.Create(firstCrossSection,new Plane(firstPoint,startTangent),fistExtensionLength,true).ToBrep());
+                breps.Add(Extrusion.Create(firstCrossSection, new Plane(firstPoint, startTangent), fistExtensionLength, true).ToBrep());
                 breps.Add(Extrusion.Create(lastCrossSection, new Plane(lastPoint, endTangent), lastExtensionLength, true).ToBrep());
 
-            }   
+            }
 
             return breps;
+        }
+        public void AddTerrainAssets(Bridge bridge, double tolerance)
+        {
+            var deckSupports = bridge.DeckSupports;
+            var riverSections = new List<Curve>();
+
+            //Check the terrain type
+            if (this.TerrainType == TerrainType.Unset) throw new Exception("Terrain type is not set");
+
+            foreach (Curve section in this.TerrainSections)
+            {
+                //Compute the tree area
+                var section_plc = section as PolylineCurve;
+                Point3d tpt1 = Point3d.Unset;
+                if (this.TerrainType == TerrainType.Platau) tpt1 = section_plc.Point(1);
+                else if (this.TerrainType == TerrainType.Valley) tpt1 = section_plc.Point(3);
+
+                Point3d tpt1_target = deckSupports.OrderBy(p => p.DistanceTo(tpt1)).FirstOrDefault();
+                Vector3d vect1 = tpt1_target - tpt1;
+                Transform transform = Transform.Translation(vect1);
+                LineCurve line1 = null;
+                LineCurve line2 = null;
+                if (this.TerrainType == TerrainType.Platau) line1 = new LineCurve(section_plc.PointAtStart, tpt1);
+                else if (this.TerrainType == TerrainType.Valley) line1 = new LineCurve(section_plc.Point(2), section_plc.Point(3));
+                LineCurve line1_target = new LineCurve(line1);
+                line1_target.Transform(transform);
+
+                if (this.TerrainType == TerrainType.Platau) line2 = new LineCurve(section.PointAtEnd, section_plc.Point(section_plc.PointCount - 2));
+                else if (this.TerrainType == TerrainType.Valley) line2 = new LineCurve(section_plc.Point(section_plc.PointCount - 3), section_plc.Point(section_plc.PointCount - 4));
+                LineCurve line2_target = new LineCurve(line2);
+                line2_target.Transform(transform);
+                this.TreeArea.AddRange(Brep.CreateFromLoft(new List<Curve> { line1, line1_target }, Point3d.Unset, Point3d.Unset, LoftType.Straight, false).ToList());
+                this.TreeArea.AddRange(Brep.CreateFromLoft(new List<Curve> { line2, line2_target }, Point3d.Unset, Point3d.Unset, LoftType.Straight, false).ToList());
+
+
+
+                //Compute the river
+                LineCurve crv1 = null;
+                LineCurve crv2 = null;
+                double lengthDivider = 0.5;
+                if (this.TerrainType == TerrainType.Platau)
+                {
+                    lengthDivider = 4.0;
+                    crv1 = new LineCurve(section_plc.Point(2), section_plc.Point(1));
+                    crv2 = new LineCurve(section_plc.Point(section_plc.PointCount - 3), section_plc.Point(section_plc.PointCount - 2));
+                }
+                else if (this.TerrainType == TerrainType.Valley)
+                {
+                    lengthDivider = 2.0;
+                    crv1 = new LineCurve(section_plc.Point(4), section_plc.Point(3));
+                    crv2 = new LineCurve(section_plc.Point(section_plc.PointCount - 5), section_plc.Point(section_plc.PointCount - 4));
+                }
+                
+                double t;
+                if (crv1.LengthParameter(crv1.GetLength() * (1.0 / lengthDivider), out t))
+                {
+                    Point3d pointAtT1 = crv1.PointAt(t);
+                    Point3d pointAtT2 = crv2.PointAt(t);
+
+                    if (this.TerrainType == TerrainType.Platau) riverSections.Add(new PolylineCurve(new Point3d[] { pointAtT1,
+                            section_plc.Point(2),section_plc.Point(3), section_plc.Point(4),
+                            section_plc.Point(5),pointAtT2, pointAtT1}));
+                    else if (this.TerrainType == TerrainType.Valley) riverSections.Add(new PolylineCurve(new Point3d[] { pointAtT1,
+                        section_plc.Point(4), section_plc.Point(5), pointAtT2, pointAtT1}));
+                }
+            }
+            var riverNotCapped = Brep.CreateFromLoft(riverSections, Point3d.Unset, Point3d.Unset, LoftType.Straight, false).ToList();
+            //this.River.AddRange(riverNotCapped);
+            
+            foreach (Brep brep in riverNotCapped)
+            {
+                var cap = brep.CapPlanarHoles(tolerance);
+                if (cap != null) this.River.Add(cap);
+            }
+
+        }
+
+        public void AddTerrainAssetsOG(Bridge bridge, double tolerance)
+        {
+            var deckSupports = bridge.DeckSupports;
+            var riverSections = new List<Curve>();
+
+            //Check the terrain type
+            if (this.TerrainType == TerrainType.Unset) throw new Exception("Terrain type is not set");
+            if (this.TerrainType == TerrainType.Platau)
+            {
+                foreach (Curve section in this.TerrainSections)
+                {
+                    //Compute the tree area
+                    var section_plc = section as PolylineCurve;
+                    Point3d tpt1 = section_plc.Point(1);
+                    Point3d tpt1_target = deckSupports.OrderBy(p => p.DistanceTo(tpt1)).FirstOrDefault();
+                    Vector3d vect1 = tpt1_target - tpt1;
+                    Transform transform = Transform.Translation(vect1);
+                    LineCurve line1 = new LineCurve(section.PointAtStart, tpt1);
+                    LineCurve line1_target = new LineCurve(line1);
+                    line1_target.Transform(transform);
+
+                    LineCurve line2 = new LineCurve(section.PointAtEnd, section_plc.Point(section_plc.PointCount - 2));
+                    LineCurve line2_target = new LineCurve(line2);
+                    line2_target.Transform(transform);
+                    this.TreeArea.AddRange(Brep.CreateFromLoft(new List<Curve> { line1, line1_target }, Point3d.Unset, Point3d.Unset, LoftType.Straight, false).ToList());
+                    this.TreeArea.AddRange(Brep.CreateFromLoft(new List<Curve> { line2, line2_target }, Point3d.Unset, Point3d.Unset, LoftType.Straight, false).ToList());
+
+                    //Compute the river
+                    LineCurve crv1 = new LineCurve(section_plc.Point(2), section_plc.Point(1));
+                    LineCurve crv2 = new LineCurve(section_plc.Point(section_plc.PointCount - 3), section_plc.Point(section_plc.PointCount - 2));
+                    double t;
+                    if (crv1.LengthParameter(crv1.GetLength() * (1.0 / 4.0), out t))
+                    {
+                        Point3d pointAtOneThird1 = crv1.PointAt(t);
+                        Point3d pointAtTwoThird2 = crv2.PointAt(t);
+
+                        riverSections.Add(new PolylineCurve(new Point3d[] { pointAtOneThird1,
+                            section_plc.Point(2),section_plc.Point(3), section_plc.Point(4),
+                            section_plc.Point(5),pointAtTwoThird2, pointAtOneThird1}));
+                    }
+                }
+                var riverNotCapped = Brep.CreateFromLoft(riverSections, Point3d.Unset, Point3d.Unset, LoftType.Straight, false).ToList();
+
+                foreach (Brep brep in riverNotCapped)
+                {
+                    var cap = brep.CapPlanarHoles(tolerance);
+                    if (cap != null) this.River.Add(cap);
+                }
+
+            }
+            else if (this.TerrainType == TerrainType.Valley)
+            {
+
+            }
         }
     }
 }
