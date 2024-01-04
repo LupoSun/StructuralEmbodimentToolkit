@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using Rhino.Geometry;
 using StructuralEmbodiment.Core.GrasshopperAsyncComponent;
 using StructuralEmbodiment.Core.Visualisation;
+using StructuralEmbodiment.Properties;
 
 
 namespace StructuralEmbodiment.Components.Visualisation
@@ -32,7 +33,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Prompt", "P", "Describe the image to generate", GH_ParamAccess.item);
+            pManager.AddTextParameter("• Prompt", "• P", "Describe the image to generate", GH_ParamAccess.item);
             pManager.AddTextParameter("Negative Prompt", "NP", "Describe the image not to generate", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Random Seed", "RS", "The random seed for the generation", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Batch Size", "BS", "Number of images in one geration", GH_ParamAccess.item);
@@ -72,7 +73,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.VIS_BuildImageSettings;
             }
         }
 
@@ -120,7 +121,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             public int Steps { get; set; }
             public int Width { get; set; }
             public int Height { get; set; }
-            public ControlNetSetting Guidances { get; set; }
+            public ControlNetSetting Guides { get; set; }
             
 
 
@@ -145,14 +146,14 @@ namespace StructuralEmbodiment.Components.Visualisation
                     ImageGenerationSetting imgSettings = imgSettingsTask.Result;
                     imgSettings.InitialiseSettings(Prompt, NegativePrompt, RandomSeed, Sampler, BatchSize, Steps, Width, Height);
                     this.ImgGenSettings = imgSettings;
-                    if (this.Guidances != null)
+                    if (this.Guides != null)
                     {
-                        if (this.Guidances.CannySettings != null) { 
-                            this.ImgGenSettings.Settings = Util.AddControlNet(this.ImgGenSettings.Settings, this.Guidances.CannySettings);
+                        if (this.Guides.CannySettings != null) { 
+                            this.ImgGenSettings.Settings = Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.CannySettings);
                         }
-                        if (this.Guidances.DepthMapSettings != null)
+                        if (this.Guides.DepthMapSettings != null)
                         {
-                            this.ImgGenSettings.Settings = Util.AddControlNet(this.ImgGenSettings.Settings, this.Guidances.DepthMapSettings);
+                            this.ImgGenSettings.Settings = Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.DepthMapSettings);
                         }
                     }
                 } catch (Exception e)
@@ -173,7 +174,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 // Get and set the input data
                 string _prompt = "";
-                DA.GetData("Prompt", ref _prompt);
+                DA.GetData("• Prompt", ref _prompt);
                 string _negPrompt = "";
                 DA.GetData("Negative Prompt", ref _negPrompt);
                 int _randomSeed = -1;
@@ -186,8 +187,8 @@ namespace StructuralEmbodiment.Components.Visualisation
                 DA.GetData("Width", ref _width);
                 int _height = 512;
                 DA.GetData("Height", ref _height);
-                ControlNetSetting _guidances = null;
-                DA.GetData("Guidances", ref _guidances);
+                ControlNetSetting _guides = null;
+                DA.GetData("Guides", ref _guides);
 
                 this.Prompt = _prompt;
                 this.NegativePrompt = _negPrompt;
@@ -197,7 +198,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 this.Steps = _steps;
                 this.Width = _width;
                 this.Height = _height;
-                this.Guidances = _guidances;
+                this.Guides = _guides;
 
 
 

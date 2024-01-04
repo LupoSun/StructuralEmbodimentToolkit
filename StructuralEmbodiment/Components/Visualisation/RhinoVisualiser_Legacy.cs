@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 using Rhino.DocObjects;
+using StructuralEmbodiment.Properties;
 
 namespace StructuralEmbodiment.Components.Visualisation
 {
@@ -162,7 +163,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.VIS_RhinoVisualiser_Legacy;
             }
         }
 

@@ -6,6 +6,7 @@ using Rhino;
 using Rhino.Geometry;
 using StructuralEmbodiment.Core.Materialisation;
 using System.Linq;
+using StructuralEmbodiment.Properties;
 
 namespace StructuralEmbodiment.Components.Materialisation
 {
@@ -147,7 +148,7 @@ namespace StructuralEmbodiment.Components.Materialisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.MAT_TerrainMaker;
             }
         }
 

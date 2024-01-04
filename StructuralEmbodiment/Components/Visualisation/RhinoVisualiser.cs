@@ -1,6 +1,7 @@
 ﻿using Grasshopper.Kernel;
 using Rhino.DocObjects;
 using Rhino.Geometry;
+using StructuralEmbodiment.Properties;
 using System;
 using System.Collections.Generic;
 
@@ -23,9 +24,9 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGeometryParameter("• Geometry", "G", "Geometry to be visualised", GH_ParamAccess.list);
+            pManager.AddGeometryParameter("• Geometry", "• G", "Geometry to be visualised", GH_ParamAccess.list);
             pManager.AddTextParameter("Material Name", "MN", "Name of the material", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("• Visualise", "V", "Visualise the geometries", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("• Visualise", "• V", "Visualise the geometries", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Mapping Size", "MS", "Size of the mapping", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Clear", "C", "Clean up the visualisation layers from Rhino", GH_ParamAccess.item);
 
@@ -40,6 +41,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
+            pManager.AddTextParameter("Layer Name", "LN", "Name of the layer", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -79,8 +81,6 @@ namespace StructuralEmbodiment.Components.Visualisation
                         //doc.Layers.Delete(layer.Id, true);
                         doc.Layers.Purge(layer.Id, true);
                     }
-
-
 
                 }
 
@@ -193,7 +193,7 @@ namespace StructuralEmbodiment.Components.Visualisation
 
                     }
                 }
-
+                DA.SetData("Layer Name", layerName);
                 // Redraw the view to update changes
                 doc.Views.Redraw();
 
@@ -209,7 +209,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.VIS_RhinoVisualiser;
             }
         }
 

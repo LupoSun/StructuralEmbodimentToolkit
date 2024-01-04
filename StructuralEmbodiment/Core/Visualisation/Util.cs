@@ -13,6 +13,8 @@ using System.Drawing.Imaging;
 using Rhino;
 using Rhino.Display;
 using System.Windows.Forms;
+using Rhino.Geometry;
+using Rhino.Geometry.Intersect;
 
 namespace StructuralEmbodiment.Core.Visualisation
 {
@@ -190,5 +192,90 @@ namespace StructuralEmbodiment.Core.Visualisation
             }
             return resizedBitmap;
         }
+
+        public static Interval AdjustIntervalTo180(Interval angleRange)
+        {
+            double startAngle = NormalizeAndClampAngle(angleRange.T0);
+            double endAngle = NormalizeAndClampAngle(angleRange.T1);
+
+            // Adjust if start is greater than end
+            if (startAngle > endAngle)
+            {
+                double temp = startAngle;
+                startAngle = endAngle;
+                endAngle = temp;
+            }
+
+            return new Interval(startAngle, endAngle);
+        }
+
+        private static double NormalizeAndClampAngle(double angle)
+        {
+            // Normalize angle to 0 to 360 range
+            angle = angle % 360;
+            if (angle < 0)
+                angle += 360;
+
+            // Clamp angle to 0 to 180 range
+            return angle > 180 ? 180 : angle;
+        }
+
+        public static Interval DegreesToRadiansInterval(Interval angleRangeDegrees)
+        {
+            double startRadians = angleRangeDegrees.T0 * Math.PI / 180.0;
+            double endRadians = angleRangeDegrees.T1 * Math.PI / 180.0;
+            return new Interval(startRadians, endRadians);
+        }
+
+        public static void RedrawView(Point3d cameraPt, Point3d targetPt,int lensLength)
+        {
+            RhinoDoc doc = RhinoDoc.ActiveDoc;
+            RhinoView view = doc.Views.ActiveView;
+            if (view != null)
+            {
+                view.ActiveViewport.SetCameraLocation(cameraPt, true);
+                view.ActiveViewport.SetCameraDirection(targetPt - cameraPt, true);
+                view.ActiveViewport.Camera35mmLensLength = lensLength;
+                //NEEDS MORE INVESTIGATION
+                //view.ActiveViewport.SetCameraTarget(targetPt, true);
+                view.Redraw();
+            }
+        }
+
+        public static Point3d SampleRandomPointOnBreps(List<Brep> breps, Random rnd)
+        {
+            if (breps == null || breps.Count == 0)
+            {
+                return Point3d.Unset;
+            }
+
+            // Select a random Brep from the list
+            int brepIndex = rnd.Next(breps.Count);
+            Brep selectedBrep = breps[brepIndex];
+
+            if (selectedBrep.Faces.Count == 0)
+            {
+                return Point3d.Unset;
+            }
+
+            // Select a random face from the selected Brep
+            int faceIndex = rnd.Next(selectedBrep.Faces.Count);
+            BrepFace face = selectedBrep.Faces[faceIndex];
+
+            // Get domain of the surface in U and V direction
+            Interval domainU = face.Domain(0);
+            Interval domainV = face.Domain(1);
+
+            // Generate random parameters within the domain
+            double u = domainU.ParameterAt(rnd.NextDouble());
+            double v = domainV.ParameterAt(rnd.NextDouble());
+
+            // Evaluate the surface at these parameters
+            Point3d pt = face.PointAt(u, v);
+
+            return pt;
+        }
+
+         
     }
 }

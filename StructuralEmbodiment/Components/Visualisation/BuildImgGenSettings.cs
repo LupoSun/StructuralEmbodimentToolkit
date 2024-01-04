@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using Rhino.Geometry;
 using StructuralEmbodiment.Core.GrasshopperAsyncComponent;
 using StructuralEmbodiment.Core.Visualisation;
+using StructuralEmbodiment.Properties;
 
 
 namespace StructuralEmbodiment.Components.Visualisation
@@ -32,7 +33,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Prompt", "P", "Describe the image to generate", GH_ParamAccess.item);
+            pManager.AddTextParameter("• Prompt", "• P", "Describe the image to generate", GH_ParamAccess.item);
             pManager.AddTextParameter("Negative Prompt", "NP", "Describe the image not to generate", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Random Seed", "RS", "The random seed for the generation", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Batch Size", "BS", "Number of images in one geration", GH_ParamAccess.item);
@@ -67,7 +68,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.VIS_BuildImageSettings_Legacy;
             }
         }
 
@@ -157,7 +158,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 // Get and set the input data
                 string _prompt = "";
-                DA.GetData("Prompt", ref _prompt);
+                DA.GetData("• Prompt", ref _prompt);
                 string _negPrompt = "";
                 DA.GetData("Negative Prompt", ref _negPrompt);
                 int _randomSeed = -1;

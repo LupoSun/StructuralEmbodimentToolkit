@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 using StructuralEmbodiment.Core.Materialisation;
+using StructuralEmbodiment.Properties;
 
 namespace StructuralEmbodiment.Components.Materialisation
 {
@@ -24,7 +25,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("• Structure", "S", "The Structure to extract information from", GH_ParamAccess.item);
+            pManager.AddGenericParameter("• Structure", "• S", "The Structure to extract information from", GH_ParamAccess.item);
 
         }
 
@@ -83,7 +84,7 @@ namespace StructuralEmbodiment.Components.Materialisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.MAT_ExtractStructure;
             }
         }
 

@@ -7,6 +7,7 @@ using Grasshopper.Kernel;
 using Rhino;
 using Rhino.Geometry;
 using StructuralEmbodiment.Core.Materialisation;
+using StructuralEmbodiment.Properties;
 using static Rhino.DocObjects.PhysicallyBasedMaterial;
 
 namespace StructuralEmbodiment.Components.Materialisation
@@ -28,7 +29,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("• Structure", "S", "The Structure to materialise", GH_ParamAccess.item);
+            pManager.AddGenericParameter("• Structure", "• S", "The Structure to materialise", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Cross Section", "CS", "Cross Section of the members. O=Circular, 1=Rectangular", GH_ParamAccess.item);
             pManager.AddNumberParameter("Multiplier", "M", "Multiplier for the cross section", GH_ParamAccess.item);
             pManager.AddIntervalParameter("Range", "R", "Range of the cross section", GH_ParamAccess.item);
@@ -120,7 +121,7 @@ namespace StructuralEmbodiment.Components.Materialisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.MAT_Materialiser;
             }
         }
 

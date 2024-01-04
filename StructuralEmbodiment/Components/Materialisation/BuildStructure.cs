@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 using StructuralEmbodiment.Core.Materialisation;
+using StructuralEmbodiment.Properties;
 
 namespace StructuralEmbodiment.Components.Materialisation
 {
@@ -27,13 +29,13 @@ namespace StructuralEmbodiment.Components.Materialisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("Edge As Points","EP","Each edge described as start and end points",GH_ParamAccess.tree);
-            pManager.AddNumberParameter("Forces","F","Forces on each edge",GH_ParamAccess.list);
-            pManager.AddBooleanParameter("Deck Labels","DL","True if the edge is a deck",GH_ParamAccess.list);
-            pManager.AddBooleanParameter("Trail Deviation Labels","TL","Weather a edge is a trail",GH_ParamAccess.list);
-            pManager.AddPointParameter("Nodes","N","Nodes of the structure",GH_ParamAccess.list);
-            pManager.AddBooleanParameter("Deck Node Labels","DNL","True if the node is a deck node",GH_ParamAccess.list);
-            pManager.AddBooleanParameter("Support Labels", "SL", "True if a Node is a support", GH_ParamAccess.list);
+            pManager.AddPointParameter("• Edge As Points", "• EP", "Each edge described as start and end points",GH_ParamAccess.tree);
+            pManager.AddNumberParameter("• Forces", "• F", "Forces on each edge",GH_ParamAccess.list);
+            pManager.AddBooleanParameter("• Deck Labels", "• DL", "True if the edge is a deck",GH_ParamAccess.list);
+            pManager.AddBooleanParameter("• Trail Deviation Labels", "• TL", "Weather a edge is a trail",GH_ParamAccess.list);
+            pManager.AddPointParameter("• Nodes", "• N", "Nodes of the structure",GH_ParamAccess.list);
+            pManager.AddBooleanParameter("• Deck Node Labels", "• DNL", "True if the node is a deck node",GH_ParamAccess.list);
+            pManager.AddBooleanParameter("• Support Labels", "• SL", "True if a Node is a support", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -52,7 +54,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         {
             //Get the data
             GH_Structure<GH_Point> tree = new GH_Structure<GH_Point>();
-            DA.GetDataTree("Edge As Points", out tree);
+            DA.GetDataTree("• Edge As Points", out tree);
             DataTree<Point3d> EdgeAsPoints = new DataTree<Point3d>();
             foreach (GH_Path path in tree.Paths)
             {
@@ -64,17 +66,17 @@ namespace StructuralEmbodiment.Components.Materialisation
             }
 
             List<double> forces = new List<double>();
-            DA.GetDataList("Forces", forces);
+            DA.GetDataList("• Forces", forces);
             List<bool> deckLabels = new List<bool>();
-            DA.GetDataList("Deck Labels", deckLabels);
+            DA.GetDataList("• Deck Labels", deckLabels);
             List<bool> trailDevLabels = new List<bool>();
-            DA.GetDataList("Trail Deviation Labels", trailDevLabels);
+            DA.GetDataList("• Trail Deviation Labels", trailDevLabels);
             List<Point3d> nodes = new List<Point3d>();
-            DA.GetDataList("Nodes", nodes);
+            DA.GetDataList("• Nodes", nodes);
             List<bool> deckNodeLabels = new List<bool>();
-            DA.GetDataList("Deck Node Labels", deckNodeLabels);
+            DA.GetDataList("• Deck Node Labels", deckNodeLabels);
             List<bool> supportLabels = new List<bool>();
-            DA.GetDataList("Support Labels", supportLabels);
+            DA.GetDataList("• Support Labels", supportLabels);
 
 
             List<Member> members = new List<Member>();
@@ -122,7 +124,7 @@ namespace StructuralEmbodiment.Components.Materialisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.MAT_BuildStructure;
             }
         }
 

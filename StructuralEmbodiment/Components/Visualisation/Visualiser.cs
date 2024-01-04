@@ -7,6 +7,7 @@ using Grasshopper.Kernel;
 using Rhino.Geometry;
 using StructuralEmbodiment.Core.GrasshopperAsyncComponent;
 using StructuralEmbodiment.Core.Visualisation;
+using StructuralEmbodiment.Properties;
 
 namespace StructuralEmbodiment.Components.Visualisation
 {
@@ -30,8 +31,8 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Settings", "S", "Settings for image Generation", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Generate", "G", "Generate the images", GH_ParamAccess.item);
+            pManager.AddGenericParameter("• Settings", "• S", "Settings for image Generation", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("• Generate", "• G", "Generate the images", GH_ParamAccess.item);
 
         }
 
@@ -53,7 +54,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.VIS_SDVisualiser;
             }
         }
 
@@ -115,9 +116,9 @@ namespace StructuralEmbodiment.Components.Visualisation
             public override void GetData(IGH_DataAccess DA, GH_ComponentParamServer Params)
             {
                 ImageGenerationSetting _imgGenSettings = null;
-                DA.GetData("Settings", ref _imgGenSettings);
+                DA.GetData("• Settings", ref _imgGenSettings);
                 bool _generate = false;
-                DA.GetData("Generate", ref _generate);
+                DA.GetData("• Generate", ref _generate);
 
                 ImgGenSettings = _imgGenSettings;
                 Generate = _generate;
