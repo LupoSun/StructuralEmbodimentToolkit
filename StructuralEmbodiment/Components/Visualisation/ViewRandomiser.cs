@@ -11,6 +11,10 @@ namespace StructuralEmbodiment.Components.Visualisation
 {
     public class ViewRandomiser : GH_Component
     {
+        Point3d camera = new Point3d(0, 0, 0);
+        Point3d cameraTarget = new Point3d(0, 0, 0);
+        Random rnd = new Random();
+
         /// <summary>
         /// Initializes a new instance of the MyComponent1 class.
         /// </summary>
@@ -28,7 +32,6 @@ namespace StructuralEmbodiment.Components.Visualisation
         {
             pManager.AddGenericParameter("Centre", "C", "A Structure or a manual point definition of the visual centre", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Eye Level", "EL", "Only set views with eye-level height", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Lens Length", "LL", "Lens length of the camera", GH_ParamAccess.item);
             pManager.AddNumberParameter("Radius", "RA", "Radius of the view circle", GH_ParamAccess.item);
             pManager.AddAngleParameter("Rotate", "RO", "Rotate the view area", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Visualise Area", "VA", "Visualise the view area", GH_ParamAccess.item);
@@ -45,7 +48,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             pManager[5].Optional = true;
             pManager[6].Optional = true;
             pManager[7].Optional = true;
-            pManager[8].Optional = true;
+            //pManager[8].Optional = true;
         }
 
         /// <summary>
@@ -67,15 +70,15 @@ namespace StructuralEmbodiment.Components.Visualisation
             // Initialise data needed
             List<Brep> viewAreas = new List<Brep>();
             List<Curve> viewCurves = new List<Curve>();
-            Point3d camera = new Point3d(0, 0, 0);
+            
             double eyeLevelHeight = 1.6;
-            Random rnd = new Random();
+            
 
             // Default values for inputs
-            Point3d cameraTarget = new Point3d(0, 0, 0);
+            
             object centreFromInput = null;
             bool eyelevel = false;
-            int lensLength = 50;
+            //int lensLength = 50;
 
 
             double radius = 1;
@@ -112,7 +115,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 }
             }
 
-            DA.GetData("Lens Length", ref lensLength);
+            //DA.GetData("Lens Length", ref lensLength);
             DA.GetData("Radius", ref radius);
             if (radius <= 0) radius = 1;
             DA.GetData("Rotate", ref rotate);
@@ -151,15 +154,6 @@ namespace StructuralEmbodiment.Components.Visualisation
                     }
                 }
 
-                //Randomly select a curve 
-                int curveIndex = rnd.Next(viewCurves.Count);
-                Curve selectedCurve = viewCurves[curveIndex];
-                //Randomly select a point on the curve
-                double t;
-                selectedCurve.LengthParameter(rnd.NextDouble() * selectedCurve.GetLength(), out t);
-                Point3d randomPointOnCurve = selectedCurve.PointAt(t);
-
-                camera = randomPointOnCurve;
 
 
             }
@@ -178,8 +172,6 @@ namespace StructuralEmbodiment.Components.Visualisation
                 Curve latCrv2 = latArc2.ToNurbsCurve();
                 viewAreas.AddRange(new SweepOneRail().PerformSweep(lonCrv2, latCrv2));
 
-                camera = Core.Visualisation.Util.SampleRandomPointOnBreps(viewAreas, rnd);
-
             }
             //List<object> test = new List<object>() { lonCrv1, lonCrv2, latCrv1, latCrv2 };
             //List<object> test2 = new List<object>() { };
@@ -192,12 +184,33 @@ namespace StructuralEmbodiment.Components.Visualisation
             }
             if (nextView)
             {
+                if (eyelevel)
+                {
+                    //Randomly select a curve 
+                    int curveIndex = rnd.Next(viewCurves.Count);
+                    Curve selectedCurve = viewCurves[curveIndex];
+                    //Randomly select a point on the curve
+                    double t;
+                    selectedCurve.LengthParameter(rnd.NextDouble() * selectedCurve.GetLength(), out t);
+                    Point3d randomPointOnCurve = selectedCurve.PointAt(t);
 
-                Core.Visualisation.Util.RedrawView(camera, cameraTarget, lensLength);
-                nextView = false;
+                    camera = randomPointOnCurve;
+                    nextView = false;
+                }
+                else
+                {
+                    camera = Core.Visualisation.Util.SampleRandomPointOnBreps(viewAreas, rnd);
+                    nextView = false;
+                }
+                //Core.Visualisation.Util.RedrawView(camera, cameraTarget, lensLength);
+                //nextView = false;  
             }
-            DA.SetDataList("Camera Target", new List<Point3d>() { cameraTarget });
-            DA.SetDataList("Camera Position", new List<Point3d>() { camera });
+            else
+            {
+                DA.SetDataList("Camera Target", new List<Point3d>() { cameraTarget });
+                DA.SetDataList("Camera Position", new List<Point3d>() { camera });
+            }
+
 
 
             //DA.SetDataList("(Test)", test);
