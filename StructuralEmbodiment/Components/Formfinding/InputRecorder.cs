@@ -4,9 +4,11 @@ using System.IO;
 using System.Linq;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
+using Newtonsoft.Json;
 using Rhino.Geometry;
+using StructuralEmbodiment.Properties;
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodiment.Components.Formfinding
 {
     public class InputRecorder : GH_Component
     {
@@ -15,15 +17,15 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         public InputRecorder()
           : base("Input Recorder", "IR",
-              "Record all inputs on the canvas with a user defined tag as suffix",
-              "Structural Embodiment", "Visualisation")
+              "Record all inputs on the canvas with a user defined tag as suffix and write data to JSON",
+              "Structural Embodiment", "Form-finding")
         {
         }
 
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddTextParameter("Tag", "T", "Tag the inputs with a customised string (_X) to be recorded, by default _S", GH_ParamAccess.item);
             pManager.AddGenericParameter("Refresh", "R", "Refresh the data", GH_ParamAccess.tree);
@@ -43,7 +45,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddGenericParameter("Header", "H", "Header of the gethered data", GH_ParamAccess.list);
             pManager.AddGenericParameter("Values", "R", "The gethered data", GH_ParamAccess.list);
@@ -66,8 +68,8 @@ namespace StructuralEmbodiment.Components.Visualisation
             DA.GetData("File Name", ref fileName);
             DA.GetData("File Path", ref filePath);
             DA.GetData("Index", ref index);
-            
-            
+
+
             DA.GetData("Write", ref write);
 
 
@@ -113,13 +115,13 @@ namespace StructuralEmbodiment.Components.Visualisation
                                                         }
                                                         */
                                                         test.Add(item.GetType().ToString());
-                                                        if (item is GH_Number)  inputDataDict[key] = ((GH_Number)item).ToString();
+                                                        if (item is GH_Number) inputDataDict[key] = ((GH_Number)item).ToString();
                                                         else if (item is GH_Integer) inputDataDict[key] = ((GH_Integer)item).ToString();
                                                         else if (item is GH_String) inputDataDict[key] = ((GH_String)item).Value;
                                                         else if (item is GH_Boolean) inputDataDict[key] = ((GH_Boolean)item).ToString();
                                                         else if (item is GH_Point) inputDataDict[key] = ((GH_Point)item).ToString();
                                                         else if (item is GH_Vector) inputDataDict[key] = ((GH_Vector)item).ToString();
-                                                         // Add the item to the list under the key
+                                                        // Add the item to the list under the key
                                                     }
                                                 }
                                             }
@@ -134,7 +136,7 @@ namespace StructuralEmbodiment.Components.Visualisation
 
             var sortedInputData = inputDataDict.OrderBy(entry => entry.Key);
 
-            //Handle the writing to file
+            // Handle the writing to file
             if (write && !string.IsNullOrEmpty(filePath))
             {
                 filePath = Path.Combine(filePath, fileName);
@@ -142,28 +144,20 @@ namespace StructuralEmbodiment.Components.Visualisation
                 {
                     Directory.CreateDirectory(filePath);
                 }
-                fileName += ("_" + index.ToString() + ".csv");
+                fileName += "_" + index.ToString() + ".json";
                 filePath = Path.Combine(filePath, fileName);
 
                 try
                 {
-                    using (StreamWriter writer = new StreamWriter(filePath))
-                    {
-                        
-                        foreach (var entry in sortedInputData)
-                        {
-                            string key = entry.Key;
-                            string value = entry.Value.Contains(",") ? $"\"{entry.Value}\"" : entry.Value;
-                            writer.WriteLine($"{key},{value}");
-                        }
-                    }
-
+                    string json = JsonConvert.SerializeObject(sortedInputData.ToDictionary(entry => entry.Key, entry => entry.Value), Formatting.Indented);
+                    File.WriteAllText(filePath, json);
                 }
                 catch (Exception e)
                 {
                     throw new Exception(e.Message);
                 }
             }
+
             List<string> keys = new List<string>();
             List<string> values = new List<string>();
             foreach (var entry in sortedInputData)
@@ -186,7 +180,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.FF_InputRecorder;
             }
         }
 
@@ -195,7 +189,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("F15DA333-B5B1-41F7-AB3B-7F91593A8CAF"); }
+            get { return new Guid("177D645D-0B00-46D0-8E7A-832EA447BBA4"); }
         }
     }
 }

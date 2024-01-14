@@ -73,6 +73,36 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FF_InputRecorder {
+            get {
+                object obj = ResourceManager.GetObject("FF_InputRecorder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FF_InputRecorderCSV {
+            get {
+                object obj = ResourceManager.GetObject("FF_InputRecorderCSV", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FF_MassProducer {
+            get {
+                object obj = ResourceManager.GetObject("FF_MassProducer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap MAT_BuildStructure {
             get {
                 object obj = ResourceManager.GetObject("MAT_BuildStructure", resourceCulture);
@@ -166,6 +196,16 @@ namespace StructuralEmbodiment.Properties {
         internal static System.Drawing.Bitmap VIS_SDVisualiser {
             get {
                 object obj = ResourceManager.GetObject("VIS_SDVisualiser", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap VIS_SetCamera {
+            get {
+                object obj = ResourceManager.GetObject("VIS_SetCamera", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

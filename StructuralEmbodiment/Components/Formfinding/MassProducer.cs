@@ -1,6 +1,7 @@
 ﻿using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
+using StructuralEmbodiment.Properties;
 using System;
 
 namespace StructuralEmbodiment.Components.Formfinding
@@ -130,7 +131,7 @@ namespace StructuralEmbodiment.Components.Formfinding
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Resources.FF_MassProducer;
             }
         }
 
