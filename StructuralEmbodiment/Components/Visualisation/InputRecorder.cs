@@ -66,16 +66,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             DA.GetData("File Name", ref fileName);
             DA.GetData("File Path", ref filePath);
             DA.GetData("Index", ref index);
-            if (!string.IsNullOrEmpty(filePath))
-            {
-                filePath = Path.Combine(filePath, fileName);
-                if (!Directory.Exists(filePath))
-                {
-                    Directory.CreateDirectory(filePath);
-                }
-                fileName += ("_" + index.ToString() + ".csv");
-                filePath = Path.Combine(filePath, fileName);
-            }
+            
             
             DA.GetData("Write", ref write);
 
@@ -146,6 +137,14 @@ namespace StructuralEmbodiment.Components.Visualisation
             //Handle the writing to file
             if (write && !string.IsNullOrEmpty(filePath))
             {
+                filePath = Path.Combine(filePath, fileName);
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+                fileName += ("_" + index.ToString() + ".csv");
+                filePath = Path.Combine(filePath, fileName);
+
                 try
                 {
                     using (StreamWriter writer = new StreamWriter(filePath))

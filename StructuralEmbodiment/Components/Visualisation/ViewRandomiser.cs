@@ -70,12 +70,12 @@ namespace StructuralEmbodiment.Components.Visualisation
             // Initialise data needed
             List<Brep> viewAreas = new List<Brep>();
             List<Curve> viewCurves = new List<Curve>();
-            
+
             double eyeLevelHeight = 1.6;
-            
+
 
             // Default values for inputs
-            
+
             object centreFromInput = null;
             bool eyelevel = false;
             //int lensLength = 50;
@@ -178,38 +178,33 @@ namespace StructuralEmbodiment.Components.Visualisation
 
             if (visualiseArea)
             {
-                if(eyelevel) DA.SetDataList("View Areas", viewCurves); 
+                if (eyelevel) DA.SetDataList("View Areas", viewCurves);
                 else DA.SetDataList("View Areas", viewAreas);
 
             }
-            if (nextView)
-            {
-                if (eyelevel)
-                {
-                    //Randomly select a curve 
-                    int curveIndex = rnd.Next(viewCurves.Count);
-                    Curve selectedCurve = viewCurves[curveIndex];
-                    //Randomly select a point on the curve
-                    double t;
-                    selectedCurve.LengthParameter(rnd.NextDouble() * selectedCurve.GetLength(), out t);
-                    Point3d randomPointOnCurve = selectedCurve.PointAt(t);
 
-                    camera = randomPointOnCurve;
-                    nextView = false;
-                }
-                else
-                {
-                    camera = Core.Visualisation.Util.SampleRandomPointOnBreps(viewAreas, rnd);
-                    nextView = false;
-                }
-                //Core.Visualisation.Util.RedrawView(camera, cameraTarget, lensLength);
-                //nextView = false;  
+            if (eyelevel)
+            {
+                //Randomly select a curve 
+                int curveIndex = rnd.Next(viewCurves.Count);
+                Curve selectedCurve = viewCurves[curveIndex];
+                //Randomly select a point on the curve
+                double t;
+                selectedCurve.LengthParameter(rnd.NextDouble() * selectedCurve.GetLength(), out t);
+                Point3d randomPointOnCurve = selectedCurve.PointAt(t);
+
+                if (!nextView)camera = randomPointOnCurve;
+                nextView = false;
             }
             else
             {
-                DA.SetDataList("Camera Target", new List<Point3d>() { cameraTarget });
-                DA.SetDataList("Camera Position", new List<Point3d>() { camera });
+                if (!nextView) camera = Core.Visualisation.Util.SampleRandomPointOnBreps(viewAreas, rnd);
+                nextView = false;
             }
+            //Core.Visualisation.Util.RedrawView(camera, cameraTarget, lensLength);
+            //nextView = false;  
+            DA.SetDataList("Camera Target", new List<Point3d>() { cameraTarget });
+            DA.SetDataList("Camera Position", new List<Point3d>() { camera });
 
 
 
