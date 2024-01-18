@@ -33,12 +33,14 @@ namespace StructuralEmbodiment.Components.Materialisation
             pManager.AddIntegerParameter("Cross Section", "CS", "Cross Section of the members. O=Circular, 1=Rectangular", GH_ParamAccess.item);
             pManager.AddNumberParameter("Multiplier", "M", "Multiplier for the cross section", GH_ParamAccess.item);
             pManager.AddIntervalParameter("Range", "R", "Range of the cross section", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Minimal Thickness", "MT", "Minimal thickness of the cross section", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Include Deck Edges", "IDE", "Materialise the deck edges", GH_ParamAccess.item);
 
             pManager[1].Optional = true;
             pManager[2].Optional = true;
             pManager[3].Optional = true;
             pManager[4].Optional = true;
+            pManager[5].Optional = true;
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace StructuralEmbodiment.Components.Materialisation
             pManager.AddBrepParameter("Arches", "A", "Arches of a bridge", GH_ParamAccess.list);
             pManager.AddBrepParameter("Towers", "T", "Towers of a bridge", GH_ParamAccess.list);
 
-            pManager.AddGenericParameter("(test)", "t", "test", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Deck Surface", "DC", "The walking surface", GH_ParamAccess.list);
             pManager.AddGenericParameter("(test2)", "t2", "test2", GH_ParamAccess.list);
         }
 
@@ -71,6 +73,8 @@ namespace StructuralEmbodiment.Components.Materialisation
             DA.GetData("Multiplier", ref multiplier);
             Interval range = new Interval(structure.ForceRangeUnsigned[0], structure.ForceRangeUnsigned[1]);
             DA.GetData("Range", ref range);
+            double minimalThickness = 0.05;
+            DA.GetData("Minimal Thickness", ref minimalThickness);
             bool includeDeckEdges = false;
             DA.GetData("Include Deck Edges", ref includeDeckEdges);
 
@@ -84,7 +88,7 @@ namespace StructuralEmbodiment.Components.Materialisation
                 List<Brep> trails = ((Bridge)structure).LoftTrails(connectedMembersDict, crossSection, multiplier, range, includeDeckEdges, tolerance * 10);
                 DA.SetDataList("Arches", trails);
 
-                List<List<Brep>> devs = ((Bridge)structure).LoftDeviations(crossSection, multiplier, range, tolerance * 10);
+                List<List<Brep>> devs = ((Bridge)structure).LoftDeviations(crossSection, multiplier, range,minimalThickness, tolerance * 10);
                 List<Brep> cables = devs[0];
                 List<Brep> bars = devs[1];
                 DA.SetDataList("Cables", cables);
@@ -97,14 +101,16 @@ namespace StructuralEmbodiment.Components.Materialisation
                 DA.SetDataList("Towers", tower);
 
                 List<Brep> deck = new List<Brep>();
-                deck.AddRange(((Bridge)structure).LoftDeckSmooth(multiplier, range));
+                Brep[] deckSurface;
+                deck.AddRange(((Bridge)structure).LoftDeckSmooth(multiplier, range, out deckSurface));
                 DA.SetDataList("Deck", deck);
+                DA.SetDataList("Deck Surface", deckSurface);
 
 
                 List<LineCurve> lcrv = new List<LineCurve>();
               
 
-                DA.SetDataList("(test)", lcrv);
+                
                 DA.SetDataList("(test2)", ((Bridge)structure).DeckOutlines);
                 DA.SetData("Structure", structure);
             }

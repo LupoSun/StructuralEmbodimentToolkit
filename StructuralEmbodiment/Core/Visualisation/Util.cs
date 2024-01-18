@@ -227,6 +227,11 @@ namespace StructuralEmbodiment.Core.Visualisation
             return new Interval(startRadians, endRadians);
         }
 
+        public static double DegreesToRadians(double degrees)
+        {
+            return degrees * (Math.PI / 180);
+        }
+
         public static void RedrawView(Point3d cameraPt, Point3d targetPt,int lensLength)
         {
             RhinoDoc doc = RhinoDoc.ActiveDoc;

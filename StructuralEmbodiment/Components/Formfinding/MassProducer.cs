@@ -90,35 +90,40 @@ namespace StructuralEmbodiment.Components.Formfinding
                 this.data = dataIn;
             }
 
-            if (this.structureID < structureCount && this.viewID <= viewCount)
+            if (production)
             {
-                if (production)
+                if (this.structureID < structureCount && this.viewID <= viewCount)
                 {
-                    nextView = true;
-                    if (this.viewID < viewCount-1) {
-                        
-                        if (initialised) this.viewID++;
-                    }
-                    else
+                    
+                        nextView = true;
+                        if (this.viewID < viewCount - 1)
+                        {
+
+                            if (initialised) this.viewID++;
+                        }
+                        else
+                        {
+                            this.viewID = 0;
+                            if (initialised) this.structureID++;
+                            this.data = dataIn;
+                        }
+                    
+
+                    // Prevents the component outputting data after the last structure has been produced
+                    if (this.structureID < structureCount)
                     {
-                        this.viewID = 0;
-                        if(initialised) this.structureID++;
-                        this.data = dataIn;
+                        DA.SetDataTree(0, this.data);
+                        DA.SetData("Next View", nextView);
+                        DA.SetData("Structure ID", structureID);
+                        DA.SetData("View ID", viewID);
+                        DA.SetData("State", this.initialised);
                     }
+
+                    this.initialised = true;
                 }
-                
-                // Prevents the component outputting data after the last structure has been produced
-                if(this.structureID < structureCount)
-                {
-                    DA.SetDataTree(0, this.data);
-                    DA.SetData("Next View", nextView);
-                    DA.SetData("Structure ID", structureID);
-                    DA.SetData("View ID", viewID);
-                    DA.SetData("State", this.initialised);
-                }
-                
-                this.initialised = true;
             }
+            else DA.SetDataTree(0, volatileData);
+
 
         }
 

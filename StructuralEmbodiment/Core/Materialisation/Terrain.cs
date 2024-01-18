@@ -57,31 +57,34 @@ namespace StructuralEmbodiment.Core.Materialisation
             if (terrainType == 1)
             {
                 this.TerrainType = TerrainType.Platau;
+                var pt0 = new Point3d(averageDeckStart);
+                pt0.Transform(Transform.Translation(x * terrainWidth));
+
                 var pt1 = new Point3d(averageDeckStart);
-                pt1.Transform(Transform.Translation(x * terrainWidth));
 
-                var pt2 = new Point3d(averageDeckStart);
+                double zOffset = Math.Abs(averageDeckStart.Z - averageNotDeckStart.Z)/5;
+                var pt2 = new Point3d(averageNotDeckStart);
+                pt2.Transform(Transform.Translation(-z * zOffset));
 
-                double zOffset = Math.Abs(averageDeckStart.Z - averageNotDeckStart.Z);
-                var pt3 = new Point3d(averageNotDeckStart);
-                pt3.Transform(Transform.Translation(-z * zOffset));
+                var pt3 = new Point3d(pt2);
+                pt3.Transform(Transform.Translation(-x * trenchDepth));
+                //Ver1 Lagacy
+                //var pt4 = new Point3d(averageNotDeckStart);
+                //pt4.Transform(Transform.Translation(-z * trenchDepth - x * trenchSlope));
 
-                var pt4 = new Point3d(averageNotDeckStart);
-                pt4.Transform(Transform.Translation(-z * trenchDepth - x * trenchSlope));
+                var pt4 = new Point3d(pt3);
+                pt4.Transform(transformMirror);
 
-                var pt5 = new Point3d(pt4);
+                var pt5 = new Point3d(pt2);
                 pt5.Transform(transformMirror);
 
-                var pt6 = new Point3d(pt3);
+                var pt6 = new Point3d(pt1);
                 pt6.Transform(transformMirror);
 
-                var pt7 = new Point3d(pt2);
+                var pt7 = new Point3d(pt0);
                 pt7.Transform(transformMirror);
 
-                var pt8 = new Point3d(pt1);
-                pt8.Transform(transformMirror);
-
-                var points = new List<Point3d> { pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8 };
+                var points = new List<Point3d> { pt0, pt1, pt2, pt3, pt4, pt5, pt6, pt7 };
                 section = new PolylineCurve(points);
             }
             else
@@ -89,8 +92,8 @@ namespace StructuralEmbodiment.Core.Materialisation
                 this.TerrainType = TerrainType.Valley;
                 var pt3 = new Point3d(averageDeckStart);
                 var pt2 = pt3 + (x * terrainWidth / 5);
-                var pt1 = pt2 + (4 * (averageNotDeckStart - averageDeckStart) + x * terrainWidth / 10);
-                var pt4 = pt3 + (-z * trenchDepth);
+                var pt1 = pt2 + (3 * (averageNotDeckStart - averageDeckStart) + x * terrainWidth / 10);
+                var pt4 = pt3 + (-z * trenchDepth/10);
                 var pt0 = pt1 + (x * terrainWidth / 7);
 
                 var pt5 = new Point3d(pt4);
@@ -109,8 +112,8 @@ namespace StructuralEmbodiment.Core.Materialisation
                 pt9.Transform(transformMirror);
 
                 //readjust the river bed to have the slope on the sides
-                pt4 += (pt3 - pt2);
-                pt5 += (pt6 - pt7);
+                //pt4 += (pt3 - pt2);
+                //pt5 += (pt6 - pt7);
 
                 var points = new List<Point3d> { pt0, pt1, pt2, pt3, pt4, pt5, pt6, pt7, pt8, pt9 };
                 section = new PolylineCurve(points);
@@ -275,7 +278,7 @@ namespace StructuralEmbodiment.Core.Materialisation
                 double lengthDivider = 0.5;
                 if (this.TerrainType == TerrainType.Platau)
                 {
-                    lengthDivider = 4.0;
+                    lengthDivider = 10.0;
                     crv1 = new LineCurve(section_plc.Point(2), section_plc.Point(1));
                     crv2 = new LineCurve(section_plc.Point(section_plc.PointCount - 3), section_plc.Point(section_plc.PointCount - 2));
                 }

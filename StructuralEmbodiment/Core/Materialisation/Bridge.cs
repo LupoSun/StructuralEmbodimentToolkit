@@ -2,7 +2,6 @@
 using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace StructuralEmbodiment.Core.Materialisation
@@ -185,12 +184,13 @@ namespace StructuralEmbodiment.Core.Materialisation
                 }
 
                 // Register the planes and cross sections in to the object's attributes
-                if(connectedMembers.First().MemberType != MemberType.Deck) {
+                if (connectedMembers.First().MemberType != MemberType.Deck)
+                {
                     this.NonDeckConnectedMembersDict[kvp.Key] = connectedMembers;
                     this.NonDeckPlanesDict[kvp.Key] = planes;
                     this.NonDeckCrossSectionsDict[kvp.Key] = crossSectinos;
                 }
-                
+
 
                 var brep = Brep.CreateFromLoft(crossSectinos, Point3d.Unset, Point3d.Unset, LoftType.Tight, false)[0];
                 breps.Add(brep.CapPlanarHoles(RhinoDoc.ActiveDoc.ModelAbsoluteTolerance));
@@ -273,12 +273,14 @@ namespace StructuralEmbodiment.Core.Materialisation
             return newDict;
         }
 
-        public List<List<Brep>> LoftDeviations(int crossSection, double multiplier, Interval range, double tolerance)
+        public List<List<Brep>> LoftDeviations(int crossSection, double multiplier, Interval range, double minimalThickness, double tolerance)
         {
             var cables = new List<Brep>();
             var bars = new List<Brep>();
             double cableThicknessCoeff = 0.2;
             double compressionMemberCoeff = 3 * cableThicknessCoeff;
+
+
             foreach (Member m in this.Members)
             {
                 //make sure the deck outlines are at their original position
@@ -286,7 +288,8 @@ namespace StructuralEmbodiment.Core.Materialisation
                 //if the member is connecting the deck outlines, skip it
                 if (Util.IsMemberConnectingOutlines(m, this.DeckOutlines, tolerance)) continue;
 
-                if (m.EdgeType == EdgeType.DeviationEdge && m.EdgeAsPoints[0].DistanceTo(m.EdgeAsPoints[1])>tolerance*10)
+
+                if (m.EdgeType == EdgeType.DeviationEdge && m.EdgeAsPoints[0].DistanceTo(m.EdgeAsPoints[1]) > tolerance * 10)
                 {
                     //If a deviation edge is in tension
                     double crossSectionSize;
@@ -295,6 +298,8 @@ namespace StructuralEmbodiment.Core.Materialisation
                         m.MemberType = MemberType.Cabel;
                         crossSectionSize = Util.ValueRemap(this.ForceRange.T1, this.ForceRangeUnsigned, range);
                         crossSectionSize *= (multiplier * cableThicknessCoeff);
+                        if (crossSectionSize < minimalThickness) crossSectionSize = minimalThickness;
+
 
                         cables.Add(Brep.CreatePipe(
                             new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1]),
@@ -309,15 +314,28 @@ namespace StructuralEmbodiment.Core.Materialisation
                     } //If a deviation edge is in compression
                     else
                     {
-
                         //If the compresion members have smaller forces than the tension members
+                        /*
                         if (Math.Abs(m.Force) < Math.Abs(this.ForceRange.T1))
                         {
                             crossSectionSize = Util.ValueRemap(Math.Abs(this.ForceRange.T1), this.ForceRangeUnsigned, range);
                         }
                         else crossSectionSize = Util.ValueRemap(Math.Abs(m.Force), this.ForceRangeUnsigned, range);
+                        */
+                        // If the compresion members have similar forces as the tension members
+                        if (Math.Abs(m.Force) - Math.Abs(this.ForceRange.T1) < this.ForceRangeUnsigned.Max * 0.1)
+                        {
+                            crossSectionSize = Util.ValueRemap(Math.Abs(this.ForceRange.T1), this.ForceRangeUnsigned, range);
+                            crossSectionSize *= (multiplier * 2* cableThicknessCoeff);
 
-                        crossSectionSize *= (multiplier * compressionMemberCoeff);
+                        }
+                        else
+                        {
+                            crossSectionSize = Util.ValueRemap(Math.Abs(m.Force), this.ForceRangeUnsigned, range);
+                            crossSectionSize *= (multiplier * compressionMemberCoeff);
+                        }
+
+                        if (crossSectionSize < minimalThickness) crossSectionSize = 2*minimalThickness;
 
                         bars.Add(Brep.CreatePipe(
                             new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1]),
@@ -379,7 +397,7 @@ namespace StructuralEmbodiment.Core.Materialisation
             return brepVolumes;
         }
 
-        public List<Brep> LoftDeckSmooth(double multiplier, Interval range)
+        public List<Brep> LoftDeckSmooth(double multiplier, Interval range, out Brep[] deckSurface)
         {
             //Compute the cross section value
             double deckThicknessCoeff = 0.5;
@@ -394,6 +412,7 @@ namespace StructuralEmbodiment.Core.Materialisation
             //Move and loft the deck
             Transform move = Transform.Translation(0, 0, (crossSectionSize / 2));
             List<Curve> outlines = new List<Curve>();
+            List<Curve> outlineOriginal = new List<Curve>();
             foreach (Curve outline in this.DeckOutlines)
             {
                 Curve copy = outline.DuplicateCurve();
@@ -401,20 +420,24 @@ namespace StructuralEmbodiment.Core.Materialisation
                 List<Point3d> pts = new List<Point3d>(((PolylineCurve)copy).ToPolyline());
                 Curve smooth = Curve.CreateInterpolatedCurve(pts, 3);
                 outlines.Add(smooth);
+                outlineOriginal.Add(smooth.DuplicateCurve());
             }
 
             // Make the deck wider
             var Pt1 = outlines[0].PointAtStart;
             var Pt2 = outlines[1].PointAtStart;
-            outlines[0].Transform(Transform.Translation(((Pt1 - Pt2)/((Pt1-Pt2).Length)) * crossSectionSize));
+            outlines[0].Transform(Transform.Translation(((Pt1 - Pt2) / ((Pt1 - Pt2).Length)) * crossSectionSize));
             outlines[1].Transform(Transform.Translation(-((Pt1 - Pt2) / ((Pt1 - Pt2).Length)) * crossSectionSize));
 
             List<Brep> brepVolumes = new List<Brep>();
             // Convert polylines to curves
             var loftCurves = outlines.Select(polyline => polyline.ToNurbsCurve()).ToList();
+            var loftCurvesOriginal = outlineOriginal.Select(polyline => polyline.ToNurbsCurve()).ToList();
 
             // Create the lofted surface
             var loftedSurface = Brep.CreateFromLoft(loftCurves, Point3d.Unset, Point3d.Unset, LoftType.Normal, false);
+            deckSurface = Brep.CreateFromLoft(loftCurvesOriginal, Point3d.Unset, Point3d.Unset, LoftType.Normal, false);
+
 
             // Check if loft was successful
             if (loftedSurface == null || loftedSurface.Length == 0)

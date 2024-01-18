@@ -33,7 +33,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             pManager.AddGenericParameter("Centre", "C", "A Structure or a manual point definition of the visual centre", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Eye Level", "EL", "Only set views with eye-level height", GH_ParamAccess.item);
             pManager.AddNumberParameter("Radius", "RA", "Radius of the view circle", GH_ParamAccess.item);
-            pManager.AddAngleParameter("Rotate", "RO", "Rotate the view area", GH_ParamAccess.item);
+            pManager.AddAngleParameter("Rotate", "RO", "Rotate the view area ()", GH_ParamAccess.item);
             pManager.AddBooleanParameter("Visualise Area", "VA", "Visualise the view area", GH_ParamAccess.item);
             pManager.AddIntervalParameter("Longitude Range", "LR", "Longitudinal view range, from 0 to 180 degree", GH_ParamAccess.item);
             pManager.AddIntervalParameter("Latitude Range", "LT", "Latitude view range, from 0 to 180 degree", GH_ParamAccess.item);
@@ -131,7 +131,8 @@ namespace StructuralEmbodiment.Components.Visualisation
 
             //Create a the longitudinal arcs for the view area
             Circle lonCirc = new Circle(new Plane(cameraTarget, Vector3d.ZAxis), radius);
-            lonCirc.Rotate(rotate, Vector3d.ZAxis, cameraTarget);
+            
+            lonCirc.Rotate(Core.Visualisation.Util.DegreesToRadians(rotate), Vector3d.ZAxis, cameraTarget);
             Arc lonArc1 = new Arc(lonCirc, Core.Visualisation.Util.DegreesToRadiansInterval(longitudeRange));
             Curve lonCrv1 = lonArc1.ToNurbsCurve();
             lonCrv1.Domain = new Interval(0, 1);

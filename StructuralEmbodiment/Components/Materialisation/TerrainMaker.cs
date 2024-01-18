@@ -104,9 +104,9 @@ namespace StructuralEmbodiment.Components.Materialisation
 
 
                 //Setting the optional parameters
-                width = Util.AveragePoint(deckStartPoints).DistanceTo(Util.AveragePoint(deckEndPoints));
+                width = Util.AveragePoint(deckStartPoints).DistanceTo(Util.AveragePoint(deckEndPoints))/3*2;
                 length = width;
-                depth = width / 2;
+                depth = width / 4;
                 slope = width / 4;
                 baseThickness = width / 10;
                 DA.GetData("Width", ref width);
