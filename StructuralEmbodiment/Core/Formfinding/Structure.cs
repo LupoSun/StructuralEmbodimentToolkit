@@ -11,21 +11,14 @@ namespace StructuralEmbodiment.Core.Formfinding
         public List<Point3d> Supports { get; set; }
         public Interval ForceRange { get; set; }
         public Interval ForceRangeUnsigned { get; set; }
-        public List<LineCurve> TrailEdges { get; set; }
-        public List<LineCurve> DeviationEdges { get; set; }
 
         public Structure(List<Member> members, List<Point3d> supports)
         {
             Members = members;
             Supports = supports;
             ComputeForceRange(Members);
-            ComputeCEMEdges();
         }
-        public Structure(List<Member> members)
-        {
-            Members = members;
-            ComputeForceRange(Members);
-        }
+        
 
         private void ComputeForceRange(List<Member> members)
         {
@@ -48,11 +41,7 @@ namespace StructuralEmbodiment.Core.Formfinding
             ForceRangeUnsigned = new Interval(Math.Abs(minForce), Math.Abs(maxForce));
             ForceRangeUnsigned.MakeIncreasing();
         }
-        private void ComputeCEMEdges()
-        {
-            TrailEdges = Members.Where(m => m.EdgeType == EdgeType.TrailEdge).Select(m => new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1])).ToList();
-            DeviationEdges = Members.Where(m => m.EdgeType == EdgeType.DeviationEdge).Select(m => new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1])).ToList();
-        }
+        
 
 
     }

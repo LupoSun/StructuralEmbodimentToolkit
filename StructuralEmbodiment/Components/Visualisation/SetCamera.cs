@@ -60,7 +60,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 if (setCamera)
                 {
-                    Core.Visualisation.Util.RedrawView(cameraPosition, cameraTarget, lensLength);
+                    Core.Util.RedrawView(cameraPosition, cameraTarget, lensLength);
                     setCamera = false;
                 }
 

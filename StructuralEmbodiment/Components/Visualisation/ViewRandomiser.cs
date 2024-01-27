@@ -125,19 +125,19 @@ namespace StructuralEmbodiment.Components.Visualisation
             DA.GetData("Next View", ref nextView);
 
             //Normalise and clamp the longitude and latitude range
-            longitudeRange = StructuralEmbodiment.Core.Visualisation.Util.AdjustIntervalTo180(longitudeRange);
+            longitudeRange = StructuralEmbodiment.Core.Util.AdjustIntervalTo180(longitudeRange);
             Interval longitudeRange2 = new Interval(longitudeRange.Min + 180, longitudeRange.Max + 180);
-            latitudeRange = StructuralEmbodiment.Core.Visualisation.Util.AdjustIntervalTo180(latitudeRange);
+            latitudeRange = StructuralEmbodiment.Core.Util.AdjustIntervalTo180(latitudeRange);
 
             //Create a the longitudinal arcs for the view area
             Circle lonCirc = new Circle(new Plane(cameraTarget, Vector3d.ZAxis), radius);
             
-            lonCirc.Rotate(Core.Visualisation.Util.DegreesToRadians(rotate), Vector3d.ZAxis, cameraTarget);
-            Arc lonArc1 = new Arc(lonCirc, Core.Visualisation.Util.DegreesToRadiansInterval(longitudeRange));
+            lonCirc.Rotate(Core.Util.DegreesToRadians(rotate), Vector3d.ZAxis, cameraTarget);
+            Arc lonArc1 = new Arc(lonCirc, Core.Util.DegreesToRadiansInterval(longitudeRange));
             Curve lonCrv1 = lonArc1.ToNurbsCurve();
             lonCrv1.Domain = new Interval(0, 1);
 
-            Arc lonArc2 = new Arc(lonCirc, Core.Visualisation.Util.DegreesToRadiansInterval(longitudeRange2));
+            Arc lonArc2 = new Arc(lonCirc, Core.Util.DegreesToRadiansInterval(longitudeRange2));
             Curve lonCrv2 = lonArc2.ToNurbsCurve();
             lonCrv2.Domain = new Interval(0, 1);
 
@@ -163,13 +163,13 @@ namespace StructuralEmbodiment.Components.Visualisation
                 //Compute the latitudinal arcs
                 Plane latPl1 = new Plane(cameraTarget, cameraTarget + new Vector3d(0, 0, 1), lonCrv1.PointAtStart);
                 Circle latCirc1 = new Circle(latPl1, radius);
-                Arc latArc1 = new Arc(latCirc1, Core.Visualisation.Util.DegreesToRadiansInterval(latitudeRange));
+                Arc latArc1 = new Arc(latCirc1, Core.Util.DegreesToRadiansInterval(latitudeRange));
                 Curve latCrv1 = latArc1.ToNurbsCurve();
                 viewAreas.AddRange(new SweepOneRail().PerformSweep(lonCrv1, latCrv1));
 
                 Plane latPl2 = new Plane(cameraTarget, cameraTarget + new Vector3d(0, 0, 1), lonCrv2.PointAtStart);
                 Circle latCirc2 = new Circle(latPl2, radius);
-                Arc latArc2 = new Arc(latCirc2, Core.Visualisation.Util.DegreesToRadiansInterval(latitudeRange));
+                Arc latArc2 = new Arc(latCirc2, Core.Util.DegreesToRadiansInterval(latitudeRange));
                 Curve latCrv2 = latArc2.ToNurbsCurve();
                 viewAreas.AddRange(new SweepOneRail().PerformSweep(lonCrv2, latCrv2));
 
@@ -199,7 +199,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             }
             else
             {
-                if (!nextView) camera = Core.Visualisation.Util.SampleRandomPointOnBreps(viewAreas, rnd);
+                if (!nextView) camera = Core.Util.SampleRandomPointOnBreps(viewAreas, rnd);
                 nextView = false;
             }
             //Core.Visualisation.Util.RedrawView(camera, cameraTarget, lensLength);

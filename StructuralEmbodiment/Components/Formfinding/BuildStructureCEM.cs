@@ -103,7 +103,7 @@ namespace StructuralEmbodiment.Components.Formfinding
             List<Point3d> CEMsupports = nodes.Where((item, index) => supportLabels[index]).ToList();
             List<Point3d> DeckNodes = nodes.Where((item, index) => deckNodeLabels[index]).ToList();
             List<Point3d> supports = new List<Point3d>(CEMsupports);
-            Util.RemoveClosestToCenter(supports);
+            StructuralEmbodiment.Core.Util.RemoveClosestToCenter(supports);
 
             //find the deck support points
             List<Point3d> deckSupports = supports.Intersect(DeckNodes).ToList();

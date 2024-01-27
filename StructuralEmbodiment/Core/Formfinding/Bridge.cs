@@ -14,6 +14,9 @@ namespace StructuralEmbodiment.Core.Formfinding
         public List<Point3d> NonDeckSupports { get; set; }
         public List<Point3d> TowerSupports { get; set; }
 
+        public List<LineCurve> TrailEdges { get; set; }
+        public List<LineCurve> DeviationEdges { get; set; }
+
         public Dictionary<Point3d, List<Member>> NonDeckConnectedMembersDict { get; set; }
         public Dictionary<Point3d, List<Plane>> NonDeckPlanesDict { get; set; }
         public Dictionary<Point3d, List<Curve>> NonDeckCrossSectionsDict { get; set; }
@@ -22,6 +25,7 @@ namespace StructuralEmbodiment.Core.Formfinding
         {
             Members = members;
             Supports = supports;
+            ComputeCEMEdges();
 
             DeckSupports = deckSupport;
             NonDeckSupports = nonDeckSupport;
@@ -39,6 +43,11 @@ namespace StructuralEmbodiment.Core.Formfinding
 
         }
 
+        private void ComputeCEMEdges()
+        {
+            TrailEdges = Members.Where(m => m.EdgeType == EdgeType.TrailEdge).Select(m => new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1])).ToList();
+            DeviationEdges = Members.Where(m => m.EdgeType == EdgeType.DeviationEdge).Select(m => new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1])).ToList();
+        }
         public void ComputeDeckOutlines()
         {
             var filteredMembers = Members.Where(m => m.MemberType == MemberType.Deck && m.EdgeType == EdgeType.TrailEdge).ToList();

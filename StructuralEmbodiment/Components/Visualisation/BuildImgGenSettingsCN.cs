@@ -149,11 +149,11 @@ namespace StructuralEmbodiment.Components.Visualisation
                     if (this.Guides != null)
                     {
                         if (this.Guides.CannySettings != null) { 
-                            this.ImgGenSettings.Settings = Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.CannySettings);
+                            this.ImgGenSettings.Settings = Core.Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.CannySettings);
                         }
                         if (this.Guides.DepthMapSettings != null)
                         {
-                            this.ImgGenSettings.Settings = Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.DepthMapSettings);
+                            this.ImgGenSettings.Settings = Core.Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.DepthMapSettings);
                         }
                     }
                 } catch (Exception e)

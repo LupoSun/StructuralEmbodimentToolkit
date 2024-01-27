@@ -105,7 +105,7 @@ namespace StructuralEmbodiment.Components.Materialisation
 
 
                 //Setting the optional parameters
-                width = Util.AveragePoint(deckStartPoints).DistanceTo(Util.AveragePoint(deckEndPoints))/3*2;
+                width = StructuralEmbodiment.Core.Util.AveragePoint(deckStartPoints).DistanceTo(StructuralEmbodiment.Core.Util.AveragePoint(deckEndPoints))/3*2;
                 length = width;
                 depth = width / 4;
                 slope = width / 4;

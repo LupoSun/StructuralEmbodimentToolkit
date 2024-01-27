@@ -83,7 +83,7 @@ namespace StructuralEmbodiment.Components.Materialisation
             {
                 double tolerance = RhinoDoc.ActiveDoc.ModelAbsoluteTolerance;
                 var supports = new List<Point3d>(((Bridge)structure).Supports);
-                Util.RemoveClosestToCenter(supports);
+                StructuralEmbodiment.Core.Util.RemoveClosestToCenter(supports);
                 Dictionary<Point3d, List<Member>> connectedMembersDict = Bridge.FindConncectedTrails(supports,((Bridge)structure).Members);
 
                 List<Brep> trails = ((Bridge)structure).LoftTrails(connectedMembersDict, crossSection, multiplier, range, includeDeckEdges, tolerance * 10);
