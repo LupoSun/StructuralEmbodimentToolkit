@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StructuralEmbodiment.Core.Materialisation
+namespace StructuralEmbodiment.Core.Formfinding
 {
     public abstract class Structure
     {
@@ -16,17 +16,22 @@ namespace StructuralEmbodiment.Core.Materialisation
 
         public Structure(List<Member> members, List<Point3d> supports)
         {
-            this.Members = members;
-            this.Supports = supports;
-            ComputeForceRange(this.Members);
+            Members = members;
+            Supports = supports;
+            ComputeForceRange(Members);
             ComputeCEMEdges();
+        }
+        public Structure(List<Member> members)
+        {
+            Members = members;
+            ComputeForceRange(Members);
         }
 
         private void ComputeForceRange(List<Member> members)
         {
             if (members == null || members.Count == 0)
             {
-                this.ForceRange = new Interval(0.0, 0.0);
+                ForceRange = new Interval(0.0, 0.0);
                 //this.ForceRange = new List<double> { 0.0, 0.0 }; // Or handle empty list appropriately
             }
 
@@ -39,14 +44,14 @@ namespace StructuralEmbodiment.Core.Materialisation
                 maxForce = Math.Max(maxForce, member.Force);
             }
 
-            this.ForceRange = new Interval(minForce, maxForce);
-            this.ForceRangeUnsigned = new Interval(Math.Abs(minForce), Math.Abs(maxForce));
-            this.ForceRangeUnsigned.MakeIncreasing();
+            ForceRange = new Interval(minForce, maxForce);
+            ForceRangeUnsigned = new Interval(Math.Abs(minForce), Math.Abs(maxForce));
+            ForceRangeUnsigned.MakeIncreasing();
         }
         private void ComputeCEMEdges()
         {
-            this.TrailEdges = Members.Where(m => m.EdgeType == EdgeType.TrailEdge).Select(m => new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1])).ToList();
-            this.DeviationEdges = Members.Where(m => m.EdgeType == EdgeType.DeviationEdge).Select(m => new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1])).ToList();
+            TrailEdges = Members.Where(m => m.EdgeType == EdgeType.TrailEdge).Select(m => new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1])).ToList();
+            DeviationEdges = Members.Where(m => m.EdgeType == EdgeType.DeviationEdge).Select(m => new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1])).ToList();
         }
 
 
@@ -62,11 +67,11 @@ namespace StructuralEmbodiment.Core.Materialisation
 
         public Member(int cemid, double force, List<Point3d> edgeAsPoints, MemberType memberType, EdgeType edgeType)
         {
-            this.CEMid = cemid;
-            this.Force = force;
-            this.EdgeAsPoints = edgeAsPoints;
-            this.MemberType = memberType;
-            this.EdgeType = edgeType;
+            CEMid = cemid;
+            Force = force;
+            EdgeAsPoints = edgeAsPoints;
+            MemberType = memberType;
+            EdgeType = edgeType;
         }
     }
 }

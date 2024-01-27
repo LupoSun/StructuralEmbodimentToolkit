@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StructuralEmbodiment.Core.Materialisation
+namespace StructuralEmbodiment.Core.Formfinding
 {
     public enum MemberType
     {
         Deck,
         NonDeck,
         Tower,
-        Cabel
+        Cabel,
+        RoofBeam,
+        Generic
     }
 }

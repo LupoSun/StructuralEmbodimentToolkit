@@ -1,6 +1,7 @@
 ﻿using Rhino.Geometry;
 using Rhino.Geometry.Intersect;
 using StructuralEmbodiment.Components.Materialisation;
+using StructuralEmbodiment.Core.Formfinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,9 +93,9 @@ namespace StructuralEmbodiment.Core.Materialisation
                 this.TerrainType = TerrainType.Valley;
                 var pt3 = new Point3d(averageDeckStart);
                 var pt2 = pt3 + (x * terrainWidth / 5);
-                var pt1 = pt2 + (3 * (averageNotDeckStart - averageDeckStart) + x * terrainWidth / 10);
+                var pt1 = pt2 + (2 * (averageNotDeckStart - averageDeckStart) + x * terrainWidth / 10);
                 var pt4 = pt3 + (-z * trenchDepth/10);
-                var pt0 = pt1 + (x * terrainWidth / 7);
+                var pt0 = pt1 + (x * terrainWidth / 3);
 
                 var pt5 = new Point3d(pt4);
                 pt5.Transform(transformMirror);

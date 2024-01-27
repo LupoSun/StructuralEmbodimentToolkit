@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Grasshopper.Kernel;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.Materialisation;
+using StructuralEmbodiment.Core.Formfinding;
 using StructuralEmbodiment.Properties;
 
 namespace StructuralEmbodiment.Components.Materialisation

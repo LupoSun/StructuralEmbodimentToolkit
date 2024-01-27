@@ -7,6 +7,7 @@ using Rhino.Geometry;
 using StructuralEmbodiment.Core.Materialisation;
 using System.Linq;
 using StructuralEmbodiment.Properties;
+using StructuralEmbodiment.Core.Formfinding;
 
 namespace StructuralEmbodiment.Components.Materialisation
 {
@@ -108,7 +109,7 @@ namespace StructuralEmbodiment.Components.Materialisation
                 length = width;
                 depth = width / 4;
                 slope = width / 4;
-                baseThickness = width / 10;
+                baseThickness = width / 5;
                 DA.GetData("Width", ref width);
                 DA.GetData("Length", ref length);
                 DA.GetData("Depth", ref depth);

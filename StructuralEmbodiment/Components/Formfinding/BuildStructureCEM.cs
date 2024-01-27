@@ -7,20 +7,21 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
+using StructuralEmbodiment.Core.Formfinding;
 using StructuralEmbodiment.Core.Materialisation;
 using StructuralEmbodiment.Properties;
 
-namespace StructuralEmbodiment.Components.Materialisation
+namespace StructuralEmbodiment.Components.Formfinding
 {
-    public class BuildStructure : GH_Component
+    public class BuildStructureCEM : GH_Component
     {
         /// <summary>
         /// Initializes a new instance of the MyComponent1 class.
         /// </summary>
-        public BuildStructure()
-          : base("Build Structure", "BS",
-              "Build the structure object given data",
-              "Structural Embodiment", "Materialisation")
+        public BuildStructureCEM()
+          : base("Build Structure from CEM", "BSCEM",
+              "Build the structure object given data from CEM",
+              "Structural Embodiment", "Form-finding")
         {
         }
 
@@ -43,7 +44,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Structure","S","Structure object",GH_ParamAccess.item);
+            pManager.AddGenericParameter("Structure","S","Structure object of Structural Embodiment assembly",GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -124,7 +125,7 @@ namespace StructuralEmbodiment.Components.Materialisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return Resources.MAT_BuildStructure;
+                return Resources.FF_BuildStructureCEM;
             }
         }
 

@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using Grasshopper.Kernel;
 using Rhino;
 using Rhino.Geometry;
+using StructuralEmbodiment.Core.Formfinding;
 using StructuralEmbodiment.Core.Materialisation;
 using StructuralEmbodiment.Properties;
 using static Rhino.DocObjects.PhysicallyBasedMaterial;
@@ -31,10 +32,10 @@ namespace StructuralEmbodiment.Components.Materialisation
         {
             pManager.AddGenericParameter("• Structure", "• S", "The Structure to materialise", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Cross Section", "CS", "Cross Section of the members. O=Circular, 1=Rectangular", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Multiplier", "M", "Multiplier for the cross section", GH_ParamAccess.item);
-            pManager.AddIntervalParameter("Range", "R", "Range of the cross section", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Minimal Thickness", "MT", "Minimal thickness of the cross section", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Include Deck Edges", "IDE", "Materialise the deck edges", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Multiplier", "M", "Multiplier for the cross section, by default 1", GH_ParamAccess.item);
+            pManager.AddIntervalParameter("Range", "R", "Range of the cross section, by default the unsigned force range of the structure", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Minimal Thickness", "MT", "Minimal thickness of the cross section, by default 0.05", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Include Deck Edges", "IDE", "Materialise the deck edges, by default not", GH_ParamAccess.item);
 
             pManager[1].Optional = true;
             pManager[2].Optional = true;

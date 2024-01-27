@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StructuralEmbodiment.Core.Materialisation
+namespace StructuralEmbodiment.Core.Formfinding
 {
     public enum EdgeType
     {
         TrailEdge,
-        DeviationEdge
+        DeviationEdge,
+        GenericEdge
     }
 }

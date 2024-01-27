@@ -106,22 +106,22 @@ namespace StructuralEmbodiment.Components.Formfinding
                                                 foreach (var path in dataTree.Paths) // Iterate over all paths in the data tree
                                                 {
                                                     var branch = dataTree.get_Branch(path); // Get the branch at the current path
+                                                    inputDataDict[key] = "";
+                                                    int num = 0;
                                                     foreach (var item in branch) // Iterate over all items in the branch
                                                     {
-                                                        /*
-                                                        if (!inputDataDict.ContainsKey(key))
-                                                        {
-                                                            inputDataDict[key] = null;
-                                                        }
-                                                        */
+                                                        
                                                         test.Add(item.GetType().ToString());
-                                                        if (item is GH_Number) inputDataDict[key] = ((GH_Number)item).ToString();
-                                                        else if (item is GH_Integer) inputDataDict[key] = ((GH_Integer)item).ToString();
-                                                        else if (item is GH_String) inputDataDict[key] = ((GH_String)item).Value;
-                                                        else if (item is GH_Boolean) inputDataDict[key] = ((GH_Boolean)item).ToString();
-                                                        else if (item is GH_Point) inputDataDict[key] = ((GH_Point)item).ToString();
-                                                        else if (item is GH_Vector) inputDataDict[key] = ((GH_Vector)item).ToString();
+                                                        //some formatting
+                                                        if (num !=0) inputDataDict[key] += ", ";
+                                                        if (item is GH_Number) inputDataDict[key] += ((GH_Number)item).ToString();
+                                                        else if (item is GH_Integer) inputDataDict[key] += ((GH_Integer)item).ToString();
+                                                        else if (item is GH_String) inputDataDict[key] += ((GH_String)item).Value;
+                                                        else if (item is GH_Boolean) inputDataDict[key] += ((GH_Boolean)item).ToString();
+                                                        else if (item is GH_Point) inputDataDict[key] += ((GH_Point)item).ToString();
+                                                        else if (item is GH_Vector) inputDataDict[key] += ((GH_Vector)item).ToString();
                                                         // Add the item to the list under the key
+                                                        num++;
                                                     }
                                                 }
                                             }

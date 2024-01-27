@@ -1,6 +1,7 @@
 ﻿using Grasshopper.Kernel.Types;
 using Rhino;
 using Rhino.Geometry;
+using StructuralEmbodiment.Core.Formfinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -63,6 +63,16 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FF_BuildStructureCEM {
+            get {
+                object obj = ResourceManager.GetObject("FF_BuildStructureCEM", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap FF_CEMGenerator {
             get {
                 object obj = ResourceManager.GetObject("FF_CEMGenerator", resourceCulture);

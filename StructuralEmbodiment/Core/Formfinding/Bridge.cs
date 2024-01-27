@@ -1,10 +1,11 @@
 ﻿using Rhino;
 using Rhino.Geometry;
+using StructuralEmbodiment.Core.Materialisation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StructuralEmbodiment.Core.Materialisation
+namespace StructuralEmbodiment.Core.Formfinding
 {
     public class Bridge : Structure
     {
@@ -19,19 +20,19 @@ namespace StructuralEmbodiment.Core.Materialisation
 
         public Bridge(List<Member> members, List<Point3d> supports, List<Point3d> deckSupport, List<Point3d> nonDeckSupport) : base(members, supports)
         {
-            this.Members = members;
-            this.Supports = supports;
+            Members = members;
+            Supports = supports;
 
-            this.DeckSupports = deckSupport;
-            this.NonDeckSupports = nonDeckSupport;
+            DeckSupports = deckSupport;
+            NonDeckSupports = nonDeckSupport;
 
-            this.NonDeckConnectedMembersDict = new Dictionary<Point3d, List<Member>>();
-            this.NonDeckPlanesDict = new Dictionary<Point3d, List<Plane>>();
-            this.NonDeckCrossSectionsDict = new Dictionary<Point3d, List<Curve>>();
+            NonDeckConnectedMembersDict = new Dictionary<Point3d, List<Member>>();
+            NonDeckPlanesDict = new Dictionary<Point3d, List<Plane>>();
+            NonDeckCrossSectionsDict = new Dictionary<Point3d, List<Curve>>();
 
             if (supports.Count - deckSupport.Count - nonDeckSupport.Count == 1)
             {
-                TowerSupports = (List<Point3d>)supports.Except(deckSupport).ToList().Except(nonDeckSupport).ToList();
+                TowerSupports = supports.Except(deckSupport).ToList().Except(nonDeckSupport).ToList();
                 RegisterTowerMembers();
             }
             ComputeDeckOutlines();
@@ -40,7 +41,7 @@ namespace StructuralEmbodiment.Core.Materialisation
 
         public void ComputeDeckOutlines()
         {
-            var filteredMembers = this.Members.Where(m => m.MemberType == MemberType.Deck && m.EdgeType == EdgeType.TrailEdge).ToList();
+            var filteredMembers = Members.Where(m => m.MemberType == MemberType.Deck && m.EdgeType == EdgeType.TrailEdge).ToList();
             var lines = new List<LineCurve>();
             //Connect the individual members to form continuous outlines
             foreach (Member member in filteredMembers)
@@ -48,26 +49,26 @@ namespace StructuralEmbodiment.Core.Materialisation
                 LineCurve line = new LineCurve(member.EdgeAsPoints[0], member.EdgeAsPoints[1]);
                 lines.Add(line);
             }
-            List<Curve> outlines = Curve.JoinCurves(lines, Rhino.RhinoDoc.ActiveDoc.ModelAbsoluteTolerance * 10).ToList();
-            this.DeckOutlines = outlines;
+            List<Curve> outlines = Curve.JoinCurves(lines, RhinoDoc.ActiveDoc.ModelAbsoluteTolerance * 10).ToList();
+            DeckOutlines = outlines;
 
-            if (this.DeckOutlines.Count == 2)
+            if (DeckOutlines.Count == 2)
             {
                 //TODO Rework on this logic
-                if (!Util.HaveSameDirection(this.DeckOutlines[0], this.DeckOutlines[1]))
+                if (!Util.HaveSameDirection(DeckOutlines[0], DeckOutlines[1]))
                 {
-                    this.DeckOutlines[1].Reverse();
+                    DeckOutlines[1].Reverse();
                 }
             }
-            else throw new System.Exception("Deck Outlines are not 2, try to increase the tolerance");
+            else throw new Exception("Deck Outlines are not 2, try to increase the tolerance");
 
         }
         public void RegisterTowerMembers()
         {
             var towerMembers = new List<Member>();
             FindConnectedMembersRecursive(
-                this.TowerSupports.First(),
-                this.Members.Where(m => m.EdgeType == EdgeType.TrailEdge).ToList(),
+                TowerSupports.First(),
+                Members.Where(m => m.EdgeType == EdgeType.TrailEdge).ToList(),
                 null,
                 ref towerMembers);
             foreach (Member member in towerMembers)
@@ -172,7 +173,7 @@ namespace StructuralEmbodiment.Core.Materialisation
                     var plane = planes[i];
                     var force = forces[i];
                     //Remap the unsigned force from the unsigned force range to the new range
-                    double crossSectionSize = Util.ValueRemap(Math.Abs(force), this.ForceRangeUnsigned, range) * multiplier * trailThicknessCoeff;
+                    double crossSectionSize = Util.ValueRemap(Math.Abs(force), ForceRangeUnsigned, range) * multiplier * trailThicknessCoeff;
                     if (crossSection == 0)
                     {
                         crossSectinos.Add(new Circle(plane, crossSectionSize / 2).ToNurbsCurve());
@@ -186,9 +187,9 @@ namespace StructuralEmbodiment.Core.Materialisation
                 // Register the planes and cross sections in to the object's attributes
                 if (connectedMembers.First().MemberType != MemberType.Deck)
                 {
-                    this.NonDeckConnectedMembersDict[kvp.Key] = connectedMembers;
-                    this.NonDeckPlanesDict[kvp.Key] = planes;
-                    this.NonDeckCrossSectionsDict[kvp.Key] = crossSectinos;
+                    NonDeckConnectedMembersDict[kvp.Key] = connectedMembers;
+                    NonDeckPlanesDict[kvp.Key] = planes;
+                    NonDeckCrossSectionsDict[kvp.Key] = crossSectinos;
                 }
 
 
@@ -281,12 +282,12 @@ namespace StructuralEmbodiment.Core.Materialisation
             double compressionMemberCoeff = 3 * cableThicknessCoeff;
 
 
-            foreach (Member m in this.Members)
+            foreach (Member m in Members)
             {
                 //make sure the deck outlines are at their original position
-                this.ComputeDeckOutlines();
+                ComputeDeckOutlines();
                 //if the member is connecting the deck outlines, skip it
-                if (Util.IsMemberConnectingOutlines(m, this.DeckOutlines, tolerance)) continue;
+                if (Util.IsMemberConnectingOutlines(m, DeckOutlines, tolerance)) continue;
 
 
                 if (m.EdgeType == EdgeType.DeviationEdge && m.EdgeAsPoints[0].DistanceTo(m.EdgeAsPoints[1]) > tolerance * 10)
@@ -296,8 +297,8 @@ namespace StructuralEmbodiment.Core.Materialisation
                     if (m.Force > 0)
                     {
                         m.MemberType = MemberType.Cabel;
-                        crossSectionSize = Util.ValueRemap(this.ForceRange.T1, this.ForceRangeUnsigned, range);
-                        crossSectionSize *= (multiplier * cableThicknessCoeff);
+                        crossSectionSize = Util.ValueRemap(ForceRange.T1, ForceRangeUnsigned, range);
+                        crossSectionSize *= multiplier * cableThicknessCoeff;
                         if (crossSectionSize < minimalThickness) crossSectionSize = minimalThickness;
 
 
@@ -323,19 +324,19 @@ namespace StructuralEmbodiment.Core.Materialisation
                         else crossSectionSize = Util.ValueRemap(Math.Abs(m.Force), this.ForceRangeUnsigned, range);
                         */
                         // If the compresion members have similar forces as the tension members
-                        if (Math.Abs(m.Force) - Math.Abs(this.ForceRange.T1) < this.ForceRangeUnsigned.Max * 0.1)
+                        if (Math.Abs(m.Force) - Math.Abs(ForceRange.T1) < ForceRangeUnsigned.Max * 0.1)
                         {
-                            crossSectionSize = Util.ValueRemap(Math.Abs(this.ForceRange.T1), this.ForceRangeUnsigned, range);
-                            crossSectionSize *= (multiplier * 2* cableThicknessCoeff);
+                            crossSectionSize = Util.ValueRemap(Math.Abs(ForceRange.T1), ForceRangeUnsigned, range);
+                            crossSectionSize *= multiplier * 2 * cableThicknessCoeff;
 
                         }
                         else
                         {
-                            crossSectionSize = Util.ValueRemap(Math.Abs(m.Force), this.ForceRangeUnsigned, range);
-                            crossSectionSize *= (multiplier * compressionMemberCoeff);
+                            crossSectionSize = Util.ValueRemap(Math.Abs(m.Force), ForceRangeUnsigned, range);
+                            crossSectionSize *= multiplier * compressionMemberCoeff;
                         }
 
-                        if (crossSectionSize < minimalThickness) crossSectionSize = 2*minimalThickness;
+                        if (crossSectionSize < minimalThickness) crossSectionSize = 2 * minimalThickness;
 
                         bars.Add(Brep.CreatePipe(
                             new LineCurve(m.EdgeAsPoints[0], m.EdgeAsPoints[1]),
@@ -357,18 +358,18 @@ namespace StructuralEmbodiment.Core.Materialisation
         {
             //Compute the cross section value
             double deckThicknessCoeff = 0.5;
-            double absMaxForce = this.Members
+            double absMaxForce = Members
                 .Where(m => m.MemberType == MemberType.Deck)
                 .Select(m => Math.Abs(m.Force))
                 .DefaultIfEmpty(0) // This ensures a default value if the collection is empty
                 .Max();
-            double crossSectionSize = Util.ValueRemap(absMaxForce, this.ForceRangeUnsigned, range);
-            crossSectionSize *= (multiplier * deckThicknessCoeff);
+            double crossSectionSize = Util.ValueRemap(absMaxForce, ForceRangeUnsigned, range);
+            crossSectionSize *= multiplier * deckThicknessCoeff;
 
             //Move and loft the deck
-            Transform move = Transform.Translation(0, 0, (crossSectionSize / 2));
+            Transform move = Transform.Translation(0, 0, crossSectionSize / 2);
             List<Curve> outlines = new List<Curve>();
-            foreach (Curve outline in this.DeckOutlines)
+            foreach (Curve outline in DeckOutlines)
             {
                 Curve copy = outline.DuplicateCurve();
                 copy.Transform(move);
@@ -386,7 +387,7 @@ namespace StructuralEmbodiment.Core.Materialisation
                 return brepVolumes;
 
             // Extrude the loft surface
-            var extrusionPath = new LineCurve(new Point3d(0, 0, 0), new Point3d(0, 0, (-crossSectionSize)));
+            var extrusionPath = new LineCurve(new Point3d(0, 0, 0), new Point3d(0, 0, -crossSectionSize));
             foreach (var face in loftedSurface[0].Faces)
             {
                 Brep faceBrep = face.DuplicateFace(false);
@@ -401,19 +402,19 @@ namespace StructuralEmbodiment.Core.Materialisation
         {
             //Compute the cross section value
             double deckThicknessCoeff = 0.5;
-            double absMaxForce = this.Members
+            double absMaxForce = Members
                 .Where(m => m.MemberType == MemberType.Deck)
                 .Select(m => Math.Abs(m.Force))
                 .DefaultIfEmpty(0) // This ensures a default value if the collection is empty
                 .Max();
-            double crossSectionSize = Util.ValueRemap(absMaxForce, this.ForceRangeUnsigned, range);
-            crossSectionSize *= (multiplier * deckThicknessCoeff);
+            double crossSectionSize = Util.ValueRemap(absMaxForce, ForceRangeUnsigned, range);
+            crossSectionSize *= multiplier * deckThicknessCoeff;
 
             //Move and loft the deck
-            Transform move = Transform.Translation(0, 0, (crossSectionSize / 2));
+            Transform move = Transform.Translation(0, 0, crossSectionSize / 2);
             List<Curve> outlines = new List<Curve>();
             List<Curve> outlineOriginal = new List<Curve>();
-            foreach (Curve outline in this.DeckOutlines)
+            foreach (Curve outline in DeckOutlines)
             {
                 Curve copy = outline.DuplicateCurve();
                 copy.Transform(move);
@@ -426,8 +427,8 @@ namespace StructuralEmbodiment.Core.Materialisation
             // Make the deck wider
             var Pt1 = outlines[0].PointAtStart;
             var Pt2 = outlines[1].PointAtStart;
-            outlines[0].Transform(Transform.Translation(((Pt1 - Pt2) / ((Pt1 - Pt2).Length)) * crossSectionSize));
-            outlines[1].Transform(Transform.Translation(-((Pt1 - Pt2) / ((Pt1 - Pt2).Length)) * crossSectionSize));
+            outlines[0].Transform(Transform.Translation((Pt1 - Pt2) / (Pt1 - Pt2).Length * crossSectionSize));
+            outlines[1].Transform(Transform.Translation(-((Pt1 - Pt2) / (Pt1 - Pt2).Length) * crossSectionSize));
 
             List<Brep> brepVolumes = new List<Brep>();
             // Convert polylines to curves
@@ -444,7 +445,7 @@ namespace StructuralEmbodiment.Core.Materialisation
                 return brepVolumes;
 
             // Extrude the loft surface
-            var extrusionPath = new LineCurve(new Point3d(0, 0, 0), new Point3d(0, 0, (-crossSectionSize)));
+            var extrusionPath = new LineCurve(new Point3d(0, 0, 0), new Point3d(0, 0, -crossSectionSize));
             foreach (var face in loftedSurface[0].Faces)
             {
                 Brep faceBrep = face.DuplicateFace(false);
@@ -458,7 +459,7 @@ namespace StructuralEmbodiment.Core.Materialisation
         public List<Brep> LoftTower(int crossSection, double multiplier, Interval range, double tolerance)
         {
             List<Brep> breps = new List<Brep>();
-            List<Member> towerMembers = this.Members.Where(m => m.MemberType == MemberType.Tower).ToList();
+            List<Member> towerMembers = Members.Where(m => m.MemberType == MemberType.Tower).ToList();
             double towerThicknessCoeff = 1.5;
 
             List<Plane> planes = ComputePerpendicularPlanesAtPoints(towerMembers, tolerance);
@@ -470,7 +471,7 @@ namespace StructuralEmbodiment.Core.Materialisation
                 var plane = planes[i];
                 var force = forces[i];
                 //Remap the unsigned force from the unsigned force range to the new range
-                double crossSectionSize = Util.ValueRemap(Math.Abs(force), this.ForceRangeUnsigned, range) * multiplier * towerThicknessCoeff;
+                double crossSectionSize = Util.ValueRemap(Math.Abs(force), ForceRangeUnsigned, range) * multiplier * towerThicknessCoeff;
                 if (crossSection == 0)
                 {
                     crossSectinos.Add(new Circle(plane, crossSectionSize / 2).ToNurbsCurve());
@@ -527,7 +528,7 @@ namespace StructuralEmbodiment.Core.Materialisation
         public override string ToString()
         {
 
-            return this.GetType().ToString();
+            return GetType().ToString();
         }
 
     }
