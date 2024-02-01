@@ -220,5 +220,9 @@ namespace StructuralEmbodiment.Components.Visualisation
         {
             get { return new Guid("268382FC-C7A2-48C9-8DCE-E655693859C9"); }
         }
+        public override GH_Exposure Exposure
+        {
+            get { return GH_Exposure.primary; }
+        }
     }
 }

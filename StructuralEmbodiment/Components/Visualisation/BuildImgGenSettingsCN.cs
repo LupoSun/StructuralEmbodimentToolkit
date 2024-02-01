@@ -84,6 +84,10 @@ namespace StructuralEmbodiment.Components.Visualisation
         {
             get { return new Guid("EEA43DB2-F06D-4AAB-AA69-F66C4927001E"); }
         }
+        public override GH_Exposure Exposure
+        {
+            get { return GH_Exposure.secondary; }
+        }
 
         public override void AppendAdditionalMenuItems(System.Windows.Forms.ToolStripDropDown menu)
         {

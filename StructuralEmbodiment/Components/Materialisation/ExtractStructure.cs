@@ -155,5 +155,9 @@ namespace StructuralEmbodiment.Components.Materialisation
         {
             get { return new Guid("8FCA03FF-8C40-4692-AEEB-3C3542853FC5"); }
         }
+        public override GH_Exposure Exposure
+        {
+            get { return GH_Exposure.primary; }
+        }
     }
 }

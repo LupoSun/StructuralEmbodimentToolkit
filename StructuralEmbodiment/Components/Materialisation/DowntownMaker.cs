@@ -6,7 +6,7 @@ using StructuralEmbodiment.Core.Materialisation;
 using System;
 using System.Collections.Generic;
 
-namespace StructuralEmbodiment.Components.Formfinding
+namespace StructuralEmbodiment.Components.Materialisation
 {
     public class DowntownMaker : GH_Component
     {
@@ -25,7 +25,7 @@ namespace StructuralEmbodiment.Components.Formfinding
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter("• Structure", "• S", "The Structure to be embedded in the downtown settings", GH_ParamAccess.item);
             pManager.AddNumberParameter("Structure Height", "SH", "THe height of the buildings", GH_ParamAccess.item, 10);
@@ -48,12 +48,12 @@ namespace StructuralEmbodiment.Components.Formfinding
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddGenericParameter("Buildings", "B", "Created Houses", GH_ParamAccess.list);
             pManager.AddBrepParameter("Auxiliary Structure", "AS", "Auxiliary Structure", GH_ParamAccess.list);
             pManager.AddBrepParameter("Ground", "G", "Ground for the downtown", GH_ParamAccess.list);
-            pManager.AddGenericParameter("test", "t", "test", GH_ParamAccess.list);
+            //pManager.AddGenericParameter("test", "t", "test", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -88,6 +88,7 @@ namespace StructuralEmbodiment.Components.Formfinding
 
                 var outlines = new List<PolylineCurve>();
                 var brepHouses = new List<Brep>();
+                var brepAuxiliary = new List<Brep>();
                 var uniqueHouses = new List<House>();
 
                 var centrePt = Core.Util.AveragePoint(new List<Point3d>(((PolylineCurve)boundary[0]).ToPolyline()));
@@ -124,9 +125,23 @@ namespace StructuralEmbodiment.Components.Formfinding
                 {
                     foreach (var house in uniqueHouses)
                     {
-                        brepHouses.AddRange(house.LoftHouse(structureHeight, siteHeight, saddleRoof,tolerance,angleTolerance));
+                        brepHouses.AddRange(house.LoftHouse(structureHeight, siteHeight, saddleRoof, tolerance, angleTolerance));
                     }
                     DA.SetDataList("Buildings", brepHouses);
+
+                    if (auxiliaryStructure && roof.SortedSupports.Count > 0)
+                    {
+                        foreach (var supportGroup in roof.SortedSupports)
+                        {
+                            var supportCentre = Core.Util.AveragePoint(supportGroup);
+                            var supportPlane = new Plane(supportCentre, Vector3d.ZAxis);
+                            var diameter = new BoundingBox(supportGroup).Diagonal.Length;
+                            var supportVect = new Vector3d(0, 0, groundPlane.OriginZ - supportCentre.Z);
+                            var column = Brep.CreatePipe(new LineCurve(supportCentre, supportCentre + supportVect), diameter / 2, false, PipeCapMode.Flat, true, tolerance, angleTolerance);
+                            brepAuxiliary.AddRange(column);
+                        }
+                        DA.SetDataList("Auxiliary Structure", brepAuxiliary);
+                    }
 
                 }
                 else
@@ -141,7 +156,7 @@ namespace StructuralEmbodiment.Components.Formfinding
                 }
 
 
-                
+
 
             }
 
@@ -168,6 +183,10 @@ namespace StructuralEmbodiment.Components.Formfinding
         public override Guid ComponentGuid
         {
             get { return new Guid("1DFB8C68-502E-42E3-851A-5FD6C15DF743"); }
+        }
+        public override GH_Exposure Exposure
+        {
+            get { return GH_Exposure.secondary; }
         }
     }
 }

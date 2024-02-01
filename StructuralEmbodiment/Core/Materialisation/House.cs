@@ -27,7 +27,7 @@ namespace StructuralEmbodiment.Core.Materialisation
             outlineBottom.Translate(Vector3d.ZAxis * -structureHeight);
             var outlineTop = outlineBottom.DuplicateCurve();
             outlineTop.Translate(Vector3d.ZAxis * siteHeight);
-            var loft = Brep.CreateFromLoft(new List<Curve> { outlineBottom, outlineTop }, Point3d.Unset, Point3d.Unset, LoftType.Normal, false)[0];
+            var loft = Brep.CreateFromLoft(new List<Curve> { outlineBottom, outlineTop }, Point3d.Unset, Point3d.Unset, LoftType.Straight, false)[0];
             loft = loft.CapPlanarHoles(tolerance);
             breps.Add(loft);
 

@@ -1,6 +1,5 @@
 ﻿using Rhino.Geometry;
 using Rhino.Geometry.Intersect;
-using StructuralEmbodiment.Components.Materialisation;
 using StructuralEmbodiment.Core.Formfinding;
 using System;
 using System.Collections.Generic;

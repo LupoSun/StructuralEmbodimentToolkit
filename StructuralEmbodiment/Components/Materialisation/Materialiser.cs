@@ -57,7 +57,7 @@ namespace StructuralEmbodiment.Components.Materialisation
             pManager.AddBrepParameter("Column", "CL", "Column of a structure", GH_ParamAccess.list);
 
             pManager.AddGenericParameter("Deck Surface", "DC", "The walking surface", GH_ParamAccess.list);
-            pManager.AddGenericParameter("(test2)", "t2", "test2", GH_ParamAccess.list);
+            //pManager.AddGenericParameter("(test2)", "t2", "test2", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -151,6 +151,10 @@ namespace StructuralEmbodiment.Components.Materialisation
         public override Guid ComponentGuid
         {
             get { return new Guid("61B435BB-AFF1-4D23-A626-63C88A70D0D1"); }
+        }
+        public override GH_Exposure Exposure
+        {
+            get { return GH_Exposure.primary; }
         }
     }
 }

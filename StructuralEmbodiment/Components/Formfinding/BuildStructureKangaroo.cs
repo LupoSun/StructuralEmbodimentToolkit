@@ -218,5 +218,9 @@ namespace StructuralEmbodiment.Components.Formfinding
         {
             get { return new Guid("E892A382-840C-4B0F-89E7-D9682472182F"); }
         }
+        public override GH_Exposure Exposure
+        {
+            get { return GH_Exposure.primary; }
+        }
     }
 }

@@ -79,6 +79,10 @@ namespace StructuralEmbodiment.Components.Visualisation
         {
             get { return new Guid("5BCF32B0-45B5-45B3-9F21-41D5570F063D"); }
         }
+        public override GH_Exposure Exposure
+        {
+            get { return GH_Exposure.septenary; }
+        }
 
         public override void AppendAdditionalMenuItems(System.Windows.Forms.ToolStripDropDown menu)
         {
@@ -180,12 +184,8 @@ namespace StructuralEmbodiment.Components.Visualisation
                 this.Steps = _steps;
                 this.Width = _width;
                 this.Height = _height;
-
-
-
-
-
             }
+            
 
         }
     }
