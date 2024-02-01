@@ -1,22 +1,17 @@
-﻿using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Rhino.Display;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Rhino;
+using Rhino.Display;
 using Rhino.Geometry;
-using Grasshopper.Kernel.Data;
 using StructuralEmbodiment.Core.Formfinding;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Windows.Forms;
-using Rhino.Geometry.Intersect;
-using Grasshopper.Kernel.Types;
-using Grasshopper.Kernel;
 
 namespace StructuralEmbodiment.Core
 {
@@ -148,6 +143,9 @@ namespace StructuralEmbodiment.Core
                    member1.EdgeAsPoints[1].EpsilonEquals(member2.EdgeAsPoints[1], tolerance);
         }
 
+        /*
+         * Compute the average point of a list of points
+         */
         public static Point3d AveragePoint(List<Point3d> points)
         {
             if (points == null || !points.Any())
@@ -159,6 +157,39 @@ namespace StructuralEmbodiment.Core
                 sum += pt;
             }
             return sum / points.Count;
+        }
+        /*
+         * Compute the average point of a list of points, this version automatically removes the duplicates with a given tolerance
+         */
+        public static Point3d AveragePoint(List<Point3d> points,double tolerance)
+        {
+            List<Point3d> uniquePoints = new List<Point3d>();
+            foreach (Point3d point in points)
+            {
+                bool isUnique = true;
+                foreach (Point3d uniquePoint in uniquePoints)
+                {
+                    if (point.DistanceTo(uniquePoint) <= tolerance)
+                    {
+                        isUnique = false;
+                        break; // This point is not unique, no need to check further
+                    }
+                }
+                if (isUnique)
+                {
+                    uniquePoints.Add(point);
+                }
+            }
+
+            if (points == null || !points.Any())
+                return Point3d.Unset;
+
+            Point3d sum = new Point3d(0, 0, 0);
+            foreach (var pt in uniquePoints)
+            {
+                sum += pt;
+            }
+            return sum / uniquePoints.Count;
         }
 
         public static bool IsMemberConnectingOutlines(Member member, List<Curve> deckOutlines, double tolerance)
@@ -184,7 +215,6 @@ namespace StructuralEmbodiment.Core
             Polyline polyline = polylineCurve.ToPolyline();
             var pts = polyline.ToArray();
             return pts.Any(pt => pt.DistanceTo(point) < tolerance);
-
 
         }
 
@@ -452,29 +482,86 @@ namespace StructuralEmbodiment.Core
             return pt;
         }
 
-        /*
-        public static GH_Structure<IGH_Goo> NestedListToTree<T>(List<List<GeometryBase>> nestedList) 
+        public static Vector3d ClosestWorldAxis(Vector3d vector)
         {
-            var tree = new GH_Structure<IGH_Goo>();
+            // Normalize the input vector
+            vector.Unitize();
 
-            for (int i = 0; i < nestedList.Count; i++)
+            // Define unit vectors for the world axes and their opposites
+            Vector3d[] axes = {Vector3d.XAxis,
+                              -Vector3d.XAxis,
+                               Vector3d.YAxis,
+                              -Vector3d.YAxis,
+                               Vector3d.ZAxis,
+                              -Vector3d.ZAxis};
+
+            double minAngle = double.MaxValue;
+            Vector3d closestAxis = Vector3d.Unset;
+
+            // Find the axis with the smallest angle to the vector
+            foreach (Vector3d axis in axes)
             {
-                var path = new GH_Path(i);
-                var branch = new List<IGH_Goo>();
-
-                foreach (var geom in nestedList[i])
+                double angle = Vector3d.VectorAngle(vector, axis);
+                if (angle < minAngle)
                 {
-                    IGH_Goo ghGeom = GH_Convert.ToGoo(geom);
-                    if (ghGeom != null)
-                    {
-                        branch.Add(ghGeom);
-                    }
+                    minAngle = angle;
+                    closestAxis = axis;
                 }
-
-                tree.AppendRange(branch, path);
             }
-            return tree;
-        }*/
+            return closestAxis;
+        }
+
+        public static bool IsPointInCloud(List<Point3d> points, Point3d pointToCheck, double tolerance)
+        {
+            return points.Any(p => p.DistanceTo(pointToCheck) < tolerance);
+        }
+
+
+        public static List<List<LineCurve>> GroupConnectedLineCurves(List<LineCurve> lineCurves, double tolerance)
+        {
+            List<List<LineCurve>> groupedLines = new List<List<LineCurve>>();
+            HashSet<LineCurve> remainingLines = new HashSet<LineCurve>(lineCurves);
+
+            while (remainingLines.Any())
+            {
+                var currentLine = remainingLines.First();
+                remainingLines.Remove(currentLine);
+
+                List<LineCurve> connectedGroup = new List<LineCurve> { currentLine };
+                bool added;
+
+                do
+                {
+                    added = false;
+
+                    foreach (var line in remainingLines.ToList())
+                    {
+                        if (AreLinesConnected(connectedGroup.Last(), line, tolerance, true))
+                        {
+                            connectedGroup.Add(line);
+                            remainingLines.Remove(line);
+                            added = true;
+                        }
+                        else if (AreLinesConnected(connectedGroup.First(), line, tolerance, false))
+                        {
+                            connectedGroup.Insert(0, line);
+                            remainingLines.Remove(line);
+                            added = true;
+                        }
+                    }
+                } while (added);
+
+                groupedLines.Add(connectedGroup);
+            }
+
+            return groupedLines;
+        }
+
+        private static bool AreLinesConnected(LineCurve line1, LineCurve line2, double tolerance, bool checkEndOfFirst)
+        {
+            Point3d pointToCheck = checkEndOfFirst ? line1.PointAtEnd : line1.PointAtStart;
+            return pointToCheck.DistanceTo(line2.PointAtStart) <= tolerance || pointToCheck.DistanceTo(line2.PointAtEnd) <= tolerance;
+        }
 
     }
 }

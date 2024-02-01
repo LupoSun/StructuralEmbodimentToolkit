@@ -12,6 +12,8 @@ namespace StructuralEmbodiment.Components.Formfinding
 {
     public class BuildStructureKangaroo : GH_Component
     {
+        const double maxDistance = double.MaxValue;
+
         /// <summary>
         /// Initializes a new instance of the BuildStructureKangaroo class.
         /// </summary>
@@ -140,12 +142,14 @@ namespace StructuralEmbodiment.Components.Formfinding
             GH_Structure<GH_Point> supportsGHStructure = new GH_Structure<GH_Point>();
             if (DA.GetDataTree("Supports", out supportsGHStructure))
             {
+                PointCloud meshVertices = new PointCloud(surfaceMesh.Vertices.Select(v=>(Point3d)v));
                 foreach (GH_Path path in supportsGHStructure.Paths)
                 {
                     List<Point3d> supportsInBranch = new List<Point3d>();
                     foreach (GH_Point support in supportsGHStructure.get_Branch(path))
                     {
-                        supportsInBranch.Add(support.Value);
+                        int id = meshVertices.ClosestPoint(support.Value);
+                        supportsInBranch.Add(meshVertices[id].Location);
                     }
                     sortedSupports.Add(supportsInBranch);
                 }
@@ -174,7 +178,7 @@ namespace StructuralEmbodiment.Components.Formfinding
                 for (int j = 0; j < edgesInBranch.Count; j++)
                 {
                     Curve edge = edgesInBranch[j];
-                    List<Point3d> edgeAsPoints = new List<Point3d>() { edge.PointAtStart,edge.PointAtEnd};
+                    List<Point3d> edgeAsPoints = new List<Point3d>() {edge.PointAtStart,edge.PointAtEnd};
                     double force = forcesInBranch[j];
                     if (Util.DoesLineConnectPoints((LineCurve)edge, sortedSupports, tolerance))
                     {
@@ -203,7 +207,7 @@ namespace StructuralEmbodiment.Components.Formfinding
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Properties.Resources.FF_BuildStructureKangaroo;
             }
         }
 

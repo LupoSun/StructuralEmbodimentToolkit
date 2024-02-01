@@ -283,6 +283,7 @@ namespace StructuralEmbodiment.Core.Formfinding
             return newDict;
         }
 
+        //index0: cables, index1: bars
         public List<List<Brep>> LoftDeviations(int crossSection, double multiplier, Interval range, double minimalThickness, double tolerance)
         {
             var cables = new List<Brep>();

@@ -62,5 +62,9 @@ namespace StructuralEmbodiment.Core.Formfinding
             MemberType = memberType;
             EdgeType = edgeType;
         }
+        public override string ToString()
+        {
+            return MemberType.ToString() + Force.ToString();   
+        }
     }
 }

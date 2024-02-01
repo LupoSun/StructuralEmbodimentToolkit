@@ -73,6 +73,16 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap FF_BuildStructureKangaroo {
+            get {
+                object obj = ResourceManager.GetObject("FF_BuildStructureKangaroo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap FF_CEMGenerator {
             get {
                 object obj = ResourceManager.GetObject("FF_CEMGenerator", resourceCulture);
@@ -123,6 +133,16 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap MAT_DowntownMaker {
+            get {
+                object obj = ResourceManager.GetObject("MAT_DowntownMaker", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap MAT_ExtractStructure {
             get {
                 object obj = ResourceManager.GetObject("MAT_ExtractStructure", resourceCulture);
@@ -146,6 +166,16 @@ namespace StructuralEmbodiment.Properties {
         internal static System.Drawing.Bitmap MAT_TerrainMaker {
             get {
                 object obj = ResourceManager.GetObject("MAT_TerrainMaker", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SE_Tab {
+            get {
+                object obj = ResourceManager.GetObject("SE_Tab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

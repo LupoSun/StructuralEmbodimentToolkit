@@ -31,11 +31,11 @@ namespace StructuralEmbodiment.Components.Materialisation
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter("• Structure", "• S", "The Structure to materialise", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Cross Section", "CS", "Cross Section of the members. O=Circular, 1=Rectangular", GH_ParamAccess.item);
+            pManager.AddIntegerParameter("Cross Section", "CS", "Cross Section of the members. 0=Circular, 1=Rectangular", GH_ParamAccess.item);
             pManager.AddNumberParameter("Multiplier", "M", "Multiplier for the cross section, by default 1", GH_ParamAccess.item);
             pManager.AddIntervalParameter("Range", "R", "Range of the cross section, by default the unsigned force range of the structure", GH_ParamAccess.item);
             pManager.AddNumberParameter("Minimal Thickness", "MT", "Minimal thickness of the cross section, by default 0.05", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Include Deck Edges", "IDE", "Materialise the deck edges, by default not", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Include Implicit Edges", "IDE", "Materialise the deck edges, by default not", GH_ParamAccess.item);
 
             pManager[1].Optional = true;
             pManager[2].Optional = true;
@@ -52,9 +52,9 @@ namespace StructuralEmbodiment.Components.Materialisation
             pManager.AddGenericParameter("Structure", "S", "Materialised structure", GH_ParamAccess.item);
             pManager.AddBrepParameter("Cables", "C", "Cables of a structure", GH_ParamAccess.list);
             pManager.AddBrepParameter("Bars","B","Bars of a structure",GH_ParamAccess.list);
-            pManager.AddBrepParameter("Deck", "D", "Deck of a bridge", GH_ParamAccess.list);
-            pManager.AddBrepParameter("Arches", "A", "Arches of a bridge", GH_ParamAccess.list);
-            pManager.AddBrepParameter("Towers", "T", "Towers of a bridge", GH_ParamAccess.list);
+            pManager.AddBrepParameter("Deck", "D", "Deck of a structure", GH_ParamAccess.list);
+            pManager.AddBrepParameter("Beams", "Bm", "Beams of a structure", GH_ParamAccess.list);
+            pManager.AddBrepParameter("Column", "CL", "Column of a structure", GH_ParamAccess.list);
 
             pManager.AddGenericParameter("Deck Surface", "DC", "The walking surface", GH_ParamAccess.list);
             pManager.AddGenericParameter("(test2)", "t2", "test2", GH_ParamAccess.list);
@@ -77,17 +77,18 @@ namespace StructuralEmbodiment.Components.Materialisation
             double minimalThickness = 0.05;
             DA.GetData("Minimal Thickness", ref minimalThickness);
             bool includeDeckEdges = false;
-            DA.GetData("Include Deck Edges", ref includeDeckEdges);
+            DA.GetData("Include Implicit Edges", ref includeDeckEdges);
+
+            double tolerance = RhinoDoc.ActiveDoc.ModelAbsoluteTolerance;
 
             if (structure is Bridge)
             {
-                double tolerance = RhinoDoc.ActiveDoc.ModelAbsoluteTolerance;
                 var supports = new List<Point3d>(((Bridge)structure).Supports);
                 StructuralEmbodiment.Core.Util.RemoveClosestToCenter(supports);
                 Dictionary<Point3d, List<Member>> connectedMembersDict = Bridge.FindConncectedTrails(supports,((Bridge)structure).Members);
 
                 List<Brep> trails = ((Bridge)structure).LoftTrails(connectedMembersDict, crossSection, multiplier, range, includeDeckEdges, tolerance * 10);
-                DA.SetDataList("Arches", trails);
+                DA.SetDataList("Beams", trails);
 
                 List<List<Brep>> devs = ((Bridge)structure).LoftDeviations(crossSection, multiplier, range,minimalThickness, tolerance * 10);
                 List<Brep> cables = devs[0];
@@ -99,7 +100,7 @@ namespace StructuralEmbodiment.Components.Materialisation
                 if (((Bridge)structure).TowerSupports != null) {
                     tower = ((Bridge)structure).LoftTower(crossSection, multiplier, range, tolerance);
                 }
-                DA.SetDataList("Towers", tower);
+                DA.SetDataList("Column", tower);
 
                 List<Brep> deck = new List<Brep>();
                 Brep[] deckSurface;
@@ -109,10 +110,22 @@ namespace StructuralEmbodiment.Components.Materialisation
 
 
                 List<LineCurve> lcrv = new List<LineCurve>();
-              
-
-                
                 DA.SetDataList("(test2)", ((Bridge)structure).DeckOutlines);
+                DA.SetData("Structure", structure);
+            }else if (structure is Roof)
+            {
+                Roof roof = (Roof)structure;
+                List<Curve> planes;
+                //Hotfix for Roof remapping
+                range = new Interval(structure.ForceRange[0], structure.ForceRange[1]);
+                minimalThickness = 0.001;
+                DA.GetData("Range", ref range);
+                DA.GetData("Minimal Thickness", ref minimalThickness);
+
+                var breps = roof.LoftRoof(crossSection, multiplier, range, minimalThickness, tolerance * 10,out planes);
+                //DA.SetDataList("(test2)", planes);
+                DA.SetDataList("Bars", breps[1]);
+                DA.SetDataList("Beams", breps[0]);
                 DA.SetData("Structure", structure);
             }
 
