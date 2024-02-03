@@ -17,7 +17,7 @@ namespace StructuralEmbodiment.Components.Materialisation
         /// </summary>
         public ExtractStructure()
           : base("Extract Structure", "ES",
-              "Extract the gemometrical information",
+              "Extract the gemometrical information from a structure",
               "Structural Embodiment", "Materialisation")
         {
         }

@@ -11,7 +11,7 @@ namespace StructuralEmbodiment
         public override string Name => "StructuralEmbodiment";
 
         //Return a 24x24 pixel bitmap to represent this GHA library.
-        public override Bitmap Icon => Properties.Resources.SE_Tab;
+        public override Bitmap Icon => Properties.Resources.SE_App;
 
         //Return a short string describing the purpose of this GHA library.
         public override string Description => "A toolkit for form-finding, materialisation and visualisation via deep learning methods";

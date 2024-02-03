@@ -48,15 +48,15 @@ namespace StructuralEmbodiment.Core.Formfinding
 
     public class Member
     {
-        public int CEMid { get; set; }
+        public int id { get; set; }
         public double Force { get; set; }
         public List<Point3d> EdgeAsPoints { get; set; }
         public MemberType MemberType { get; set; }
         public EdgeType EdgeType { get; set; }
 
-        public Member(int cemid, double force, List<Point3d> edgeAsPoints, MemberType memberType, EdgeType edgeType)
+        public Member(int id, double force, List<Point3d> edgeAsPoints, MemberType memberType, EdgeType edgeType)
         {
-            CEMid = cemid;
+            this.id = id;
             Force = force;
             EdgeAsPoints = edgeAsPoints;
             MemberType = memberType;
@@ -64,7 +64,7 @@ namespace StructuralEmbodiment.Core.Formfinding
         }
         public override string ToString()
         {
-            return MemberType.ToString() + Force.ToString();   
+            return "ID: "+id.ToString()+"\nMember Type: "+MemberType.ToString() +"\nEdge Type: " +EdgeType.ToString()+"\nForce: "+ Force.ToString();   
         }
     }
 }

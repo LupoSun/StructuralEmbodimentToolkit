@@ -10,14 +10,19 @@
   </PropertyGroup>
 	
   <ItemGroup>
+    <None Remove="Resources\FF_BuildStructureCEM.png" />
+    <None Remove="Resources\FF_BuildStructureKangaroo.png" />
     <None Remove="Resources\FF_CEMGenerator.png" />
     <None Remove="Resources\FF_InputRecorder.png" />
     <None Remove="Resources\FF_InputRecorderCSV.png" />
     <None Remove="Resources\FF_MassProducer.png" />
     <None Remove="Resources\MAT_BuildStructure.png" />
+    <None Remove="Resources\MAT_DowntownMaker.png" />
+    <None Remove="Resources\MAT_ExtractMember.png" />
     <None Remove="Resources\MAT_ExtractStructure.png" />
     <None Remove="Resources\MAT_Materialiser.png" />
     <None Remove="Resources\MAT_TerrainMaker.png" />
+    <None Remove="Resources\SE_App.png" />
     <None Remove="Resources\SE_Tab.png" />
     <None Remove="Resources\Test.png" />
     <None Remove="Resources\VIS_BuildGuidance.png" />
@@ -32,14 +37,19 @@
   </ItemGroup>
 	
   <ItemGroup>
+    <EmbeddedResource Include="Resources\FF_BuildStructureCEM.png" />
+    <EmbeddedResource Include="Resources\FF_BuildStructureKangaroo.png" />
     <EmbeddedResource Include="Resources\FF_CEMGenerator.png" />
     <EmbeddedResource Include="Resources\FF_InputRecorder.png" />
     <EmbeddedResource Include="Resources\FF_InputRecorderCSV.png" />
     <EmbeddedResource Include="Resources\FF_MassProducer.png" />
     <EmbeddedResource Include="Resources\MAT_BuildStructure.png" />
+    <EmbeddedResource Include="Resources\MAT_DowntownMaker.png" />
+    <EmbeddedResource Include="Resources\MAT_ExtractMember.png" />
     <EmbeddedResource Include="Resources\MAT_ExtractStructure.png" />
     <EmbeddedResource Include="Resources\MAT_Materialiser.png" />
     <EmbeddedResource Include="Resources\MAT_TerrainMaker.png" />
+    <EmbeddedResource Include="Resources\SE_App.png" />
     <EmbeddedResource Include="Resources\SE_Tab.png" />
     <EmbeddedResource Include="Resources\VIS_BuildGuidance.png" />
     <EmbeddedResource Include="Resources\VIS_BuildImageSettings.png" />
