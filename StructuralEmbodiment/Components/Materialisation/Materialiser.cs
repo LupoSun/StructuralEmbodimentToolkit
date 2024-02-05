@@ -110,7 +110,7 @@ namespace StructuralEmbodiment.Components.Materialisation
 
 
                 List<LineCurve> lcrv = new List<LineCurve>();
-                DA.SetDataList("(test2)", ((Bridge)structure).DeckOutlines);
+                //DA.SetDataList("(test2)", ((Bridge)structure).DeckOutlines);
                 DA.SetData("Structure", structure);
             }else if (structure is Roof)
             {

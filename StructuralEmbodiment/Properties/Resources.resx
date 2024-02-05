@@ -157,6 +157,12 @@
   <data name="SE_App" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SE_App.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="SE_Line" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SE_Line.ini;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
+  </data>
+  <data name="SE_Seg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SE_Seg.ini;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
+  </data>
   <data name="SE_Tab" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SE_Tab.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

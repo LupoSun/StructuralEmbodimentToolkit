@@ -11,7 +11,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// Initializes a new instance of the SetCamera class.
         /// </summary>
         public SetCamera()
-          : base("SetCamera", "SC",
+          : base("Set Camera", "SC",
               "Set camera in the active Rhino viewport",
               "Structural Embodiment", "Visualisation")
         {

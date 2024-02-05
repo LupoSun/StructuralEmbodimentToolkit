@@ -8,7 +8,7 @@ using StructuralEmbodiment.Properties;
 
 namespace StructuralEmbodiment.Components.Visualisation
 {
-    public class BuildImgGenGuides : GH_Component
+    public class BuildImgGenGuides_Legacy : GH_Component
     {
         ControlNetSetting controlNetSettings;
         List<Bitmap> images;
@@ -16,7 +16,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// <summary>
         /// Initializes a new instance of the MyComponent1 class.
         /// </summary>
-        public BuildImgGenGuides()
+        public BuildImgGenGuides_Legacy()
           : base("Build Guidances", "GenGuides",
               "Building the guidances for the image generation",
               "Structural Embodiment", "Visualisation")
@@ -62,8 +62,6 @@ namespace StructuralEmbodiment.Components.Visualisation
             DA.GetData("Guide by Curves", ref canny);
             DA.GetData("Guide by Depth", ref depthmap);
             DA.GetData("Build", ref build);
-
-            
 
             if (build)
             {
@@ -116,7 +114,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         }
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.secondary; }
+            get { return GH_Exposure.septenary; }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// Initializes a new instance of the BuildImageSettings class.
         /// </summary>
         public BuildImgGenSettings()
-          : base("Build Image Settings", "ImgSetting",
+          : base("Build Image Settings CN", "ImgSetting",
               "Compile the settings for the image generation",
               "Structural Embodiment", "Visualisation")
         {
@@ -40,13 +40,15 @@ namespace StructuralEmbodiment.Components.Visualisation
             pManager.AddIntegerParameter("Steps", "S", "Number of sampling steps", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Width", "W", "Pixel width of the image", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Height", "H", "Pixel height of the image", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Guides", "G","Guidances for generation", GH_ParamAccess.item);
+            
             pManager[1].Optional = true;
             pManager[2].Optional = true;
             pManager[3].Optional = true;
             pManager[4].Optional = true;
             pManager[5].Optional = true;
             pManager[6].Optional = true;
-
+            pManager[7].Optional = true;
 
         }
 
@@ -68,7 +70,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return Resources.VIS_BuildImageSettings_Legacy;
+                return Resources.VIS_BuildImageSettings;
             }
         }
 
@@ -77,11 +79,11 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("5BCF32B0-45B5-45B3-9F21-41D5570F063D"); }
+            get { return new Guid("EEA43DB2-F06D-4AAB-AA69-F66C4927001E"); }
         }
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.septenary; }
+            get { return GH_Exposure.secondary; }
         }
 
         public override void AppendAdditionalMenuItems(System.Windows.Forms.ToolStripDropDown menu)
@@ -102,7 +104,6 @@ namespace StructuralEmbodiment.Components.Visualisation
                     ((ImgGenSettingsWorker)BaseWorker).UpdateServerURL(this.ServerURL);
                     ExpireSolution(true);
                 }
-                
             }
         }
 
@@ -120,6 +121,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             public int Steps { get; set; }
             public int Width { get; set; }
             public int Height { get; set; }
+            public ControlNetSetting Guides { get; set; }
             
 
 
@@ -144,6 +146,20 @@ namespace StructuralEmbodiment.Components.Visualisation
                     ImageGenerationSetting imgSettings = imgSettingsTask.Result;
                     imgSettings.InitialiseSettings(Prompt, NegativePrompt, RandomSeed, Sampler, BatchSize, Steps, Width, Height);
                     this.ImgGenSettings = imgSettings;
+                    if (this.Guides != null)
+                    {
+                        if (this.Guides.CannySettings != null) { 
+                            this.ImgGenSettings.Settings = Core.Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.CannySettings);
+                        }
+                        if (this.Guides.DepthMapSettings != null)
+                        {
+                            this.ImgGenSettings.Settings = Core.Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.DepthMapSettings);
+                        }
+                        if (this.Guides.Settings != null)
+                        {
+                            this.ImgGenSettings.Settings = Core.Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.Settings);
+                        }
+                    }
                 } catch (Exception e)
                 {
                     throw new Exception(e.Message);
@@ -175,6 +191,8 @@ namespace StructuralEmbodiment.Components.Visualisation
                 DA.GetData("Width", ref _width);
                 int _height = 512;
                 DA.GetData("Height", ref _height);
+                ControlNetSetting _guides = null;
+                DA.GetData("Guides", ref _guides);
 
                 this.Prompt = _prompt;
                 this.NegativePrompt = _negPrompt;
@@ -184,8 +202,13 @@ namespace StructuralEmbodiment.Components.Visualisation
                 this.Steps = _steps;
                 this.Width = _width;
                 this.Height = _height;
+                this.Guides = _guides;
+
+
+
+
+
             }
-            
 
         }
     }

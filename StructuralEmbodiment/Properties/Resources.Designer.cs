@@ -22,7 +22,7 @@ namespace StructuralEmbodiment.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace StructuralEmbodiment.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("StructuralEmbodiment.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace StructuralEmbodiment.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap FF_BuildStructureCEM {
+        public static System.Drawing.Bitmap FF_BuildStructureCEM {
             get {
                 object obj = ResourceManager.GetObject("FF_BuildStructureCEM", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +73,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap FF_BuildStructureKangaroo {
+        public static System.Drawing.Bitmap FF_BuildStructureKangaroo {
             get {
                 object obj = ResourceManager.GetObject("FF_BuildStructureKangaroo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +83,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap FF_CEMGenerator {
+        public static System.Drawing.Bitmap FF_CEMGenerator {
             get {
                 object obj = ResourceManager.GetObject("FF_CEMGenerator", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,7 +93,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap FF_InputRecorder {
+        public static System.Drawing.Bitmap FF_InputRecorder {
             get {
                 object obj = ResourceManager.GetObject("FF_InputRecorder", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -103,7 +103,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap FF_InputRecorderCSV {
+        public static System.Drawing.Bitmap FF_InputRecorderCSV {
             get {
                 object obj = ResourceManager.GetObject("FF_InputRecorderCSV", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -113,7 +113,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap FF_MassProducer {
+        public static System.Drawing.Bitmap FF_MassProducer {
             get {
                 object obj = ResourceManager.GetObject("FF_MassProducer", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -123,7 +123,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MAT_BuildStructure {
+        public static System.Drawing.Bitmap MAT_BuildStructure {
             get {
                 object obj = ResourceManager.GetObject("MAT_BuildStructure", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -133,7 +133,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MAT_DowntownMaker {
+        public static System.Drawing.Bitmap MAT_DowntownMaker {
             get {
                 object obj = ResourceManager.GetObject("MAT_DowntownMaker", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -143,7 +143,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MAT_ExtractMember {
+        public static System.Drawing.Bitmap MAT_ExtractMember {
             get {
                 object obj = ResourceManager.GetObject("MAT_ExtractMember", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -153,7 +153,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MAT_ExtractStructure {
+        public static System.Drawing.Bitmap MAT_ExtractStructure {
             get {
                 object obj = ResourceManager.GetObject("MAT_ExtractStructure", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -163,7 +163,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MAT_Materialiser {
+        public static System.Drawing.Bitmap MAT_Materialiser {
             get {
                 object obj = ResourceManager.GetObject("MAT_Materialiser", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -173,7 +173,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MAT_TerrainMaker {
+        public static System.Drawing.Bitmap MAT_TerrainMaker {
             get {
                 object obj = ResourceManager.GetObject("MAT_TerrainMaker", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -183,7 +183,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SE_App {
+        public static System.Drawing.Bitmap SE_App {
             get {
                 object obj = ResourceManager.GetObject("SE_App", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -191,9 +191,67 @@ namespace StructuralEmbodiment.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///[DisplayMode\66e5faf8-94cb-4762-bc92-db2907bddf33]
+        ///SupportsShadeCmd=y
+        ///SupportsShading=y
+        ///SupportsStereo=y
+        ///AddToMenu=y
+        ///AllowObjectAssignment=n
+        ///ShadedPipelineRequired=y
+        ///WireframePipelineRequired=y
+        ///PipelineLocked=y
+        ///Order=15
+        ///DerivedFrom=f4616fa5-a831-4620-a97e-9b807d5ec376
+        ///Name=SE_Line
+        ///XrayAllObjects=n
+        ///IgnoreHighlights=n
+        ///DisableConduits=n
+        ///DisableTransparency=n
+        ///BBoxMode=0
+        ///RealtimeDisplayId=00000000-0000-0000-0000-000000000000
+        ///PipelineId=e1eb7363-87f2-4a2b-a861-256e77835369
+        ///[DisplayMode\66e5fa [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SE_Line {
+            get {
+                return ResourceManager.GetString("SE_Line", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///[DisplayMode\181dd6f2-9e6a-4f43-8061-a76347deeb75]
+        ///SupportsShadeCmd=y
+        ///SupportsShading=y
+        ///SupportsStereo=y
+        ///AddToMenu=y
+        ///AllowObjectAssignment=y
+        ///ShadedPipelineRequired=y
+        ///WireframePipelineRequired=y
+        ///PipelineLocked=n
+        ///Order=14
+        ///DerivedFrom=8bc8debe-c83b-4c47-b13c-9db074510cac
+        ///Name=SE_Seg
+        ///XrayAllObjects=n
+        ///IgnoreHighlights=n
+        ///DisableConduits=n
+        ///DisableTransparency=n
+        ///BBoxMode=0
+        ///RealtimeDisplayId=00000000-0000-0000-0000-000000000000
+        ///PipelineId=952b2830-ce8a-4b4f-935a-8cd570d162c7
+        ///[DisplayMode\181dd6f [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string SE_Seg {
+            get {
+                return ResourceManager.GetString("SE_Seg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SE_Tab {
+        public static System.Drawing.Bitmap SE_Tab {
             get {
                 object obj = ResourceManager.GetObject("SE_Tab", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -203,7 +261,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap VIS_BuildGuidance {
+        public static System.Drawing.Bitmap VIS_BuildGuidance {
             get {
                 object obj = ResourceManager.GetObject("VIS_BuildGuidance", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -213,7 +271,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap VIS_BuildImageSettings {
+        public static System.Drawing.Bitmap VIS_BuildImageSettings {
             get {
                 object obj = ResourceManager.GetObject("VIS_BuildImageSettings", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -223,7 +281,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap VIS_BuildImageSettings_Legacy {
+        public static System.Drawing.Bitmap VIS_BuildImageSettings_Legacy {
             get {
                 object obj = ResourceManager.GetObject("VIS_BuildImageSettings_Legacy", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -233,7 +291,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap VIS_RhinoVisualiser {
+        public static System.Drawing.Bitmap VIS_RhinoVisualiser {
             get {
                 object obj = ResourceManager.GetObject("VIS_RhinoVisualiser", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -243,7 +301,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap VIS_RhinoVisualiser_Legacy {
+        public static System.Drawing.Bitmap VIS_RhinoVisualiser_Legacy {
             get {
                 object obj = ResourceManager.GetObject("VIS_RhinoVisualiser_Legacy", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -253,7 +311,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap VIS_SDVisualiser {
+        public static System.Drawing.Bitmap VIS_SDVisualiser {
             get {
                 object obj = ResourceManager.GetObject("VIS_SDVisualiser", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -263,7 +321,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap VIS_SetCamera {
+        public static System.Drawing.Bitmap VIS_SetCamera {
             get {
                 object obj = ResourceManager.GetObject("VIS_SetCamera", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -273,7 +331,7 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap VIS_ViewRandomiser {
+        public static System.Drawing.Bitmap VIS_ViewRandomiser {
             get {
                 object obj = ResourceManager.GetObject("VIS_ViewRandomiser", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

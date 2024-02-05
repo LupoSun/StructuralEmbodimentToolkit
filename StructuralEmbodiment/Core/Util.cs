@@ -161,7 +161,7 @@ namespace StructuralEmbodiment.Core
         /*
          * Compute the average point of a list of points, this version automatically removes the duplicates with a given tolerance
          */
-        public static Point3d AveragePoint(List<Point3d> points,double tolerance)
+        public static Point3d AveragePoint(List<Point3d> points, double tolerance)
         {
             List<Point3d> uniquePoints = new List<Point3d>();
             foreach (Point3d point in points)
@@ -563,5 +563,69 @@ namespace StructuralEmbodiment.Core
             return pointToCheck.DistanceTo(line2.PointAtStart) <= tolerance || pointToCheck.DistanceTo(line2.PointAtEnd) <= tolerance;
         }
 
+        public static void CreateSegDisplayMode(string displayModeName)
+        {
+            var existingMode = DisplayModeDescription.FindByName(displayModeName);
+            if (existingMode == null)
+            {
+
+                var temporaryFileName = Path.GetTempFileName();
+                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                var resourceName = assembly.GetManifestResourceNames().Single(n => n.EndsWith("SE_Seg.ini"));
+                using (var resourceStream = assembly.GetManifestResourceStream(resourceName))
+                {
+                    using (var fileStream = new FileStream(temporaryFileName, FileMode.Create, FileAccess.Write))
+                    {
+                        resourceStream.CopyTo(fileStream);
+                    }
+                }
+                // Import the display mode from the temporary file
+                var newModeId = DisplayModeDescription.ImportFromFile(temporaryFileName);
+
+                // Optionally, delete the temporary file after import
+                File.Delete(temporaryFileName);
+                var newMode = DisplayModeDescription.GetDisplayMode(newModeId);
+                newMode.EnglishName = displayModeName;
+                DisplayModeDescription.UpdateDisplayMode(newMode);
+
+                RhinoApp.WriteLine(newModeId.ToString());
+            }
+        }
+        public static void CreateLineDisplayMode(string displayModeName)
+        {
+            var existingMode = DisplayModeDescription.FindByName(displayModeName);
+            if (existingMode == null)
+            {
+
+                var temporaryFileName = Path.GetTempFileName();
+                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                var resourceName = assembly.GetManifestResourceNames().Single(n => n.EndsWith("SE_Line.ini"));
+                using (var resourceStream = assembly.GetManifestResourceStream(resourceName))
+                {
+                    using (var fileStream = new FileStream(temporaryFileName, FileMode.Create, FileAccess.Write))
+                    {
+                        resourceStream.CopyTo(fileStream);
+                    }
+                }
+                // Import the display mode from the temporary file
+                var newModeId = DisplayModeDescription.ImportFromFile(temporaryFileName);
+
+                // Optionally, delete the temporary file after import
+                File.Delete(temporaryFileName);
+                var newMode = DisplayModeDescription.GetDisplayMode(newModeId);
+                newMode.EnglishName = displayModeName;
+                DisplayModeDescription.UpdateDisplayMode(newMode);
+
+                RhinoApp.WriteLine(newModeId.ToString());
+            }
+        }
+        public static void SetDisplayModeToCurrentViewport(string displayModeName)
+        {
+            var existingMode = DisplayModeDescription.FindByName(displayModeName);
+            if (existingMode != null)
+            {
+                RhinoDoc.ActiveDoc.Views.ActiveView.ActiveViewport.DisplayMode = existingMode;
+            }
+        }
     }
 }
