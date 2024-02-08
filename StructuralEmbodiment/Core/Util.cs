@@ -11,6 +11,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace StructuralEmbodiment.Core
@@ -626,6 +627,65 @@ namespace StructuralEmbodiment.Core
             {
                 RhinoDoc.ActiveDoc.Views.ActiveView.ActiveViewport.DisplayMode = existingMode;
             }
+        }
+
+        public static Bitmap ConvertToGrayscale(Bitmap original)
+        {
+            // Create a blank bitmap with the same dimensions as the original
+            Bitmap grayscale = new Bitmap(original.Width, original.Height);
+
+            // Iterate through the original bitmap's pixels
+            for (int i = 0; i < original.Width; i++)
+            {
+                for (int j = 0; j < original.Height; j++)
+                {
+                    // Get the pixel from the original image
+                    Color originalColor = original.GetPixel(i, j);
+
+                    // Calculate the grayscale value
+                    int grayScale = (int)((originalColor.R * 0.3) + (originalColor.G * 0.59) + (originalColor.B * 0.11));
+
+                    // Create the grayscale version of the pixel
+                    Color grayColor = Color.FromArgb(originalColor.A, grayScale, grayScale, grayScale);
+
+                    // Set the pixel in the new image
+                    grayscale.SetPixel(i, j, grayColor);
+                }
+            }
+
+            return grayscale;
+        }
+        public static void CustomizeWebuiUserBat(string template, string outputFilePath, List<string> argsToAdd)
+        {
+            // Read the contents of the template file
+            //string[] lines = File.ReadAllLines(templateFilePath);
+            string[] lines = template.Split(new[] { "\r\n", "\r", "\n" }, System.StringSplitOptions.None);
+
+
+            // Prepare the additional args as a single string
+            string additionalArgs = string.Join(" ", argsToAdd.Select(arg => $"--{arg}"));
+
+            // StringBuilder to store the modified content
+            StringBuilder newContent = new StringBuilder();
+
+            foreach (string line in lines)
+            {
+                // Check if the current line contains "COMMANDLINE_ARGS"
+                if (line.StartsWith("set COMMANDLINE_ARGS="))
+                {
+                    // Append the additional args to the line
+                    string modifiedLine = line + " " + additionalArgs;
+                    newContent.AppendLine(modifiedLine);
+                }
+                else
+                {
+                    // If not the target line, add it unchanged
+                    newContent.AppendLine(line);
+                }
+            }
+
+            // Write the modified content to the output file
+            File.WriteAllText(outputFilePath, newContent.ToString());
         }
     }
 }

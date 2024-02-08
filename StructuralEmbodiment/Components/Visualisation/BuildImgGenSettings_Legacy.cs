@@ -21,7 +21,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// Initializes a new instance of the BuildImageSettings class.
         /// </summary>
         public BuildImgGenSettings_Legacy()
-          : base("Build Image Settings", "ImgSetting",
+          : base("Build Image Settings_Legacy", "ImgSetting_L",
               "Compile the settings for the image generation",
               "Structural Embodiment", "Visualisation")
         {
@@ -68,7 +68,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return Resources.VIS_BuildImageSettings_Legacy;
+                return Core.Util.ConvertToGrayscale(new System.Drawing.Bitmap( Resources.VIS_BuildImageSettings));
             }
         }
 

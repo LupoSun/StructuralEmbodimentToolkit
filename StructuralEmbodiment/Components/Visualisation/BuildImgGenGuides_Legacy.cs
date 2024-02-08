@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
+using StructuralEmbodiment.Core;
 using StructuralEmbodiment.Core.Visualisation;
 using StructuralEmbodiment.Properties;
 
@@ -17,7 +18,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// Initializes a new instance of the MyComponent1 class.
         /// </summary>
         public BuildImgGenGuides_Legacy()
-          : base("Build Guidances", "GenGuides",
+          : base("Build Guidances_Legacy", "GenGuides_L",
               "Building the guidances for the image generation",
               "Structural Embodiment", "Visualisation")
         {
@@ -86,8 +87,9 @@ namespace StructuralEmbodiment.Components.Visualisation
                 }
             }
 
+            DA.SetData("Guides", SDWebUISetting.Instance);
             
-            DA.SetData("Guides", controlNetSettings);
+            //DA.SetData("Guides", controlNetSettings);
             DA.SetDataList("Images", images);
 
         }
@@ -101,7 +103,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return Resources.VIS_BuildGuidance;
+                return Util.ConvertToGrayscale(new Bitmap(Properties.Resources.VIS_BuildGuidance));
             }
         }
 

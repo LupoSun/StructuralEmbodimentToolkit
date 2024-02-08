@@ -11,15 +11,15 @@ using StructuralEmbodiment.Properties;
 
 namespace StructuralEmbodiment.Components.Visualisation
 {
-    public class Visualiser : GH_AsyncComponent
+    public class AIVisualiser : GH_AsyncComponent
     {
         private List<Bitmap> ImagePersistent;
         /// <summary>
         /// Initializes a new instance of the Visualiser class.
         /// </summary>
-        public Visualiser()
-          : base("Visualiser", "Vis",
-              "Visualisation Generator",
+        public AIVisualiser()
+          : base("AI Visualiser", "Vis",
+              "AI Visualisation Generator by StableDiffusion",
               "Structural Embodiment", "Visualisation")
         {
             ImagePersistent = new List<Bitmap>();

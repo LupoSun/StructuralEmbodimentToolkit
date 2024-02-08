@@ -261,6 +261,16 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap VIS_BuildDepthGuide {
+            get {
+                object obj = ResourceManager.GetObject("VIS_BuildDepthGuide", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap VIS_BuildGuidance {
             get {
                 object obj = ResourceManager.GetObject("VIS_BuildGuidance", resourceCulture);
@@ -291,6 +301,26 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap VIS_BuildLineGuide {
+            get {
+                object obj = ResourceManager.GetObject("VIS_BuildLineGuide", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap VIS_BuildSegGuide {
+            get {
+                object obj = ResourceManager.GetObject("VIS_BuildSegGuide", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap VIS_RhinoVisualiser {
             get {
                 object obj = ResourceManager.GetObject("VIS_RhinoVisualiser", resourceCulture);
@@ -314,6 +344,16 @@ namespace StructuralEmbodiment.Properties {
         public static System.Drawing.Bitmap VIS_SDVisualiser {
             get {
                 object obj = ResourceManager.GetObject("VIS_SDVisualiser", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap VIS_SegmentationColours {
+            get {
+                object obj = ResourceManager.GetObject("VIS_SegmentationColours", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -163,7 +163,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return Resources.VIS_RhinoVisualiser_Legacy;
+                return Core.Util.ConvertToGrayscale(new System.Drawing.Bitmap(Resources.VIS_RhinoVisualiser));
             }
         }
 

@@ -93,7 +93,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 // You can add image files to your project resources and access them like this:
                 //return Resources.IconForThisComponent;
-                return null;
+                return Properties.Resources.VIS_BuildSegGuide;
             }
         }
 
@@ -125,7 +125,6 @@ namespace StructuralEmbodiment.Components.Visualisation
         System.Drawing.RectangleF ButtonBounds2;
         System.Drawing.RectangleF ButtonBounds3;
         string SegDisplayModeName;
-        string GuidingImage;
         
         public BuildSegGuide_ButtonAttributes(GH_Component owner,string SegDisplayModeName) : base(owner) { 
             thisowner = owner; 
