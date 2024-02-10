@@ -27,13 +27,23 @@
     <None Remove="Resources\SE_Seg.ini" />
     <None Remove="Resources\SE_Tab.png" />
     <None Remove="Resources\Test.png" />
+    <None Remove="Resources\VIS_BuildDepthGuide.png" />
     <None Remove="Resources\VIS_BuildGuidance.png" />
     <None Remove="Resources\VIS_BuildImageSettings.png" />
     <None Remove="Resources\VIS_BuildImageSettings_Legacy.png" />
+    <None Remove="Resources\VIS_BuildLineGuide.png" />
+    <None Remove="Resources\VIS_BuildSegGuide.png" />
+    <None Remove="Resources\VIS_CNModels.png" />
+    <None Remove="Resources\VIS_CNModules copy 2.png" />
+    <None Remove="Resources\VIS_CNModules.png" />
+    <None Remove="Resources\VIS_LoRAs.png" />
     <None Remove="Resources\VIS_RhinoVisualiser.png" />
     <None Remove="Resources\VIS_RhinoVisualiser_Legacy.png" />
+    <None Remove="Resources\VIS_SDInitialiser.png" />
+    <None Remove="Resources\VIS_SDModels.png" />
     <None Remove="Resources\VIS_SDVisualiser copy.png" />
     <None Remove="Resources\VIS_SDVisualiser.png" />
+    <None Remove="Resources\VIS_SegmentationColours.png" />
     <None Remove="Resources\VIS_SetCamera.png" />
     <None Remove="Resources\VIS_ViewRandomiser.png" />
   </ItemGroup>
@@ -55,13 +65,23 @@
     <EmbeddedResource Include="Resources\SE_Line.ini" />
     <EmbeddedResource Include="Resources\SE_Seg.ini" />
     <EmbeddedResource Include="Resources\SE_Tab.png" />
+    <EmbeddedResource Include="Resources\VIS_BuildDepthGuide.png" />
     <EmbeddedResource Include="Resources\VIS_BuildGuidance.png" />
     <EmbeddedResource Include="Resources\VIS_BuildImageSettings.png" />
     <EmbeddedResource Include="Resources\VIS_BuildImageSettings_Legacy.png" />
+    <EmbeddedResource Include="Resources\VIS_BuildLineGuide.png" />
+    <EmbeddedResource Include="Resources\VIS_BuildSegGuide.png" />
+    <EmbeddedResource Include="Resources\VIS_CNModels.png" />
+    <EmbeddedResource Include="Resources\VIS_CNModules copy 2.png" />
+    <EmbeddedResource Include="Resources\VIS_CNModules.png" />
+    <EmbeddedResource Include="Resources\VIS_LoRAs.png" />
     <EmbeddedResource Include="Resources\VIS_RhinoVisualiser.png" />
     <EmbeddedResource Include="Resources\VIS_RhinoVisualiser_Legacy.png" />
+    <EmbeddedResource Include="Resources\VIS_SDInitialiser.png" />
+    <EmbeddedResource Include="Resources\VIS_SDModels.png" />
     <EmbeddedResource Include="Resources\VIS_SDVisualiser copy.png" />
     <EmbeddedResource Include="Resources\VIS_SDVisualiser.png" />
+    <EmbeddedResource Include="Resources\VIS_SegmentationColours.png" />
     <EmbeddedResource Include="Resources\VIS_SetCamera.png" />
     <EmbeddedResource Include="Resources\VIS_ViewRandomiser.png" />
   </ItemGroup>

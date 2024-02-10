@@ -184,11 +184,26 @@
   <data name="VIS_BuildSegGuide" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\VIS_BuildSegGuide.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="VIS_CNModels" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VIS_CNModels.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VIS_CNModules" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VIS_CNModules.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VIS_LoRAs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VIS_LoRAs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="VIS_RhinoVisualiser" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\VIS_RhinoVisualiser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="VIS_RhinoVisualiser_Legacy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\VIS_RhinoVisualiser_Legacy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VIS_SDInitialiser" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VIS_SDInitialiser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VIS_SDModels" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VIS_SDModels.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="VIS_SDVisualiser" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\VIS_SDVisualiser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

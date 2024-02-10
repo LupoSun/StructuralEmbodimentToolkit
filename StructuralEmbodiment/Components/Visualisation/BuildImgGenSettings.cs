@@ -21,7 +21,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// Initializes a new instance of the BuildImageSettings class.
         /// </summary>
         public BuildImgGenSettings()
-          : base("Build Image Settings CN", "ImgSetting",
+          : base("Build Image Settings", "ImgSetting",
               "Compile the settings for the image generation",
               "Structural Embodiment", "Visualisation")
         {

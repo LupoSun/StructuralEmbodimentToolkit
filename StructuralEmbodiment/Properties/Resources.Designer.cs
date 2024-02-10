@@ -321,6 +321,36 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap VIS_CNModels {
+            get {
+                object obj = ResourceManager.GetObject("VIS_CNModels", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap VIS_CNModules {
+            get {
+                object obj = ResourceManager.GetObject("VIS_CNModules", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap VIS_LoRAs {
+            get {
+                object obj = ResourceManager.GetObject("VIS_LoRAs", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap VIS_RhinoVisualiser {
             get {
                 object obj = ResourceManager.GetObject("VIS_RhinoVisualiser", resourceCulture);
@@ -334,6 +364,26 @@ namespace StructuralEmbodiment.Properties {
         public static System.Drawing.Bitmap VIS_RhinoVisualiser_Legacy {
             get {
                 object obj = ResourceManager.GetObject("VIS_RhinoVisualiser_Legacy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap VIS_SDInitialiser {
+            get {
+                object obj = ResourceManager.GetObject("VIS_SDInitialiser", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap VIS_SDModels {
+            get {
+                object obj = ResourceManager.GetObject("VIS_SDModels", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

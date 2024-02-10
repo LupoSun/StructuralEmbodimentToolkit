@@ -14,11 +14,15 @@ using Rhino;
 using Grasshopper.Kernel.Types;
 
 using StructuralEmbodiment.Core.Visualisation;
+using StructuralEmbodiment.Core.GrasshopperAsyncComponent;
+
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Threading.Tasks;
+using System.Drawing;
 
 namespace StructuralEmbodiment.Components.Visualisation
 {
-    public class SDInitialiser : GH_Component
+    public class AIInitialiser : GH_AsyncComponent
     {
         public bool startWebUIPressed = false;
         public bool refreshStatusPressed = false;
@@ -27,11 +31,12 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// <summary>
         /// Initializes a new instance of the SDInitialiser class.
         /// </summary>
-        public SDInitialiser()
-          : base("SD Initialiser", "SDI",
+        public AIInitialiser()
+          : base("AI Initialiser", "AII",
               "Initialise the StableDiffusion WebUI by AUTOMATIC1111 with api enabled",
               "Structural Embodiment", "Visualisation")
         {
+            base.BaseWorker = new SDInitialiserWorker(this, SDWebUISetting.Instance);
         }
 
         /// <summary>
@@ -57,44 +62,6 @@ namespace StructuralEmbodiment.Components.Visualisation
         }
 
         /// <summary>
-        /// This is the method that actually does the work.
-        /// </summary>
-        /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
-        protected override void SolveInstance(IGH_DataAccess DA)
-        {
-            string sdLocation = "";
-            DA.GetData("• SD Location", ref sdLocation);
-            string userURL = "http://127.0.0.1:7860";
-            DA.GetData("User URL", ref userURL);
-            List<string> additionalArguments = new List<string>();
-            DA.GetDataList("Additional Arguments", additionalArguments);
-
-            var setting = SDWebUISetting.Instance;
-            //setting.SetSDWebUISetting(null);
-            if (setting.ServerURL != null)
-            {
-                
-                if (refreshStatusPressed)
-                {
-                    setting.SetSDWebUISetting(userURL);
-                    refreshStatusPressed = false;
-                }
-                this.Message = "WebUI is already initialised \n"+setting.ToString();
-            }
-            else
-            {
-                if(startWebUIPressed)
-                {
-                    setting.SetSDWebUISetting(userURL);
-                    startWebUIPressed = false;
-                    this.Message = "WebUI is already initialised \n" + setting.ToString();
-                }
-                
-            }
-
-        }
-
-        /// <summary>
         /// Provides an Icon for the component.
         /// </summary>
         protected override System.Drawing.Bitmap Icon
@@ -103,7 +70,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return null;
+                return Properties.Resources.VIS_SDInitialiser;
             }
         }
 
@@ -112,7 +79,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("EBDA4485-E8C3-4691-8625-C289677556F9"); }
+            get { return new Guid("5F0ED92F-1F07-403D-AC62-C001ED9FB763"); }
         }
         public override GH_Exposure Exposure
         {
@@ -123,8 +90,73 @@ namespace StructuralEmbodiment.Components.Visualisation
         {
             base.m_attributes = new SDInitialiser_ButtonAttributes(this);
         }
+
+        private class SDInitialiserWorker : WorkerInstance
+        {
+            SDWebUISetting SDWebUISetting;
+            GH_Component OWner;
+            public string SDLocation { get; set; }
+
+            public string UserURL { get; set; }
+            public List<string> AdditionalArguments { get; set; }
+
+
+            public SDInitialiserWorker(GH_Component owner, SDWebUISetting sDWebUISetting) : base(null) {
+                this.OWner = owner;
+                this.SDWebUISetting = sDWebUISetting; }
+
+            public override WorkerInstance Duplicate() => new SDInitialiserWorker(OWner,SDWebUISetting);
+
+            public override void DoWork(Action<string, double> ReportProgress, Action Done)
+            {
+                var owner = this.OWner as AIInitialiser;
+
+                // Check if the operation has been cancelled
+                if (CancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                if (owner.startWebUIPressed)
+                {
+                    SDWebUISetting.SetSDWebUISetting(UserURL);
+                    SDWebUISetting.Initialise();
+                    owner.startWebUIPressed = false;
+                    Done();
+                }
+                else if (owner.refreshStatusPressed)
+                {
+                    SDWebUISetting.Refresh();
+                    owner.refreshStatusPressed = false;
+                    Done();
+                }
+
+                
+                owner.Message = "Not Initialised";
+            }
+            public override void SetData(IGH_DataAccess DA)
+            {
+                //DA.SetDataList("Images", this.Images);
+            }
+            public override void GetData(IGH_DataAccess DA, GH_ComponentParamServer Params)
+            {
+                string _sdLocation = "";
+                DA.GetData("• SD Location", ref _sdLocation);
+                string _userURL = "http://127.0.0.1:7860";
+                DA.GetData("User URL", ref _userURL);
+                List<string> _additionalArguments = new List<string>();
+                DA.GetDataList("Additional Arguments", _additionalArguments);
+
+                this.SDLocation = _sdLocation;
+                this.UserURL = _userURL;
+                this.AdditionalArguments = _additionalArguments;
+
+            }
+        }
     }
     #endregion
+
+
     #region GH_ComponentAttributes interface
 
     public class SDInitialiser_ButtonAttributes : Grasshopper.Kernel.Attributes.GH_ComponentAttributes
@@ -179,7 +211,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 System.Drawing.RectangleF rec = ButtonBounds;
                 //rec.Inflate(-4, -4);
                 System.Drawing.RectangleF rec2 = ButtonBounds2;
-                var owner = this.Owner as SDInitialiser;
+                var owner = this.Owner as AIInitialiser;
                 if (rec.Contains(e.CanvasLocation))
                 {
                     

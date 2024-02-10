@@ -90,7 +90,8 @@ namespace StructuralEmbodiment.Components.Visualisation
             DA.SetData("Guides", SDWebUISetting.Instance);
             
             //DA.SetData("Guides", controlNetSettings);
-            DA.SetDataList("Images", images);
+            //DA.SetDataList("Images", images);
+            DA.SetDataList("Images", SDWebUISetting.Instance.VAEs);
 
         }
 

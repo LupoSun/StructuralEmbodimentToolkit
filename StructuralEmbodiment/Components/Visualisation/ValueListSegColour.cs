@@ -180,6 +180,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 item.Selected = colour.StartsWith("sky");
                 base.ListItems.Add(item);
             }
+            
         }
 
 
@@ -198,7 +199,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         }
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.tertiary; }
+            get { return GH_Exposure.quarternary; }
         }
 
         /// <summary>
