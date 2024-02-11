@@ -395,6 +395,26 @@ namespace StructuralEmbodiment.Core
             return resizedBitmap;
         }
 
+        public static string AddLoRAsToPrompt(string prompt, List<string> loRAs, List<double> multipliers)
+        {
+            if (loRAs.Count > multipliers.Count)
+            {
+                while (loRAs.Count > multipliers.Count)
+                {
+                    multipliers.Add(1.0);
+                }
+            }
+
+            for (int i = 0; i < loRAs.Count; i++)
+            {
+                string loRA = loRAs[i];
+                double multiplier = multipliers[i];
+                prompt += (" " + "<lora:" + loRA + ":" + multiplier.ToString() + ">");
+            }
+
+            return prompt;
+        }
+
         public static Interval AdjustIntervalTo180(Interval angleRange)
         {
             double startAngle = NormalizeAndClampAngle(angleRange.T0);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using Grasshopper.GUI;
+using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 using StructuralEmbodiment.Core.GrasshopperAsyncComponent;
@@ -14,6 +15,8 @@ namespace StructuralEmbodiment.Components.Visualisation
     public class AIVisualiser : GH_AsyncComponent
     {
         private List<Bitmap> ImagePersistent;
+        public bool generatePressed = false;
+        public bool clearCachePressed = false;
         /// <summary>
         /// Initializes a new instance of the Visualiser class.
         /// </summary>
@@ -23,7 +26,7 @@ namespace StructuralEmbodiment.Components.Visualisation
               "Structural Embodiment", "Visualisation")
         {
             ImagePersistent = new List<Bitmap>();
-            BaseWorker = new VisualiserWorker(ImagePersistent);
+            BaseWorker = new VisualiserWorker(this,SDWebUISetting.Instance);
         }
 
         /// <summary>
@@ -32,7 +35,6 @@ namespace StructuralEmbodiment.Components.Visualisation
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter("• Settings", "• S", "Settings for image Generation", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("• Generate", "• G", "Generate the images", GH_ParamAccess.item);
 
         }
 
@@ -70,6 +72,11 @@ namespace StructuralEmbodiment.Components.Visualisation
             get { return GH_Exposure.secondary; }
         }
 
+        public override void CreateAttributes()
+        {
+            base.m_attributes = new SDVisualiser_ButtonAttributes(this);
+        }
+
         public override void AppendAdditionalMenuItems(System.Windows.Forms.ToolStripDropDown menu)
         {
             base.AppendAdditionalMenuItems(menu);
@@ -83,52 +90,151 @@ namespace StructuralEmbodiment.Components.Visualisation
 
         private class VisualiserWorker: WorkerInstance
         {
-            List<Bitmap> Images;
+            public GH_Component Owner;
             public ImageGenerationSetting ImgGenSettings { get; set; }
-            public ImageRequest imageRequest { get; set; }
+            public ImageRequest ImageRequest { get; set; }
             public SDWebUISetting SDWebUISetting { get; set; }
-            public bool Generate { get; set; }
             
 
-            public VisualiserWorker(List<Bitmap> imagePersistent): base(null) {
-                this.Images = imagePersistent;
-                this.SDWebUISetting = SDWebUISetting.Instance;
+            public VisualiserWorker(GH_Component owner,SDWebUISetting sDWebUISetting): base(null) {
+
+                this.Owner = owner;
+                this.SDWebUISetting = sDWebUISetting;
             }
 
-            public override WorkerInstance Duplicate() => new VisualiserWorker(Images);
+            public override WorkerInstance Duplicate() => new VisualiserWorker(Owner, SDWebUISetting);
 
             public override void DoWork(Action<string, double> ReportProgress, Action Done)
             {
+                var owner = this.Owner as AIVisualiser;
                 // Check if the operation has been cancelled
                 if (CancellationToken.IsCancellationRequested)
                 {
                     return;
                 }
                 
-                if (Generate)
+                if (owner.generatePressed)
                 {
-                    imageRequest = new ImageRequest(SDWebUISetting.ServerURL, ImgGenSettings.Settings, SDWebUISetting.Client);
-                    Task imageRequestTask = imageRequest.GenerateImage(GenerationMode.text2img);
+                    ImageRequest = new ImageRequest(SDWebUISetting.ServerURL, ImgGenSettings.Settings, SDWebUISetting.Client);
+                    Task imageRequestTask = ImageRequest.GenerateImage(GenerationMode.text2img);
                     imageRequestTask.Wait();
-                    this.Images.AddRange(imageRequest.Images);
+                    //ImageRequest.Images.Reverse();
+                    owner.ImagePersistent.InsertRange(0,ImageRequest.Images);
+
+                    owner.generatePressed = false;
+                    Done();
+                }
+                else if (owner.clearCachePressed)
+                {
+                    owner.ImagePersistent.Clear();
+                    owner.clearCachePressed = false;
+                    Done();
                 }
                 
-                Done();
             }
             public override void SetData(IGH_DataAccess DA)
             {
-                DA.SetDataList("Images", this.Images);
+                var owner = this.Owner as AIVisualiser;
+                DA.SetDataList("Images", owner.ImagePersistent);
             }
             public override void GetData(IGH_DataAccess DA, GH_ComponentParamServer Params)
             {
                 ImageGenerationSetting _imgGenSettings = null;
                 DA.GetData("• Settings", ref _imgGenSettings);
-                bool _generate = false;
-                DA.GetData("• Generate", ref _generate);
 
                 ImgGenSettings = _imgGenSettings;
-                Generate = _generate;
             }
+
         }
     }
+
+    #region GH_ComponentAttributes interface
+
+    public class SDVisualiser_ButtonAttributes : Grasshopper.Kernel.Attributes.GH_ComponentAttributes
+    {
+        GH_Component thisowner = null;
+        System.Drawing.RectangleF ButtonBounds2;
+
+        public SDVisualiser_ButtonAttributes(GH_Component owner) : base(owner)
+        {
+            thisowner = owner;
+        }
+
+        protected override void Layout()
+        {
+            base.Layout();
+            var buttonWidth = 120;
+            var bezel = 5;
+            System.Drawing.Rectangle rec0 = GH_Convert.ToRectangle(this.Bounds);
+            rec0.Height += (22 * 2 + 8 + bezel);
+            System.Drawing.Rectangle rec1 = rec0;
+            System.Drawing.Rectangle rec2 = rec0;
+            rec1.Y = rec1.Bottom - 44 - 8 - bezel;
+            rec1.Height = 22;
+            rec1.Width = buttonWidth;
+            var x = rec0.Right - rec0.Width / 2 - rec1.Width / 2;
+            rec1.X = x;
+            rec1.Inflate(-2, -2);
+            Bounds = rec0;
+            ButtonBounds = rec1;
+
+            rec2.Y = rec2.Bottom - 22 - 8 - bezel;
+            rec2.Height = 22 + 8;
+            rec2.Width = buttonWidth;
+            rec2.X = x;
+            rec2.Inflate(-2, -2);
+            ButtonBounds2 = rec2;
+
+        }
+        private System.Drawing.Rectangle ButtonBounds { get; set; }
+
+        protected override void Render(GH_Canvas canvas, System.Drawing.Graphics graphics, GH_CanvasChannel channel)
+        {
+            base.Render(canvas, graphics, channel);
+
+            if (channel == GH_CanvasChannel.Objects)
+            {
+                GH_Capsule button = GH_Capsule.CreateTextCapsule(ButtonBounds, ButtonBounds, GH_Palette.White, "Clear Cache", new int[] { 7, 7, 0, 7 }, 4);
+                button.Render(graphics, Selected, Owner.Locked, false);
+                GH_Capsule button2 = GH_Capsule.CreateTextCapsule(ButtonBounds2, ButtonBounds2, GH_Palette.Pink, "Generate !", new int[] { 7, 7, 0, 7 }, 4);
+                button2.Render(graphics, Selected, Owner.Locked, false);
+
+            }
+        }
+        public override GH_ObjectResponse RespondToMouseUp(GH_Canvas sender, GH_CanvasMouseEvent e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                System.Drawing.RectangleF rec = ButtonBounds;
+                //rec.Inflate(-4, -4);
+                System.Drawing.RectangleF rec2 = ButtonBounds2;
+                var owner = this.Owner as AIVisualiser;
+                if (rec.Contains(e.CanvasLocation))
+                {
+                    if (owner != null)
+                    {
+                        owner.clearCachePressed = true;
+                        owner.ExpireSolution(true);
+                    }
+
+                    return GH_ObjectResponse.Handled;
+
+                }
+                else if (rec2.Contains(e.CanvasLocation))
+                {
+                    if (owner != null)
+                    {
+                        owner.generatePressed = true;
+                        owner.ExpireSolution(true);
+                    }
+                    return GH_ObjectResponse.Handled;
+
+                }
+            }
+
+            return base.RespondToMouseDown(sender, e);
+        }
+
+    }
+    #endregion GH_ComponentAttributes interface
 }

@@ -23,7 +23,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             this.Category = "Structural Embodiment";
             this.SubCategory = "Visualisation";
 
-            var sDWebUISetting  = SDWebUISetting.Instance;
+            var sDWebUISetting = SDWebUISetting.Instance;
             if (sDWebUISetting.isInitialised)
             {
 
@@ -34,13 +34,33 @@ namespace StructuralEmbodiment.Components.Visualisation
                     //item.Selected = colour.StartsWith("sky");
                     base.ListItems.Add(item);
                 }
-            }else
+            }
+            else
             {
-                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "StableDiffusion WebUI not intialised, please use the SD Initialiser");
+                base.ListItems.Clear();
+                base.ListItems.Add(new GH_ValueListItem("Not Initialised, Use AI Initialiser Component", "0"));
             }
         }
 
+        public override void ExpireSolution(bool recompute)
+        {
 
+            var sDWebUISetting = SDWebUISetting.Instance;
+            if (sDWebUISetting.isInitialised)
+            {
+
+                base.ListItems.Clear();
+                foreach (var model in sDWebUISetting.CNModels)
+                {
+                    var item = new GH_ValueListItem(model, "\"" + model + "\"");
+                    //item.Selected = colour.StartsWith("sky");
+                    base.ListItems.Add(item);
+                }
+            }
+            base.ExpireSolution(recompute);
+
+
+        }
 
         /// <summary>
         /// Provides an Icon for the component.

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using Grasshopper.Kernel;
 
 
 
@@ -94,6 +95,34 @@ namespace StructuralEmbodiment.Core.Visualisation
             {
                 throw new Exception("Server URL is not set yet");
             }
+        }
+        public void ReloadValueLists() {
+            var componentNames = new List<string> { "ControlNet Models", "ControlNet Modules", "LoRA Models", "Samplers", "StableDiffusion Models", "Segmentation Colours" };
+            var ghDoc = Grasshopper.Instances.ActiveCanvas.Document; // Get the active Grasshopper document
+            if (ghDoc == null) return;
+
+            foreach (IGH_DocumentObject docObj in ghDoc.Objects) // Iterate over all objects in the document
+            {
+                // Check if the object is a component and its name is in the list
+                if (docObj is IGH_Component component && componentNames.Contains(component.Name))
+                {
+                    // Expire the solution of the component to force it to recompute
+                    component.ExpireSolution(true);
+                }
+            }
+        }
+        public async Task<HttpResponseMessage> SDWebUIOptions(string sDModel) {
+            string apiTail = "/sdapi/v1/options";
+            var decodedOptions = await Util.GetInfo(this.ServerURL, apiTail, this.Client);
+            decodedOptions["sd_model_checkpoint"] = sDModel;
+            var payload = JObject.FromObject(new
+            {
+                sd_model_checkpoint = sDModel,
+                alwayson_scripts = new { }
+            });
+            StringContent content = new StringContent(decodedOptions.ToString(), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await this.Client.PostAsync(this.ServerURL + apiTail, content);
+            return response;
         }
         public override string ToString()
         {

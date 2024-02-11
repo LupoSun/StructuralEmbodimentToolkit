@@ -36,11 +36,27 @@ namespace StructuralEmbodiment.Components.Visualisation
             }
             else
             {
-                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "StableDiffusion WebUI not intialised, please use the SD Initialiser");
+                base.ListItems.Clear();
+                base.ListItems.Add(new GH_ValueListItem("Not Initialised, Use AI Initialiser Component", "0"));
             }
         }
 
+        public override void ExpireSolution(bool recompute)
+        {
+            var sDWebUISetting = SDWebUISetting.Instance;
+            if (sDWebUISetting.isInitialised)
+            {
 
+                base.ListItems.Clear();
+                foreach (var modules in sDWebUISetting.CNModules)
+                {
+                    var item = new GH_ValueListItem(modules, "\"" + modules + "\"");
+                    //item.Selected = colour.StartsWith("sky");
+                    base.ListItems.Add(item);
+                }
+            }
+            base.ExpireSolution(recompute);
+        }
 
         /// <summary>
         /// Provides an Icon for the component.

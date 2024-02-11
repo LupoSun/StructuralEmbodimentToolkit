@@ -24,8 +24,8 @@ namespace StructuralEmbodiment.Core.Visualisation
         {
             this.ServerUrl = url;
             this.Payload = payload;
-            Images = new List<Bitmap>();
-            this.Client = new HttpClient();
+            this.Images = new List<Bitmap>();
+            this.Client = client;
         }
         private async Task<HttpResponseMessage> SendRequestAsync(Enum genMode)
         {

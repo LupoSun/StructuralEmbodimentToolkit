@@ -40,6 +40,7 @@
     <None Remove="Resources\VIS_LoRAs.png" />
     <None Remove="Resources\VIS_RhinoVisualiser.png" />
     <None Remove="Resources\VIS_RhinoVisualiser_Legacy.png" />
+    <None Remove="Resources\VIS_Samplers.png" />
     <None Remove="Resources\VIS_SDInitialiser.png" />
     <None Remove="Resources\VIS_SDModels.png" />
     <None Remove="Resources\VIS_SDVisualiser copy.png" />
@@ -79,6 +80,7 @@
     <EmbeddedResource Include="Resources\VIS_LoRAs.png" />
     <EmbeddedResource Include="Resources\VIS_RhinoVisualiser.png" />
     <EmbeddedResource Include="Resources\VIS_RhinoVisualiser_Legacy.png" />
+    <EmbeddedResource Include="Resources\VIS_Samplers.png" />
     <EmbeddedResource Include="Resources\VIS_SDInitialiser.png" />
     <EmbeddedResource Include="Resources\VIS_SDModels.png" />
     <EmbeddedResource Include="Resources\VIS_SDVisualiser copy.png" />

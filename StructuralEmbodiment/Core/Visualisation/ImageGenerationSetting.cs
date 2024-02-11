@@ -24,6 +24,7 @@ namespace StructuralEmbodiment.Core.Visualisation
         public int seed;
         public int batchSize;
         public int steps;
+        public double cfgScale;
         public int width;
         public int height;
         public string sampler;
@@ -35,7 +36,7 @@ namespace StructuralEmbodiment.Core.Visualisation
             this.Client = sDWebUISetting.Client;
         }
 
-        public void InitialiseSettings(string prompt, string nprompt, int seed, string sampler, int batchSize, int steps, int width, int height)
+        public void InitialiseSettings(string prompt, string nprompt, int seed, string sampler, int batchSize, int steps,double cfgScale, int width, int height)
         {
             this.prompt = prompt;
             this.nprompt = nprompt;
@@ -43,6 +44,7 @@ namespace StructuralEmbodiment.Core.Visualisation
             this.sampler = sampler;
             this.batchSize = batchSize;
             this.steps = steps;
+            this.cfgScale = cfgScale;
             this.width = width;
             this.height = height;
             this.sampler = sampler;
@@ -54,21 +56,23 @@ namespace StructuralEmbodiment.Core.Visualisation
                 sampler_name = sampler,
                 batch_size = batchSize,
                 steps,
+                cfg_scale = cfgScale,
                 width,
                 height,
                 alwayson_scripts = new { }
             });
         }
-
+        
         public override string ToString()
         {
             
-            return "ServerURL: " + this.ServerURL + "\n" + "\n" +
+            return "Server URL: " + this.ServerURL + "\n" + "\n" +
                 "Prompt: " + this.prompt + "\n" + "\n" +
-                "NegativePrompt: " + this.nprompt + "\n" + "\n" +
-                "RandomSeed: " + this.seed + "\n" + "\n" +
+                "Negative Prompt: " + this.nprompt + "\n" + "\n" +
+                "Random Seed: " + this.seed + "\n" + "\n" +
                 "Sampler: " + this.sampler + "\n" + "\n" +
-                "BatchSize: " + this.batchSize + "\n" + "\n" +
+                "Batch Size: " + this.batchSize + "\n" + "\n" +
+                "CFG Scale " + this.cfgScale + "\n" + "\n" +
                 "Steps: " + this.steps + "\n" + "\n" +
                 "Width: " + this.width + "\n" + "\n" +
                 "Height: " + this.height + "\n" + "\n" +

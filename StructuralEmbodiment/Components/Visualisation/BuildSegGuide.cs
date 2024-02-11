@@ -47,7 +47,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddTextParameter("CN Model", "CNM", "ControlNet model", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Control Weight", "CW", "Control Weight", GH_ParamAccess.item, 1);
+            pManager.AddNumberParameter("Weight", "CW", "Control Weight", GH_ParamAccess.item, 1);
 
             pManager[0].Optional = true;
             pManager[1].Optional = true;
@@ -59,7 +59,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddGenericParameter("Seg Guide", "SegG", "Guides for image Generation", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Guiding Image", "GImg", "Guiding image", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Image", "GImg", "Guiding image", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             string cNModel = "control_seg-fp16";
             bool s1 = DA.GetData("CN Model", ref cNModel);
             double controlWeight = 1;
-            bool s2 = DA.GetData("Control Weight", ref controlWeight);
+            bool s2 = DA.GetData("Weight", ref controlWeight);
 
             if (buildDepthGuidePressed)
             {
@@ -85,7 +85,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 var segSetting = new Core.Visualisation.ControlNetSetting(capture);
                 segSetting.SetSegGuide(cNModel,controlWeight);
                 DA.SetData("Seg Guide", segSetting);
-                DA.SetData("Guiding Image", capture);
+                DA.SetData("Image", capture);
                 buildDepthGuidePressed = false;
                 this.Message = "Seg Guide Generated ✓";
             }

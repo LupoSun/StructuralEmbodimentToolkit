@@ -37,7 +37,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddTextParameter("CN Model", "CNM", "ControlNet model", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Control Weight", "CW", "Control Weight", GH_ParamAccess.item, 1);
+            pManager.AddNumberParameter("Weight", "CW", "Control Weight", GH_ParamAccess.item, 1);
 
             pManager[0].Optional = true;
             pManager[1].Optional = true;
@@ -49,7 +49,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddGenericParameter("Depth Guide", "DptG", "Guides for image Generation", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Guiding Image", "GImg", "Guiding image", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Image", "GImg", "Guiding image", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             string cNModel = "depth";
             bool s1 = DA.GetData("CN Model", ref cNModel);
             double controlWeight = 1;
-            bool s2 = DA.GetData("Control Weight", ref controlWeight);
+            bool s2 = DA.GetData("Weight", ref controlWeight);
 
             if (buildDepthGuidePressed)
             {
@@ -73,7 +73,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 var depthSetting = new Core.Visualisation.ControlNetSetting(capture);
                 depthSetting.SetDepthGuide(cNModel,controlWeight);
                 DA.SetData("Depth Guide", depthSetting);
-                DA.SetData("Guiding Image", capture);
+                DA.SetData("Image", capture);
                 buildDepthGuidePressed = false;
                 this.Message = "Depth Guide Generated ✓";
             }

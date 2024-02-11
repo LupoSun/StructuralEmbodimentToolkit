@@ -80,7 +80,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         private class SDInitialiserWorker : WorkerInstance
         {
             SDWebUISetting SDWebUISetting;
-            GH_Component OWner;
+            GH_Component Owner;
             public string SDLocation { get; set; }
 
             public string UserURL { get; set; }
@@ -89,15 +89,15 @@ namespace StructuralEmbodiment.Components.Visualisation
 
             public SDInitialiserWorker(GH_Component owner, SDWebUISetting sDWebUISetting) : base(null)
             {
-                this.OWner = owner;
+                this.Owner = owner;
                 this.SDWebUISetting = sDWebUISetting;
             }
 
-            public override WorkerInstance Duplicate() => new SDInitialiserWorker(OWner, SDWebUISetting);
+            public override WorkerInstance Duplicate() => new SDInitialiserWorker(Owner, SDWebUISetting);
 
             public override void DoWork(Action<string, double> ReportProgress, Action Done)
             {
-                var owner = this.OWner as AIInitialiser;
+                var owner = this.Owner as AIInitialiser;
 
                 // Check if the operation has been cancelled
                 if (CancellationToken.IsCancellationRequested)
@@ -115,6 +115,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 else if (owner.refreshStatusPressed)
                 {
                     SDWebUISetting.Refresh();
+                    SDWebUISetting.ReloadValueLists();
                     owner.refreshStatusPressed = false;
                     Done();
                 }

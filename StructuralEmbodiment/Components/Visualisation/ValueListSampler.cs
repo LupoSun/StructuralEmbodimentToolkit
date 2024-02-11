@@ -6,19 +6,19 @@ using System.Collections.Generic;
 
 namespace StructuralEmbodiment.Components.Visualisation
 {
-    public class ValueListSDModel : Grasshopper.Kernel.Special.GH_ValueList
+    public class ValueListSampler : Grasshopper.Kernel.Special.GH_ValueList
     {
         public new List<GH_ValueListItem> ListItems;
         /// <summary>
-        /// Initializes a new instance of the ValueListSDModel class.
+        /// Initializes a new instance of the ValueListSemantic class.
         /// </summary>
-        public ValueListSDModel()
+        public ValueListSampler()
           : base()
         {
             this.ListMode = GH_ValueListMode.DropDown;
-            this.Description = "List of the available StableDiffusion models";
-            this.Name = "StableDiffusion Models";
-            this.NickName = "SDM";
+            this.Description = "List of the available samplers";
+            this.Name = "Samplers";
+            this.NickName = "SP";
             this.Category = "Structural Embodiment";
             this.SubCategory = "Visualisation";
 
@@ -27,9 +27,9 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
 
                 base.ListItems.Clear();
-                foreach (var sdmodel in sDWebUISetting.SDModels)
+                foreach (var sampler in sDWebUISetting.Samplers)
                 {
-                    var item = new GH_ValueListItem(sdmodel, "\"" + sdmodel + "\"");
+                    var item = new GH_ValueListItem(sampler, "\"" + sampler + "\"");
                     //item.Selected = colour.StartsWith("sky");
                     base.ListItems.Add(item);
                 }
@@ -39,6 +39,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 base.ListItems.Clear();
                 base.ListItems.Add(new GH_ValueListItem("Not Initialised, Use AI Initialiser Component", "0"));
             }
+            
         }
 
         public override void ExpireSolution(bool recompute)
@@ -48,9 +49,9 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
 
                 base.ListItems.Clear();
-                foreach (var sdmodel in sDWebUISetting.SDModels)
+                foreach (var sampler in sDWebUISetting.Samplers)
                 {
-                    var item = new GH_ValueListItem(sdmodel, "\"" + sdmodel + "\"");
+                    var item = new GH_ValueListItem(sampler, "\"" + sampler + "\"");
                     //item.Selected = colour.StartsWith("sky");
                     base.ListItems.Add(item);
                 }
@@ -67,7 +68,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 //You can add image files to your project resources and access them like this:
                 // return Resources.IconForThisComponent;
-                return Properties.Resources.VIS_SDModels;
+                return Properties.Resources.VIS_Samplers;
             }
         }
         public override GH_Exposure Exposure
@@ -80,7 +81,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("40D504E5-7BCD-4100-8355-22253145A869"); }
+            get { return new Guid("429BB50F-0FF8-4962-8F6A-B398E47A1F2A"); }
         }
     }
 }

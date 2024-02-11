@@ -183,7 +183,17 @@ namespace StructuralEmbodiment.Components.Visualisation
             
         }
 
-
+        public override void ExpireSolution(bool recompute)
+        {
+            base.ListItems.Clear();
+            foreach (var colour in this.colours)
+            {
+                var item = new GH_ValueListItem(colour, "\"" + colour + "\"");
+                item.Selected = colour.StartsWith("sky");
+                base.ListItems.Add(item);
+            }
+            base.ExpireSolution(recompute);
+        }
 
         /// <summary>
         /// Provides an Icon for the component.
