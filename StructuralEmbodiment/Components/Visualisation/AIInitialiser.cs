@@ -1,24 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Parameters;
-using Grasshopper.Kernel.Data;
-using Grasshopper.GUI;
+﻿using Grasshopper.GUI;
 using Grasshopper.GUI.Canvas;
-
-using Rhino.Geometry;
-using Rhino.Display;
-using Rhino;
-using Grasshopper.Kernel.Types;
-
-using StructuralEmbodiment.Core.Visualisation;
+using Grasshopper.Kernel;
 using StructuralEmbodiment.Core.GrasshopperAsyncComponent;
-
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Threading.Tasks;
-using System.Drawing;
+using StructuralEmbodiment.Core.Visualisation;
+using System;
+using System.Collections.Generic;
 
 namespace StructuralEmbodiment.Components.Visualisation
 {
@@ -48,7 +34,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             pManager.AddTextParameter("User URL", "CA", "Customised Adress to access the api. By default http://127.0.0.1:7860", GH_ParamAccess.item);
             pManager.AddTextParameter("Additional Arguments", "AA", "Additional Arguments for the WebUI, refer to https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings#all-command-line-arguments", GH_ParamAccess.list);
 
-            pManager[0].Optional=true;
+            pManager[0].Optional = true;
             pManager[1].Optional = true;
             pManager[2].Optional = true;
 
@@ -101,11 +87,13 @@ namespace StructuralEmbodiment.Components.Visualisation
             public List<string> AdditionalArguments { get; set; }
 
 
-            public SDInitialiserWorker(GH_Component owner, SDWebUISetting sDWebUISetting) : base(null) {
+            public SDInitialiserWorker(GH_Component owner, SDWebUISetting sDWebUISetting) : base(null)
+            {
                 this.OWner = owner;
-                this.SDWebUISetting = sDWebUISetting; }
+                this.SDWebUISetting = sDWebUISetting;
+            }
 
-            public override WorkerInstance Duplicate() => new SDInitialiserWorker(OWner,SDWebUISetting);
+            public override WorkerInstance Duplicate() => new SDInitialiserWorker(OWner, SDWebUISetting);
 
             public override void DoWork(Action<string, double> ReportProgress, Action Done)
             {
@@ -131,7 +119,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                     Done();
                 }
 
-                
+
                 owner.Message = "Not Initialised";
             }
             public override void SetData(IGH_DataAccess DA)
@@ -172,19 +160,25 @@ namespace StructuralEmbodiment.Components.Visualisation
         protected override void Layout()
         {
             base.Layout();
-
+            var buttonWidth = 120;
+            var bezel = 5;
             System.Drawing.Rectangle rec0 = GH_Convert.ToRectangle(this.Bounds);
-            rec0.Height += (22 * 2 + 8);
+            rec0.Height += (22 * 2 + 8+bezel);
             System.Drawing.Rectangle rec1 = rec0;
             System.Drawing.Rectangle rec2 = rec0;
-            rec1.Y = rec1.Bottom - 44 - 8;
+            rec1.Y = rec1.Bottom - 44 - 8-bezel;
             rec1.Height = 22;
+            rec1.Width = buttonWidth;
+            var x = rec0.Right - rec0.Width / 2 - rec1.Width / 2;
+            rec1.X = x;
             rec1.Inflate(-2, -2);
             Bounds = rec0;
             ButtonBounds = rec1;
 
-            rec2.Y = rec2.Bottom - 22 - 8;
-            rec2.Height = 22 +8;
+            rec2.Y = rec2.Bottom - 22 - 8-bezel;
+            rec2.Height = 22 + 8;
+            rec2.Width = buttonWidth;
+            rec2.X = x;
             rec2.Inflate(-2, -2);
             ButtonBounds2 = rec2;
 
@@ -214,7 +208,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 var owner = this.Owner as AIInitialiser;
                 if (rec.Contains(e.CanvasLocation))
                 {
-                    
+
                     if (owner != null)
                     {
                         owner.refreshStatusPressed = true;
@@ -226,7 +220,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 }
                 else if (rec2.Contains(e.CanvasLocation))
                 {
-                        owner.startWebUIPressed = true;
+                    owner.startWebUIPressed = true;
                     if (owner != null)
                     {
                         owner.startWebUIPressed = true;

@@ -46,7 +46,11 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
+            pManager.AddTextParameter("CN Model", "CNM", "ControlNet model", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Control Weight", "CW", "Control Weight", GH_ParamAccess.item, 1);
 
+            pManager[0].Optional = true;
+            pManager[1].Optional = true;
         }
 
         /// <summary>
@@ -54,7 +58,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Line Guide", "SegG", "Guides for image Generation", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Line Guide", "LG", "Guides for image Generation", GH_ParamAccess.item);
             pManager.AddGenericParameter("Guiding Image", "GImg", "Guiding image", GH_ParamAccess.item);
         }
 
@@ -70,14 +74,20 @@ namespace StructuralEmbodiment.Components.Visualisation
             if (existingMode != null) this.Message = "Line Display Mode ✓";
             else this.Message = "Please initialise the\nLine Display Mode";
 
+            string cNModel = "control_mlsd-fp16 [e3705cfa]";
+            bool s1 = DA.GetData("CN Model", ref cNModel);
+            double controlWeight = 1;
+            bool s2 = DA.GetData("Control Weight", ref controlWeight);
+
             if (buildLineGuidePressed)
             {
                 var capture = Core.Util.CaptureView();
                 var lineSetting = new Core.Visualisation.ControlNetSetting(capture);
-                lineSetting.SetCanny();
+                lineSetting.SetLineGuide(cNModel,controlWeight);
                 DA.SetData("Line Guide", lineSetting);
                 DA.SetData("Guiding Image", capture);
                 buildLineGuidePressed = false;
+                this.Message = "Line Guide Generated ✓";
             }
 
         }
@@ -136,25 +146,34 @@ namespace StructuralEmbodiment.Components.Visualisation
         protected override void Layout()
         {
             base.Layout();
+            var buttonWidth = 120;
+            var bezel = 5;
 
             System.Drawing.Rectangle rec0 = GH_Convert.ToRectangle(this.Bounds);
-            rec0.Height += (22 * 3 + 8);
+            rec0.Height += (22 * 3 + 8+bezel);
             System.Drawing.Rectangle rec1 = rec0;
             System.Drawing.Rectangle rec2 = rec0;
             System.Drawing.Rectangle rec3 = rec0;
-            rec1.Y = rec1.Bottom - 66 - 8;
+            rec1.Y = rec1.Bottom - 66 - 8 - bezel;
             rec1.Height = 22;
+            rec1.Width = buttonWidth;
+            var x = rec0.Right - rec0.Width / 2 - rec1.Width / 2;
+            rec1.X = x;
             rec1.Inflate(-2, -2);
             Bounds = rec0;
             ButtonBounds = rec1;
 
-            rec2.Y = rec2.Bottom - 44 - 8;
+            rec2.Y = rec2.Bottom - 44 - 8 - bezel;
             rec2.Height = 22;
+            rec2.Width = buttonWidth;
+            rec2.X = x;
             rec2.Inflate(-2, -2);
             ButtonBounds2 = rec2;
 
-            rec3.Y = rec3.Bottom - 22 - 8;
+            rec3.Y = rec3.Bottom - 22 - 8-bezel;
             rec3.Height = 22 + 8;
+            rec3.Width = buttonWidth;
+            rec3.X = x;
             rec3.Inflate(-2, -2);
             ButtonBounds3 = rec3;
         }

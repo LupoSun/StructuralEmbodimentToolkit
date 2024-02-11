@@ -11,13 +11,13 @@ namespace StructuralEmbodiment.Core.Visualisation
 {
     internal class ImageGenerationSetting
     {
-        public string ServerUrl { get; set; }
+        public string ServerURL { get; set; }
         public HttpClient Client { get; set; }
         public JObject Settings { get; set; }
 
-        public List<string> controlNetModules;
-        public List<string> controlNetModels;
-        public List<string> sdModels;
+        //public List<string> controlNetModules;
+        //public List<string> controlNetModels;
+        //public List<string> sdModels;
 
         public string prompt;
         public string nprompt;
@@ -29,10 +29,10 @@ namespace StructuralEmbodiment.Core.Visualisation
         public string sampler;
 
 
-        private ImageGenerationSetting(string url)
+        public ImageGenerationSetting(SDWebUISetting sDWebUISetting)
         {
-            this.ServerUrl = url;
-            Client = new HttpClient();
+            this.ServerURL = sDWebUISetting.ServerURL;
+            this.Client = sDWebUISetting.Client;
         }
 
         public void InitialiseSettings(string prompt, string nprompt, int seed, string sampler, int batchSize, int steps, int width, int height)
@@ -60,35 +60,10 @@ namespace StructuralEmbodiment.Core.Visualisation
             });
         }
 
-        public async Task<ImageGenerationSetting> InitialiseAsyncAttribute()
-        {
-            try
-            {
-                JObject decodedCNModules = (JObject)await Util.GetInfo(ServerUrl, "/controlnet/module_list?alias_names=false", Client);
-                controlNetModules = decodedCNModules["module_list"].ToObject<List<string>>();
-                JObject decodedCNModels = (JObject)await Util.GetInfo(ServerUrl, "/controlnet/model_list?update=true", Client);
-                controlNetModels = decodedCNModels["model_list"].ToObject<List<string>>();
-                JArray decodedSDModels = (JArray)await Util.GetInfo(ServerUrl, "/sdapi/v1/sd-models", Client);
-                sdModels = Util.JArryEntryToList(decodedSDModels, "model_name");
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e + "Failed to fatch data from the given server url");
-            }
-              
-            return this;
-        }
-
-        public static async Task<ImageGenerationSetting> CreateImageSettingsObject(string url)
-        {
-            var imageSettingsObject = new ImageGenerationSetting(url);
-            return await imageSettingsObject.InitialiseAsyncAttribute();
-        }
-
         public override string ToString()
         {
             
-            return "ServerURL: " + this.ServerUrl + "\n" + "\n" +
+            return "ServerURL: " + this.ServerURL + "\n" + "\n" +
                 "Prompt: " + this.prompt + "\n" + "\n" +
                 "NegativePrompt: " + this.nprompt + "\n" + "\n" +
                 "RandomSeed: " + this.seed + "\n" + "\n" +
@@ -97,9 +72,9 @@ namespace StructuralEmbodiment.Core.Visualisation
                 "Steps: " + this.steps + "\n" + "\n" +
                 "Width: " + this.width + "\n" + "\n" +
                 "Height: " + this.height + "\n" + "\n" +
-                "ControlNetModules: " +" \n "+ String.Join("\n", this.controlNetModules) + "\n" + "\n" +
-                "ControlNetModels: " + "\n" + String.Join("\n", this.controlNetModels) + "\n" + "\n" +
-                "SDModels: " + "\n" + String.Join("\n", this.sdModels) + "\n" + "\n" +
+                //"ControlNetModules: " +" \n "+ String.Join("\n", this.controlNetModules) + "\n" + "\n" +
+                //"ControlNetModels: " + "\n" + String.Join("\n", this.controlNetModels) + "\n" + "\n" +
+                //"SDModels: " + "\n" + String.Join("\n", this.sdModels) + "\n" + "\n" +
                 "Payload" + "\n" + this.Settings.ToString();
             
         }

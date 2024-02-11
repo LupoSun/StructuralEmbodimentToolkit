@@ -40,7 +40,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             pManager.AddIntegerParameter("Steps", "S", "Number of sampling steps", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Width", "W", "Pixel width of the image", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Height", "H", "Pixel height of the image", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Guides", "G","Guidances for generation", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Guides", "G","Guidances for generation", GH_ParamAccess.list);
             
             pManager[1].Optional = true;
             pManager[2].Optional = true;
@@ -121,7 +121,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             public int Steps { get; set; }
             public int Width { get; set; }
             public int Height { get; set; }
-            public ControlNetSetting Guides { get; set; }
+            public List<ControlNetSetting> Guides { get; set; }
             
 
 
@@ -142,22 +142,13 @@ namespace StructuralEmbodiment.Components.Visualisation
                 }
                 try
                 {
-                    Task<ImageGenerationSetting> imgSettingsTask = ImageGenerationSetting.CreateImageSettingsObject(url);
-                    ImageGenerationSetting imgSettings = imgSettingsTask.Result;
-                    imgSettings.InitialiseSettings(Prompt, NegativePrompt, RandomSeed, Sampler, BatchSize, Steps, Width, Height);
-                    this.ImgGenSettings = imgSettings;
-                    if (this.Guides != null)
+                    this.ImgGenSettings = new ImageGenerationSetting(SDWebUISetting.Instance);
+                    this.ImgGenSettings.InitialiseSettings(this.Prompt, this.NegativePrompt, this.RandomSeed, this.Sampler, this.BatchSize, this.Steps, this.Width, this.Height);
+                    foreach (var guide in this.Guides)
                     {
-                        if (this.Guides.CannySettings != null) { 
-                            this.ImgGenSettings.Settings = Core.Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.CannySettings);
-                        }
-                        if (this.Guides.DepthMapSettings != null)
+                        if (guide.Settings != null)
                         {
-                            this.ImgGenSettings.Settings = Core.Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.DepthMapSettings);
-                        }
-                        if (this.Guides.Settings != null)
-                        {
-                            this.ImgGenSettings.Settings = Core.Util.AddControlNet(this.ImgGenSettings.Settings, this.Guides.Settings);
+                            this.ImgGenSettings.Settings = Core.Util.AddControlNet(this.ImgGenSettings.Settings, guide.Settings);
                         }
                     }
                 } catch (Exception e)
@@ -191,8 +182,8 @@ namespace StructuralEmbodiment.Components.Visualisation
                 DA.GetData("Width", ref _width);
                 int _height = 512;
                 DA.GetData("Height", ref _height);
-                ControlNetSetting _guides = null;
-                DA.GetData("Guides", ref _guides);
+                List<ControlNetSetting> _guides = new List<ControlNetSetting>();
+                DA.GetDataList("Guides", _guides);
 
                 this.Prompt = _prompt;
                 this.NegativePrompt = _negPrompt;
@@ -203,10 +194,6 @@ namespace StructuralEmbodiment.Components.Visualisation
                 this.Width = _width;
                 this.Height = _height;
                 this.Guides = _guides;
-
-
-
-
 
             }
 

@@ -5,9 +5,9 @@ using System;
 
 namespace StructuralEmbodiment.Components.Visualisation
 {
-    public class BuildDepthGuide : GH_Component
+    public class BuildGenericGuide : GH_Component
     {
-        public bool buildDepthGuidePressed = false;
+        public bool builGuidePressed = false;
 
         #region Methods of GH_Component interface
 
@@ -18,16 +18,16 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// Subcategory the panel. If you use non-existing tab or panel names, 
         /// new tabs/panels will automatically be created.
         /// </summary>
-        public BuildDepthGuide()
-            : base("Build Depth Guide", "DptG",
-                "Building the depth guide for the image generation",
+        public BuildGenericGuide()
+            : base("Build Generic Guide", "GG",
+                "Building the genric guide for the image generation",
               "Structural Embodiment", "Visualisation")
         {
         }
 
         public override void CreateAttributes()
         {
-            base.m_attributes = new BuildDepthGuide_ButtonAttributes(this);
+            base.m_attributes = new BuildGenericGuide_ButtonAttributes(this);
 
         }
 
@@ -36,11 +36,12 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("CN Model", "CNM", "ControlNet model", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Control Weight", "CW", "Control Weight", GH_ParamAccess.item, 1);
+            pManager.AddTextParameter("• Preprocessor", "• PP", "Preprocessor for the guiding image", GH_ParamAccess.item);
+            pManager.AddTextParameter("• CN Model", "CNM", "ControlNet model", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Control Weight", "CW", "Control Weight", GH_ParamAccess.item,1);
 
-            pManager[0].Optional = true;
-            pManager[1].Optional = true;
+            pManager[2].Optional = true;
+
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Depth Guide", "DptG", "Guides for image Generation", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Guide", "G", "Guides for image Generation", GH_ParamAccess.item);
             pManager.AddGenericParameter("Guiding Image", "GImg", "Guiding image", GH_ParamAccess.item);
         }
 
@@ -61,21 +62,24 @@ namespace StructuralEmbodiment.Components.Visualisation
         {
             this.Message = "Ready to Capture ✓";
 
-            string cNModel = "depth";
-            bool s1 = DA.GetData("CN Model", ref cNModel);
-            double controlWeight = 1;
-            bool s2 = DA.GetData("Control Weight", ref controlWeight);
-
-            if (buildDepthGuidePressed)
+            if (builGuidePressed)
             {
-                var capture = Core.Util.CaptureDepthView();
-
-                var depthSetting = new Core.Visualisation.ControlNetSetting(capture);
-                depthSetting.SetDepthGuide(cNModel,controlWeight);
-                DA.SetData("Depth Guide", depthSetting);
-                DA.SetData("Guiding Image", capture);
-                buildDepthGuidePressed = false;
-                this.Message = "Depth Guide Generated ✓";
+                string preprocessor = "";
+                bool s1 = DA.GetData("• Preprocessor", ref preprocessor);
+                string cNModel = "";
+                bool s2 = DA.GetData("• CN Model", ref cNModel);
+                double controlWeight = 1;
+                DA.GetData("Control Weight", ref controlWeight);
+                if (s1 && s2)
+                {
+                    var capture = Core.Util.CaptureView();
+                    var genericSetting = new Core.Visualisation.ControlNetSetting(capture);
+                    genericSetting.SetGenericGuide(preprocessor,cNModel,controlWeight);
+                    DA.SetData("Guide", genericSetting);
+                    DA.SetData("Guiding Image", capture);
+                    builGuidePressed = false;
+                    this.Message = "Guide Generated ✓";
+                }else this.Message = "Please provide the\nPreprocessor and CN Model";
             }
 
         }
@@ -91,7 +95,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 // You can add image files to your project resources and access them like this:
                 //return Resources.IconForThisComponent;
-                return Properties.Resources.VIS_BuildDepthGuide;
+                return Properties.Resources.VIS_BuildGenericGuide;
             }
         }
 
@@ -102,7 +106,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("49112463-E60B-4B3B-92A2-3D1EB916A007"); }
+            get { return new Guid("194FE162-F4AA-465C-8288-F6F8A7C27E59"); }
         }
         public override GH_Exposure Exposure
         {
@@ -117,11 +121,11 @@ namespace StructuralEmbodiment.Components.Visualisation
 
     #region GH_ComponentAttributes interface
 
-    public class BuildDepthGuide_ButtonAttributes : Grasshopper.Kernel.Attributes.GH_ComponentAttributes
+    public class BuildGenericGuide_ButtonAttributes : Grasshopper.Kernel.Attributes.GH_ComponentAttributes
     {
         GH_Component thisowner = null;
 
-        public BuildDepthGuide_ButtonAttributes(GH_Component owner) : base(owner)
+        public BuildGenericGuide_ButtonAttributes(GH_Component owner) : base(owner)
         {
             thisowner = owner;
 
@@ -136,7 +140,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             System.Drawing.Rectangle rec0 = GH_Convert.ToRectangle(this.Bounds);
             rec0.Height += (22 * 1 + 8+bezel);
             System.Drawing.Rectangle rec1 = rec0;
-            rec1.Y = rec1.Bottom - 22 - 8-bezel;
+            rec1.Y = rec1.Bottom - 22 - 8 - bezel;
             rec1.Height = 22 + 8;
             rec1.Width = buttonWidth;
             var x = rec0.Right - rec0.Width / 2 - rec1.Width / 2;
@@ -155,7 +159,7 @@ namespace StructuralEmbodiment.Components.Visualisation
 
             if (channel == GH_CanvasChannel.Objects)
             {
-                GH_Capsule button = GH_Capsule.CreateTextCapsule(ButtonBounds, ButtonBounds, GH_Palette.Pink, "Build Depth Guide", new int[] { 7, 7, 0, 7 }, 4);
+                GH_Capsule button = GH_Capsule.CreateTextCapsule(ButtonBounds, ButtonBounds, GH_Palette.Pink, "Build Generic Guide", new int[] { 7, 7, 0, 7 }, 4);
                 button.Render(graphics, Selected, Owner.Locked, false);
 
             }
@@ -167,10 +171,10 @@ namespace StructuralEmbodiment.Components.Visualisation
                 System.Drawing.RectangleF rec = ButtonBounds;
                 if (rec.Contains(e.CanvasLocation))
                 {
-                    var owner = this.Owner as BuildDepthGuide;
+                    var owner = this.Owner as BuildGenericGuide;
                     if (owner != null)
                     {
-                        owner.buildDepthGuidePressed = true;
+                        owner.builGuidePressed = true;
                         owner.ExpireSolution(true);
                     }
 

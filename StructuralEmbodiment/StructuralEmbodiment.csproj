@@ -28,6 +28,7 @@
     <None Remove="Resources\SE_Tab.png" />
     <None Remove="Resources\Test.png" />
     <None Remove="Resources\VIS_BuildDepthGuide.png" />
+    <None Remove="Resources\VIS_BuildGenericGuide.png" />
     <None Remove="Resources\VIS_BuildGuidance.png" />
     <None Remove="Resources\VIS_BuildImageSettings.png" />
     <None Remove="Resources\VIS_BuildImageSettings_Legacy.png" />
@@ -66,6 +67,7 @@
     <EmbeddedResource Include="Resources\SE_Seg.ini" />
     <EmbeddedResource Include="Resources\SE_Tab.png" />
     <EmbeddedResource Include="Resources\VIS_BuildDepthGuide.png" />
+    <EmbeddedResource Include="Resources\VIS_BuildGenericGuide.png" />
     <EmbeddedResource Include="Resources\VIS_BuildGuidance.png" />
     <EmbeddedResource Include="Resources\VIS_BuildImageSettings.png" />
     <EmbeddedResource Include="Resources\VIS_BuildImageSettings_Legacy.png" />

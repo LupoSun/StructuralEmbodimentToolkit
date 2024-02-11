@@ -10,14 +10,18 @@ namespace StructuralEmbodiment.Core.Visualisation
 {
     public class ControlNetSetting
     {
+        //Obsolete
         public Bitmap CannySourceImage { get; set; }
         public Bitmap DepthMapSourceImage { get; set; }
+
+
         public Bitmap SourceImage { get; set; }
         public JObject CannySettings { get; set; }
         public JObject DepthMapSettings { get; set; }
         public JObject Settings { get; set; }
 
 
+        //Obsolete
         public ControlNetSetting()
         {
         }
@@ -26,14 +30,14 @@ namespace StructuralEmbodiment.Core.Visualisation
             this.SourceImage = sourceImage;
         }
 
-        public void SetCanny(int width= -1, int height = -1) {
+        public void SetLineGuide(string lineModel, double cNWeight = 1, int width= -1, int height = -1) {
             string encodedImage = Util.ReadImage(new Bitmap(this.SourceImage));
             this.Settings = JObject.FromObject(new
             {
                 enabled = true,
-                module = "canny",
-                model = "canny",
-                weight = 0.75,
+                //module = "canny",
+                model = lineModel,
+                weight = cNWeight,
                 image = encodedImage,
                 resize_mode = 1,
                 lowvram = false,
@@ -46,15 +50,15 @@ namespace StructuralEmbodiment.Core.Visualisation
                 pixel_perfect = false
             });
         }
-        public void SetDepthMap(int width = -1, int height = -1) { 
+        public void SetDepthGuide(string depthModel, double cNWeight = 1, int width = -1, int height = -1) { 
             //this.DepthMapSourceImage = Util.CaptureDepthView(width, height);
             string encodedImage = Util.ReadImage(new Bitmap (this.SourceImage));
-            this.DepthMapSettings = JObject.FromObject(new
+            this.Settings = JObject.FromObject(new
             {
                 enabled = true,
                 //module = "depth",
-                model = "depth",
-                weight = 1,
+                model = depthModel,
+                weight = cNWeight,
                 image = encodedImage,
                 resize_mode = 1,
                 lowvram = false,
@@ -67,15 +71,36 @@ namespace StructuralEmbodiment.Core.Visualisation
                 pixel_perfect = false
             });
         }
-        public void SetSeg(int width = -1, int height = -1)
+        public void SetSegGuide(string segModel = "control_seg-fp16", double cNWeight = 1,int width = -1, int height = -1)
         {
             string encodedImage = Util.ReadImage(new Bitmap(this.SourceImage));
             this.Settings = JObject.FromObject(new
             {
                 enabled = true,
                 //module = "segmentation",
-                model = "control_seg-fp16",
-                weight = 1,
+                model = segModel,
+                weight = cNWeight,
+                image = encodedImage,
+                resize_mode = 1,
+                lowvram = false,
+                processor_res = 512,
+                threshold_a = 200,
+                threshold_b = 100,
+                guidance_start = 0.0,
+                guidance_end = 1.0,
+                control_mode = 0,
+                pixel_perfect = false
+            });
+        }
+        public void SetGenericGuide(string cNModule, string cNModel,double weight=1, int width = -1, int height = -1)
+        {
+            string encodedImage = Util.ReadImage(new Bitmap(this.SourceImage));
+            this.Settings = JObject.FromObject(new
+            {
+                enabled = true,
+                module = cNModule,
+                model = cNModel,
+                weight = weight,
                 image = encodedImage,
                 resize_mode = 1,
                 lowvram = false,
@@ -92,9 +117,10 @@ namespace StructuralEmbodiment.Core.Visualisation
         public override string ToString()
         {
             string repr = "";
-            if (this.CannySettings != null) repr += this.CannySettings.ToString();
-            if (this.DepthMapSettings != null) repr += this.DepthMapSettings.ToString();
+            //if (this.CannySettings != null) repr += this.CannySettings.ToString();
+            //if (this.DepthMapSettings != null) repr += this.DepthMapSettings.ToString();
             if (this.Settings != null) repr += this.Settings.ToString();
+            else repr += "No guide set";
             return repr;
         }
     }

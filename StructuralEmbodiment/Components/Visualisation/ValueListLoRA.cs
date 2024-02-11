@@ -38,6 +38,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "StableDiffusion WebUI not intialised, please use the SD Initialiser");
             }
+            
         }
 
 

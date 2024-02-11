@@ -140,10 +140,10 @@ namespace StructuralEmbodiment.Components.Visualisation
                 }
                 try
                 {
-                    Task<ImageGenerationSetting> imgSettingsTask = ImageGenerationSetting.CreateImageSettingsObject(url);
-                    ImageGenerationSetting imgSettings = imgSettingsTask.Result;
-                    imgSettings.InitialiseSettings(Prompt, NegativePrompt, RandomSeed, Sampler, BatchSize, Steps, Width, Height);
-                    this.ImgGenSettings = imgSettings;
+                    //Task<ImageGenerationSetting> imgSettingsTask = ImageGenerationSetting.CreateImageSettingsObject(url);
+                    //ImageGenerationSetting imgSettings = imgSettingsTask.Result;
+                    //imgSettings.InitialiseSettings(Prompt, NegativePrompt, RandomSeed, Sampler, BatchSize, Steps, Width, Height);
+                    //this.ImgGenSettings = imgSettings;
                 } catch (Exception e)
                 {
                     throw new Exception(e.Message);

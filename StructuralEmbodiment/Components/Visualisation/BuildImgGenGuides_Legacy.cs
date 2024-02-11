@@ -77,13 +77,13 @@ namespace StructuralEmbodiment.Components.Visualisation
                 */
                 if (canny)
                 {
-                    controlNetSettings.SetCanny();
-                    images.Add(controlNetSettings.CannySourceImage);
+                    //controlNetSettings.SetLineGuide();
+                    //images.Add(controlNetSettings.CannySourceImage);
                 }
                 if (depthmap)
                 {
-                    controlNetSettings.SetDepthMap();
-                    images.Add(controlNetSettings.DepthMapSourceImage);
+                    //controlNetSettings.SetDepthGuide();
+                    //images.Add(controlNetSettings.DepthMapSourceImage);
                 }
             }
 

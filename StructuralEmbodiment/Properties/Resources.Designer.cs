@@ -271,6 +271,16 @@ namespace StructuralEmbodiment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap VIS_BuildGenericGuide {
+            get {
+                object obj = ResourceManager.GetObject("VIS_BuildGenericGuide", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap VIS_BuildGuidance {
             get {
                 object obj = ResourceManager.GetObject("VIS_BuildGuidance", resourceCulture);

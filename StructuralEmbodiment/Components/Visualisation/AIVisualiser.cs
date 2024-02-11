@@ -85,12 +85,15 @@ namespace StructuralEmbodiment.Components.Visualisation
         {
             List<Bitmap> Images;
             public ImageGenerationSetting ImgGenSettings { get; set; }
-
             public ImageRequest imageRequest { get; set; }
+            public SDWebUISetting SDWebUISetting { get; set; }
             public bool Generate { get; set; }
             
 
-            public VisualiserWorker(List<Bitmap> imagePersistent): base(null) { this.Images = imagePersistent; }
+            public VisualiserWorker(List<Bitmap> imagePersistent): base(null) {
+                this.Images = imagePersistent;
+                this.SDWebUISetting = SDWebUISetting.Instance;
+            }
 
             public override WorkerInstance Duplicate() => new VisualiserWorker(Images);
 
@@ -104,11 +107,10 @@ namespace StructuralEmbodiment.Components.Visualisation
                 
                 if (Generate)
                 {
-                    imageRequest = new ImageRequest(ImgGenSettings.ServerUrl, ImgGenSettings.Settings, ImgGenSettings.Client);
+                    imageRequest = new ImageRequest(SDWebUISetting.ServerURL, ImgGenSettings.Settings, SDWebUISetting.Client);
                     Task imageRequestTask = imageRequest.GenerateImage(GenerationMode.text2img);
                     imageRequestTask.Wait();
                     this.Images.AddRange(imageRequest.Images);
-
                 }
                 
                 Done();
