@@ -39,6 +39,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             {
                 base.ListItems.Clear();
                 base.ListItems.Add(new GH_ValueListItem("Not Initialised, Use AI Initialiser Component", "0"));
+                base.ListItems.Add(new GH_ValueListItem("Select to Refresh", "1"));
             }
         }
 

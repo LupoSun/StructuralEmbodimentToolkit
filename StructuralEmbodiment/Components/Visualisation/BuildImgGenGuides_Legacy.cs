@@ -117,7 +117,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         }
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.septenary; }
+            get { return GH_Exposure.hidden; }
         }
     }
 }

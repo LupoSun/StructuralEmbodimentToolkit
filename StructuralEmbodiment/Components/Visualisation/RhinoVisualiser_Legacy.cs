@@ -93,7 +93,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                         if (m.Name.Equals(materialName, StringComparison.OrdinalIgnoreCase))
                         {
                             mat = m;
-                            layerName += "_"+materialName;
+                            layerName += "_" + materialName;
                             break;
                         }
                     }
@@ -117,40 +117,40 @@ namespace StructuralEmbodiment.Components.Visualisation
                     layerIndex = doc.Layers.Add(newLayer);
                 }
 
-                    // Get the layer
-                    var layer = doc.Layers[layerIndex];
+                // Get the layer
+                var layer = doc.Layers[layerIndex];
 
-                    // Delete all objects in the layer
-                    var objsToDelete = doc.Objects.FindByLayer(layer);
-                    foreach (var obj in objsToDelete)
-                    {
-                        doc.Objects.Delete(obj);
-                    }
+                // Delete all objects in the layer
+                var objsToDelete = doc.Objects.FindByLayer(layer);
+                foreach (var obj in objsToDelete)
+                {
+                    doc.Objects.Delete(obj);
+                }
 
-                    // Bake the breps into the layer
-                    foreach (var geo in geos)
+                // Bake the breps into the layer
+                foreach (var geo in geos)
+                {
+                    if (geo != null)
                     {
-                        if (geo != null)
+                        var attributes = new Rhino.DocObjects.ObjectAttributes
                         {
-                            var attributes = new Rhino.DocObjects.ObjectAttributes
-                            {
-                                LayerIndex = layerIndex
-                            };
+                            LayerIndex = layerIndex
+                        };
 
-                            if (geo is Brep) doc.Objects.AddBrep((Brep)geo, attributes);
-                            else if (geo is Mesh) doc.Objects.AddMesh((Mesh)geo, attributes);
-                            else if (geo is Curve) doc.Objects.AddCurve((Curve)geo, attributes);
-                            else if (geo is NurbsCurve) doc.Objects.AddCurve((NurbsCurve)geo, attributes);
-                            else if (geo is Surface) doc.Objects.AddSurface((Surface)geo, attributes);
-                            else if (geo is Extrusion) doc.Objects.AddExtrusion((Extrusion)geo, attributes);
-                            else if (geo is SubD) doc.Objects.AddSubD((SubD)geo, attributes);
+                        if (geo is Brep) doc.Objects.AddBrep((Brep)geo, attributes);
+                        else if (geo is Mesh) doc.Objects.AddMesh((Mesh)geo, attributes);
+                        else if (geo is Curve) doc.Objects.AddCurve((Curve)geo, attributes);
+                        else if (geo is NurbsCurve) doc.Objects.AddCurve((NurbsCurve)geo, attributes);
+                        else if (geo is Surface) doc.Objects.AddSurface((Surface)geo, attributes);
+                        else if (geo is Extrusion) doc.Objects.AddExtrusion((Extrusion)geo, attributes);
+                        else if (geo is SubD) doc.Objects.AddSubD((SubD)geo, attributes);
 
-                        }
                     }
+                }
 
-                    // Redraw the view to update changes
-                    doc.Views.Redraw();
-                
+                // Redraw the view to update changes
+                doc.Views.Redraw();
+
             }
         }
 
@@ -176,7 +176,7 @@ namespace StructuralEmbodiment.Components.Visualisation
         }
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.septenary; }
+            get { return GH_Exposure.hidden; }
         }
     }
 }
