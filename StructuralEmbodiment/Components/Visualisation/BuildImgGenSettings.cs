@@ -1,14 +1,11 @@
 ﻿using Grasshopper.GUI;
 using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
-using Newtonsoft.Json.Linq;
 using StructuralEmbodiment.Core.GrasshopperAsyncComponent;
 using StructuralEmbodiment.Core.Visualisation;
 using StructuralEmbodiment.Properties;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 
 
 namespace StructuralEmbodiment.Components.Visualisation
@@ -149,16 +146,21 @@ namespace StructuralEmbodiment.Components.Visualisation
                 {
                     return;
                 }
+
                 try
                 {
                     this.Prompt = Core.Util.AddLoRAsToPrompt(this.Prompt, this.LoRAs, this.LoRAMultipliers);
                     this.ImgGenSettings = new ImageGenerationSetting(SDWebUISetting.Instance);
                     this.ImgGenSettings.InitialiseSettings(this.Prompt, this.NegativePrompt, this.RandomSeed, this.Sampler, this.BatchSize, this.Steps, this.CFGScale, this.Width, this.Height);
+
                     foreach (var guide in this.Guides)
                     {
-                        if (guide.Settings != null)
+                        if (guide != null)
                         {
-                            this.ImgGenSettings.Settings = Core.Util.AddControlNet(this.ImgGenSettings.Settings, guide.Settings);
+                            if (guide.Settings != null)
+                            {
+                                this.ImgGenSettings.Settings = Core.Util.AddControlNet(this.ImgGenSettings.Settings, guide.Settings);
+                            }
                         }
                     }
                     Done();

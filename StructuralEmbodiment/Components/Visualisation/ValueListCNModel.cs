@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace StructuralEmbodiment.Components.Visualisation
 {
-    public class ValueListCNModel : Grasshopper.Kernel.Special.GH_ValueList
+    public class ValueListCNModel : Grasshopper.Kernel.Special.GH_ValueList, ISE_ValueList
     {
         public new List<GH_ValueListItem> ListItems;
 
@@ -42,8 +42,8 @@ namespace StructuralEmbodiment.Components.Visualisation
                 base.ListItems.Add(new GH_ValueListItem("Select to Refresh", "1"));
             }
         }
-
-        public override void ExpireSolution(bool recompute)
+        
+        public void Refresh()
         {
 
             var sDWebUISetting = SDWebUISetting.Instance;
@@ -58,11 +58,20 @@ namespace StructuralEmbodiment.Components.Visualisation
                     base.ListItems.Add(item);
                 }
             }
-            base.ExpireSolution(recompute);
+            base.ExpireSolution(true);
 
 
         }
+        
 
+        public override void AppendAdditionalMenuItems(System.Windows.Forms.ToolStripDropDown menu)
+        {
+            base.AppendAdditionalMenuItems(menu);
+            Menu_AppendItem(menu, "Refresh List", (s, e) =>
+            {
+                Refresh();
+            });
+        }
         /// <summary>
         /// Provides an Icon for the component.
         /// </summary>

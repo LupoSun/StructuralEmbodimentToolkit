@@ -100,14 +100,15 @@ namespace StructuralEmbodiment.Core.Visualisation
             var componentNames = new List<string> { "ControlNet Models", "ControlNet Modules", "LoRA Models", "Samplers", "StableDiffusion Models", "Segmentation Colours" };
             var ghDoc = Grasshopper.Instances.ActiveCanvas.Document; // Get the active Grasshopper document
             if (ghDoc == null) return;
-
             foreach (IGH_DocumentObject docObj in ghDoc.Objects) // Iterate over all objects in the document
             {
                 // Check if the object is a component and its name is in the list
-                if (docObj is IGH_Component component && componentNames.Contains(component.Name))
+                if (docObj is ISE_ValueList component)
                 {
+                    component.Refresh();
+                    var valueList = component as Grasshopper.Kernel.Special.GH_ValueList;
                     // Expire the solution of the component to force it to recompute
-                    component.ExpireSolution(true);
+                    Rhino.RhinoApp.WriteLine(valueList.Name + " refreshed");
                 }
             }
         }

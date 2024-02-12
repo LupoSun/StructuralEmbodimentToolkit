@@ -74,7 +74,7 @@ namespace StructuralEmbodiment.Components.Visualisation
             if (existingMode != null) this.Message = "Line Display Mode ✓";
             else this.Message = "Please initialise the\nLine Display Mode";
 
-            string cNModel = "control_mlsd-fp16 [e3705cfa]";
+            string cNModel = "control_canny-fp16 [e3fe7712]";
             bool s1 = DA.GetData("CN Model", ref cNModel);
             double controlWeight = 1;
             bool s2 = DA.GetData("Weight", ref controlWeight);

@@ -1,11 +1,13 @@
 ﻿using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
+using StructuralEmbodiment.Core.Visualisation;
 using System;
 using System.Collections.Generic;
 
+
 namespace StructuralEmbodiment.Components.Visualisation
 {
-    public class ValueListSegColour : Grasshopper.Kernel.Special.GH_ValueList
+    public class ValueListSegColour : Grasshopper.Kernel.Special.GH_ValueList, ISE_ValueList
     {
         public new List<GH_ValueListItem> ListItems;
         public string[] colours = new string[]{
@@ -183,7 +185,8 @@ namespace StructuralEmbodiment.Components.Visualisation
             
         }
 
-        public override void ExpireSolution(bool recompute)
+        
+        public void Refresh()
         {
             base.ListItems.Clear();
             foreach (var colour in this.colours)
@@ -192,7 +195,16 @@ namespace StructuralEmbodiment.Components.Visualisation
                 item.Selected = colour.StartsWith("sky");
                 base.ListItems.Add(item);
             }
-            base.ExpireSolution(recompute);
+            base.ExpireSolution(true);
+        }
+        
+        public override void AppendAdditionalMenuItems(System.Windows.Forms.ToolStripDropDown menu)
+        {
+            base.AppendAdditionalMenuItems(menu);
+            Menu_AppendItem(menu, "Refresh List", (s, e) =>
+            {
+                Refresh();
+            });
         }
 
         /// <summary>

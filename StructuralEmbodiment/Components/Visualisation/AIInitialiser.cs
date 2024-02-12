@@ -109,6 +109,7 @@ namespace StructuralEmbodiment.Components.Visualisation
                 {
                     SDWebUISetting.SetSDWebUISetting(UserURL);
                     SDWebUISetting.Initialise();
+                    SDWebUISetting.ReloadValueLists();
                     owner.startWebUIPressed = false;
                     Done();
                 }
@@ -192,7 +193,7 @@ namespace StructuralEmbodiment.Components.Visualisation
 
             if (channel == GH_CanvasChannel.Objects)
             {
-                GH_Capsule button = GH_Capsule.CreateTextCapsule(ButtonBounds, ButtonBounds, GH_Palette.White, "Refresh Status", new int[] { 7, 7, 0, 7 }, 4);
+                GH_Capsule button = GH_Capsule.CreateTextCapsule(ButtonBounds, ButtonBounds, GH_Palette.White, "Refresh", new int[] { 7, 7, 0, 7 }, 4);
                 button.Render(graphics, Selected, Owner.Locked, false);
                 GH_Capsule button2 = GH_Capsule.CreateTextCapsule(ButtonBounds2, ButtonBounds2, GH_Palette.Pink, "Initialise", new int[] { 7, 7, 0, 7 }, 4);
                 button2.Render(graphics, Selected, Owner.Locked, false);
