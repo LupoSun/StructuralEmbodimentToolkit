@@ -97,7 +97,8 @@ namespace StructuralEmbodiment.Core.Visualisation
             }
         }
         public void ReloadValueLists() {
-            var componentNames = new List<string> { "ControlNet Models", "ControlNet Modules", "LoRA Models", "Samplers", "StableDiffusion Models", "Segmentation Colours" };
+            //"Segmentation Colours" 
+            var componentNames = new List<string> { "ControlNet Models", "ControlNet Modules", "LoRA Models", "Samplers", "StableDiffusion Models"};
             var ghDoc = Grasshopper.Instances.ActiveCanvas.Document; // Get the active Grasshopper document
             if (ghDoc == null) return;
             foreach (IGH_DocumentObject docObj in ghDoc.Objects) // Iterate over all objects in the document
