@@ -7,11 +7,11 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.Formfinding;
-using StructuralEmbodiment.Core.Materialisation;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Core.Formfinding;
+using StructuralEmbodimentToolkit.Core.Materialisation;
+using StructuralEmbodimentToolkit.Properties;
 
-namespace StructuralEmbodiment.Components.Formfinding
+namespace StructuralEmbodimentToolkit.Components.Formfinding
 {
     public class BuildStructureCEM : GH_Component
     {
@@ -103,7 +103,7 @@ namespace StructuralEmbodiment.Components.Formfinding
             List<Point3d> CEMsupports = nodes.Where((item, index) => supportLabels[index]).ToList();
             List<Point3d> DeckNodes = nodes.Where((item, index) => deckNodeLabels[index]).ToList();
             List<Point3d> supports = new List<Point3d>(CEMsupports);
-            StructuralEmbodiment.Core.Util.RemoveClosestToCenter(supports);
+            StructuralEmbodimentToolkit.Core.Util.RemoveClosestToCenter(supports);
 
             //find the deck support points
             List<Point3d> deckSupports = supports.Intersect(DeckNodes).ToList();

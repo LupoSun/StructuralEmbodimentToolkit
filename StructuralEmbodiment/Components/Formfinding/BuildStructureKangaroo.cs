@@ -5,10 +5,10 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core;
-using StructuralEmbodiment.Core.Formfinding;
+using StructuralEmbodimentToolkit.Core;
+using StructuralEmbodimentToolkit.Core.Formfinding;
 
-namespace StructuralEmbodiment.Components.Formfinding
+namespace StructuralEmbodimentToolkit.Components.Formfinding
 {
     public class BuildStructureKangaroo : GH_Component
     {

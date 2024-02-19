@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core;
-using StructuralEmbodiment.Core.Visualisation;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Core;
+using StructuralEmbodimentToolkit.Core.Visualisation;
+using StructuralEmbodimentToolkit.Properties;
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class BuildImgGenGuides_Legacy : GH_Component
     {

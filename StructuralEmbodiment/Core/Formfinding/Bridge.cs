@@ -1,11 +1,11 @@
 ﻿using Rhino;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.Materialisation;
+using StructuralEmbodimentToolkit.Core.Materialisation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StructuralEmbodiment.Core.Formfinding
+namespace StructuralEmbodimentToolkit.Core.Formfinding
 {
     public class Bridge : Structure
     {

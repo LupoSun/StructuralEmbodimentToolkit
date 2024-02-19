@@ -5,10 +5,10 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.Formfinding;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Core.Formfinding;
+using StructuralEmbodimentToolkit.Properties;
 
-namespace StructuralEmbodiment.Components.Materialisation
+namespace StructuralEmbodimentToolkit.Components.Materialisation
 {
     public class ExtractStructure : GH_Component
     {

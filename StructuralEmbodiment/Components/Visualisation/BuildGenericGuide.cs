@@ -3,7 +3,7 @@ using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
 using System;
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class BuildGenericGuide : GH_Component
     {

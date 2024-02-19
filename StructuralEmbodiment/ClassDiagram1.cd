@@ -1,299 +1,292 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="StructuralEmbodiment.Core.Formfinding.Structure" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Core.Formfinding.Structure" Collapsed="true">
     <Position X="6.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAgAAAAAAAAAEAAAAhAA=</HashCode>
       <FileName>Core\Formfinding\Structure.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Core.Formfinding.Member" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Core.Formfinding.Member" Collapsed="true">
     <Position X="4.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAQgAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAIAgA=</HashCode>
       <FileName>Core\Formfinding\Structure.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Core.Formfinding.Roof" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Core.Formfinding.Roof" Collapsed="true">
     <Position X="4.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AABAAQCAAAgAAAAAAACIAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
       <FileName>Core\Formfinding\Roof.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Core.Formfinding.Bridge" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Core.Formfinding.Bridge" Collapsed="true">
     <Position X="6.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>MIAABAAQAAggAAAEAAAAAAQAAAAAggQEQAEAAAYIIkg=</HashCode>
       <FileName>Core\Formfinding\Bridge.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Core.Materialisation.House" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Core.Materialisation.House" Collapsed="true">
     <Position X="6.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAEAAgAQAAAAgAAAAEAAAAAAAAAAAAABA=</HashCode>
       <FileName>Core\Materialisation\House.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Core.Materialisation.Terrain" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Core.Materialisation.Terrain" Collapsed="true">
     <Position X="4.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAIABCAAAAIAAAEABAAAgABAAAAAAAABAAAAAAAA=</HashCode>
       <FileName>Core\Materialisation\Terrain.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Core.Visualisation.ControlNetSetting" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Core.Visualisation.ControlNetSetting" Collapsed="true">
     <Position X="6.5" Y="8.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAIAAAEAAAAAAAAQAAEACAEgAACAAABAAE=</HashCode>
       <FileName>Core\Visualisation\ControlNetSetting.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Core.Visualisation.ImageGenerationSetting" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Core.Visualisation.ImageGenerationSetting" Collapsed="true">
     <Position X="4.5" Y="7.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAQAAQAQEYAAAAAAAABAAAQQAgAAAAQAAAAQ=</HashCode>
       <FileName>Core\Visualisation\ImageGenerationSetting.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Core.Visualisation.ImageRequest" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Core.Visualisation.ImageRequest" Collapsed="true">
     <Position X="6.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAhABAAAEAAAAAAQ=</HashCode>
       <FileName>Core\Visualisation\ImageRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Core.Visualisation.SDWebUISetting" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Core.Visualisation.SDWebUISetting" Collapsed="true">
     <Position X="4.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIAAACAAAABAAQAEAAACAAAABABAAwACQAAAIAAQAAw=</HashCode>
       <FileName>Core\Visualisation\SDWebUISetting.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Core.Util" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Core.Util" Collapsed="true">
     <Position X="4.5" Y="12" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AABCIAgGQUAEFARABICAAAAAIAgGAkABAAACAAAaEMA=</HashCode>
       <FileName>Core\Util.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Formfinding.BuildStructureCEM" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Formfinding.BuildStructureCEM" Collapsed="true">
     <Position X="8.75" Y="2.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Formfinding\BuildStructureCEM.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Formfinding.BuildStructureKangaroo" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Formfinding.BuildStructureKangaroo" Collapsed="true">
     <Position X="10.75" Y="2.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAIABQAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Formfinding\BuildStructureKangaroo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Formfinding.InputRecorder" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Formfinding.InputRecorder" Collapsed="true">
     <Position X="13" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Formfinding\InputRecorder.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Formfinding.InputRecorderCSV" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Formfinding.InputRecorderCSV" Collapsed="true">
     <Position X="14.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Formfinding\InputRecorderCSV.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Formfinding.MassProducer" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Formfinding.MassProducer" Collapsed="true">
     <Position X="16.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAABAAIAAAABAAAAEAABAAAAAACAAQAAEAAAA=</HashCode>
       <FileName>Components\Formfinding\MassProducer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Materialisation.ExtractMember" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Materialisation.ExtractMember" Collapsed="true">
     <Position X="8.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAAAAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Materialisation\ExtractMember.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Materialisation.DowntownMaker" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Materialisation.DowntownMaker" Collapsed="true">
     <Position X="14" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAIAEAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Materialisation\DowntownMaker.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Materialisation.ExtractStructure" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Materialisation.ExtractStructure" Collapsed="true">
     <Position X="15.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Materialisation\ExtractStructure.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Materialisation.Materialiser" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Materialisation.Materialiser" Collapsed="true">
     <Position X="10.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Materialisation\Materialiser.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Materialisation.TerrainMaker" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Materialisation.TerrainMaker" Collapsed="true">
     <Position X="12.25" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Materialisation\TerrainMaker.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Properties.Resources" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Properties.Resources" Collapsed="true">
     <Position X="4.5" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAAIggAIAMAAAloAIEhEZAAEQAAgAAAgQAQIYABCYA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.StructuralEmbodimentComponent" Collapsed="true">
-    <Position X="6.25" Y="1" Width="2.5" />
-    <TypeIdentifier>
-      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
-      <FileName>StructuralEmbodimentComponent.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="StructuralEmbodiment.StructuralEmbodimentInfo" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.StructuralEmbodimentToolkitInfo" Collapsed="true">
     <Position X="9" Y="1" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAgAAAACAAAEAQAAAAAAAAAAAAAAAEAAAA=</HashCode>
-      <FileName>StructuralEmbodimentInfo.cs</FileName>
+      <FileName>StructuralEmbodimentToolkitInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.SE_CategoryIcon" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.SE_CategoryIcon" Collapsed="true">
     <Position X="11.5" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>StructuralEmbodimentInfo.cs</FileName>
+      <FileName>StructuralEmbodimentToolkitInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.AIInitialiser" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.AIInitialiser" Collapsed="true">
     <Position X="8.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABEAAAEBAAAAAAAAAAAAAAEAABA=</HashCode>
       <FileName>Components\Visualisation\AIInitialiser.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.SDInitialiser_ButtonAttributes" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.SDInitialiser_ButtonAttributes" Collapsed="true">
     <Position X="10.25" Y="7.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAgAAAAAAAAAAAAgAAAAAAAAIABAAAAAAAEA=</HashCode>
       <FileName>Components\Visualisation\AIInitialiser.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.AIVisualiser" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.AIVisualiser" Collapsed="true">
     <Position X="17.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAQAAAEAAAAABAAACEAAAAAAAAAAAAACAEAABA=</HashCode>
       <FileName>Components\Visualisation\AIVisualiser.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.SDVisualiser_ButtonAttributes" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.SDVisualiser_ButtonAttributes" Collapsed="true">
     <Position X="19" Y="7.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAgAAAAAAAAAAAAgAAAAAAAAIABAAAAAAAEA=</HashCode>
       <FileName>Components\Visualisation\AIVisualiser.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.BuildDepthGuide" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildDepthGuide" Collapsed="true">
     <Position X="8.75" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAABA=</HashCode>
       <FileName>Components\Visualisation\BuildDepthGuide.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.BuildDepthGuide_ButtonAttributes" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildDepthGuide_ButtonAttributes" Collapsed="true">
     <Position X="10.25" Y="8.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAgAAAAAAAAIABAAAAAAAEA=</HashCode>
       <FileName>Components\Visualisation\BuildDepthGuide.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.BuildGenericGuide" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildGenericGuide" Collapsed="true">
     <Position X="12.75" Y="7.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAgAAAAEAABA=</HashCode>
       <FileName>Components\Visualisation\BuildGenericGuide.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.BuildGenericGuide_ButtonAttributes" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildGenericGuide_ButtonAttributes" Collapsed="true">
     <Position X="14.5" Y="7.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAgAAAAAAAAIABAAAAAAAEA=</HashCode>
       <FileName>Components\Visualisation\BuildGenericGuide.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.BuildImgGenSettings" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildImgGenSettings" Collapsed="true">
     <Position X="8.75" Y="9.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABAAACEAAAAAAAAAAAAAAAEAABQ=</HashCode>
       <FileName>Components\Visualisation\BuildImgGenSettings.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.BuildImgGenSettings_ButtonAttributes" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildImgGenSettings_ButtonAttributes" Collapsed="true">
     <Position X="10.5" Y="9.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAgAAAAAAAAAgAAAAAAAAIABAAAAAAAEA=</HashCode>
       <FileName>Components\Visualisation\BuildImgGenSettings.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.BuildLineGuide" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildLineGuide" Collapsed="true">
     <Position X="13.25" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAQAAAABAAAAEAABAAAAAAAAAAAAEAABA=</HashCode>
       <FileName>Components\Visualisation\BuildLineGuide.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.BuildLineGuide_ButtonAttributes" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildLineGuide_ButtonAttributes" Collapsed="true">
     <Position X="14.75" Y="8.75" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAwAAAABAAAAAAAgAAAAAAAAIABAAAAAAAEA=</HashCode>
       <FileName>Components\Visualisation\BuildLineGuide.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.BuildSegGuide" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildSegGuide" Collapsed="true">
     <Position X="17.5" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAABA=</HashCode>
       <FileName>Components\Visualisation\BuildSegGuide.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.BuildSegGuide_ButtonAttributes" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildSegGuide_ButtonAttributes" Collapsed="true">
     <Position X="19" Y="8.75" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAwAAAABAAAAAAAgAAAAAAAAIABAAAAAAAEA=</HashCode>
       <FileName>Components\Visualisation\BuildSegGuide.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.RhinoVisualiser" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.RhinoVisualiser" Collapsed="true">
     <Position X="13.5" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAIAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Visualisation\RhinoVisualiser.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.SetCamera" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.SetCamera" Collapsed="true">
     <Position X="15.25" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Visualisation\SetCamera.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.ViewRandomiser" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.ViewRandomiser" Collapsed="true">
     <Position X="17" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIEBAAAAgAAAAAAABAAAAEAABAABAAAAAAAAAEAAAA=</HashCode>
       <FileName>Components\Visualisation\ViewRandomiser.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.ValueListCNModel" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.ValueListCNModel" Collapsed="true">
     <Position X="8.75" Y="10.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAABAAAAAARAAACAAAAAAAAAAAAAAAAEAAAA=</HashCode>
@@ -301,7 +294,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.ValueListCNModule" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.ValueListCNModule" Collapsed="true">
     <Position X="10.75" Y="10.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAABAAAAAARAAACAAAAAAAAAAAAAAAAEAAAA=</HashCode>
@@ -309,7 +302,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.ValueListLoRA" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.ValueListLoRA" Collapsed="true">
     <Position X="12.75" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAABAAAAAARAAACAAAAAAAAAAAAAAAAEAAAA=</HashCode>
@@ -317,7 +310,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.ValueListSampler" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.ValueListSampler" Collapsed="true">
     <Position X="14.5" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAABAAAAAARAAACAAAAAAAAAAAAAAAAEAAAA=</HashCode>
@@ -325,7 +318,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.ValueListSDModel" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.ValueListSDModel" Collapsed="true">
     <Position X="16.25" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAABAAAAAARAAACAAAAAAAAAAAAAAAAEAAAA=</HashCode>
@@ -333,7 +326,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="StructuralEmbodiment.Components.Visualisation.ValueListSegColour" Collapsed="true">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.ValueListSegColour" Collapsed="true">
     <Position X="18" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAABAAAAAARAAACAAIAAAAAAAAAAAAAEAAAA=</HashCode>
@@ -341,42 +334,42 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Interface Name="StructuralEmbodiment.Core.Visualisation.ISE_ValueList" Collapsed="true">
+  <Interface Name="StructuralEmbodimentToolkit.Core.Visualisation.ISE_ValueList" Collapsed="true">
     <Position X="6.75" Y="10.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\Visualisation\ISE_ValueList.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Enum Name="StructuralEmbodiment.Core.Formfinding.MemberType" Collapsed="true">
+  <Enum Name="StructuralEmbodimentToolkit.Core.Formfinding.MemberType" Collapsed="true">
     <Position X="4.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAEAAAgAAAAAAAQAAIAAAAAIAAAABAAAAAAAA=</HashCode>
       <FileName>Core\Formfinding\MemberType.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="StructuralEmbodiment.Core.Formfinding.EdgeType" Collapsed="true">
+  <Enum Name="StructuralEmbodimentToolkit.Core.Formfinding.EdgeType" Collapsed="true">
     <Position X="6.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAAAAAAAAAAAAAgAAEAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\Formfinding\EdgeType.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="StructuralEmbodiment.Core.Materialisation.HouseType" Collapsed="true">
+  <Enum Name="StructuralEmbodimentToolkit.Core.Materialisation.HouseType" Collapsed="true">
     <Position X="4.5" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAA=</HashCode>
       <FileName>Core\Materialisation\HouseType.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="StructuralEmbodiment.Core.Materialisation.TerrainType" Collapsed="true">
+  <Enum Name="StructuralEmbodimentToolkit.Core.Materialisation.TerrainType" Collapsed="true">
     <Position X="6.75" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAAAAAAAAAAACAAAAAAAQAAAAAAAAAAA=</HashCode>
       <FileName>Core\Materialisation\TerrainType.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="StructuralEmbodiment.Core.Visualisation.GenerationMode" Collapsed="true">
+  <Enum Name="StructuralEmbodimentToolkit.Core.Visualisation.GenerationMode" Collapsed="true">
     <Position X="4.5" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAAAA=</HashCode>

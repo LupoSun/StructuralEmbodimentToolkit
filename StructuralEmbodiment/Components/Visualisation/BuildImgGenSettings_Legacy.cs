@@ -7,12 +7,12 @@ using Grasshopper.GUI;
 using Grasshopper.Kernel;
 using Newtonsoft.Json.Linq;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.GrasshopperAsyncComponent;
-using StructuralEmbodiment.Core.Visualisation;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Core.GrasshopperAsyncComponent;
+using StructuralEmbodimentToolkit.Core.Visualisation;
+using StructuralEmbodimentToolkit.Properties;
 
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class BuildImgGenSettings_Legacy : GH_AsyncComponent
     {

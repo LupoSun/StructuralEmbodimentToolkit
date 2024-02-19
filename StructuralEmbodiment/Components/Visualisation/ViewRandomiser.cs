@@ -1,13 +1,13 @@
 ﻿using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.Formfinding;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Core.Formfinding;
+using StructuralEmbodimentToolkit.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class ViewRandomiser : GH_Component
     {
@@ -125,9 +125,9 @@ namespace StructuralEmbodiment.Components.Visualisation
             DA.GetData("Next View", ref nextView);
 
             //Normalise and clamp the longitude and latitude range
-            longitudeRange = StructuralEmbodiment.Core.Util.AdjustIntervalTo180(longitudeRange);
+            longitudeRange = StructuralEmbodimentToolkit.Core.Util.AdjustIntervalTo180(longitudeRange);
             Interval longitudeRange2 = new Interval(longitudeRange.Min + 180, longitudeRange.Max + 180);
-            latitudeRange = StructuralEmbodiment.Core.Util.AdjustIntervalTo180(latitudeRange);
+            latitudeRange = StructuralEmbodimentToolkit.Core.Util.AdjustIntervalTo180(latitudeRange);
 
             //Create a the longitudinal arcs for the view area
             Circle lonCirc = new Circle(new Plane(cameraTarget, Vector3d.ZAxis), radius);

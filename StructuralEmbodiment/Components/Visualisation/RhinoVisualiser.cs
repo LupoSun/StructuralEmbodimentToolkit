@@ -1,11 +1,11 @@
 ﻿using Grasshopper.Kernel;
 using Rhino.DocObjects;
 using Rhino.Geometry;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Properties;
 using System;
 using System.Collections.Generic;
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class RhinoVisualiser : GH_Component
     {

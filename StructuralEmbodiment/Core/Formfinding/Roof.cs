@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Rhino.Geometry;
 
-namespace StructuralEmbodiment.Core.Formfinding
+namespace StructuralEmbodimentToolkit.Core.Formfinding
 {
     public class Roof: Structure
     {

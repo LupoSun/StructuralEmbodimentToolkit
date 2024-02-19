@@ -1,11 +1,11 @@
 ﻿using Rhino.Geometry;
 using Rhino.Geometry.Intersect;
-using StructuralEmbodiment.Core.Formfinding;
+using StructuralEmbodimentToolkit.Core.Formfinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StructuralEmbodiment.Core.Materialisation
+namespace StructuralEmbodimentToolkit.Core.Materialisation
 {
     public class Terrain
     {

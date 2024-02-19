@@ -1,12 +1,12 @@
 ﻿using Grasshopper.Kernel;
 using Rhino;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.Formfinding;
-using StructuralEmbodiment.Core.Materialisation;
+using StructuralEmbodimentToolkit.Core.Formfinding;
+using StructuralEmbodimentToolkit.Core.Materialisation;
 using System;
 using System.Collections.Generic;
 
-namespace StructuralEmbodiment.Components.Materialisation
+namespace StructuralEmbodimentToolkit.Components.Materialisation
 {
     public class DowntownMaker : GH_Component
     {

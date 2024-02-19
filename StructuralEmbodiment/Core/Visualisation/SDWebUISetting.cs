@@ -9,7 +9,7 @@ using Grasshopper.Kernel;
 
 
 
-namespace StructuralEmbodiment.Core.Visualisation
+namespace StructuralEmbodimentToolkit.Core.Visualisation
 {
     public class SDWebUISetting
     {

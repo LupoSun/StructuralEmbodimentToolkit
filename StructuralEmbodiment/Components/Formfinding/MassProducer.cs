@@ -1,10 +1,10 @@
 ﻿using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Properties;
 using System;
 
-namespace StructuralEmbodiment.Components.Formfinding
+namespace StructuralEmbodimentToolkit.Components.Formfinding
 {
     public class MassProducer : GH_Component
     {

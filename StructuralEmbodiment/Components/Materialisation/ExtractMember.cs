@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 using Grasshopper.Kernel;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.Formfinding;
+using StructuralEmbodimentToolkit.Core.Formfinding;
 
-namespace StructuralEmbodiment.Components.Materialisation
+namespace StructuralEmbodimentToolkit.Components.Materialisation
 {
     public class ExtractMember : GH_Component
     {

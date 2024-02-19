@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 using Rhino.DocObjects;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Properties;
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class RhinoVisualiser_Legacy : GH_Component
     {

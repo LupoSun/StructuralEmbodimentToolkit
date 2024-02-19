@@ -5,9 +5,9 @@ using System.Linq;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Properties;
 
-namespace StructuralEmbodiment.Components.Formfinding
+namespace StructuralEmbodimentToolkit.Components.Formfinding
 {
     public class InputRecorderCSV : GH_Component
     {

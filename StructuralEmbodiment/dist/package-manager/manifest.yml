@@ -1,0 +1,12 @@
+name: StructuralEmbodiment Toolkit
+version: 0.9.0
+authors:
+- Tao Sun
+description: >
+  The Structural Embodiment Toolkit enhances conceptual structural design by streamlining form-finding, materialisation, and visualisation processes, ensuring realistic structure dimensions and site models. It improves interaction with conventional render-based methods like Vray and integrates Stable Diffusion WebUI with access to Multi-ControlNet for advanced visualisation in Grasshopper. This toolkit unifies design workflows, blending traditional techniques with deep learning methods. 
+  url: "https://github.com/LupoSun/StructuralEmbodimentToolkit"
+icon: icon.png
+keywords:
+- AI
+- StableDiffusion
+- Deep Learning

@@ -4,11 +4,11 @@ using System;
 using System.Drawing;
 using System.Linq;
 
-namespace StructuralEmbodiment
+namespace StructuralEmbodimentToolkit
 {
-    public class StructuralEmbodimentInfo : GH_AssemblyInfo
+    public class StructuralEmbodimentToolkitInfo : GH_AssemblyInfo
     {
-        public override string Name => "StructuralEmbodiment";
+        public override string Name => "StructuralEmbodiment Toolkit";
 
         //Return a 24x24 pixel bitmap to represent this GHA library.
         public override Bitmap Icon => Properties.Resources.SE_App;

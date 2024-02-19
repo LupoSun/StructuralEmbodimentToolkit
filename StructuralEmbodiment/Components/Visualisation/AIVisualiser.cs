@@ -6,11 +6,11 @@ using Grasshopper.GUI;
 using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.GrasshopperAsyncComponent;
-using StructuralEmbodiment.Core.Visualisation;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Core.GrasshopperAsyncComponent;
+using StructuralEmbodimentToolkit.Core.Visualisation;
+using StructuralEmbodimentToolkit.Properties;
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class AIVisualiser : GH_AsyncComponent
     {

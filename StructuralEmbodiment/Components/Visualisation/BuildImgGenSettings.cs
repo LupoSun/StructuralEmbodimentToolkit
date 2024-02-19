@@ -1,14 +1,14 @@
 ﻿using Grasshopper.GUI;
 using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
-using StructuralEmbodiment.Core.GrasshopperAsyncComponent;
-using StructuralEmbodiment.Core.Visualisation;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Core.GrasshopperAsyncComponent;
+using StructuralEmbodimentToolkit.Core.Visualisation;
+using StructuralEmbodimentToolkit.Properties;
 using System;
 using System.Collections.Generic;
 
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class BuildImgGenSettings : GH_AsyncComponent
     {

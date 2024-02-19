@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using Rhino;
 using Rhino.Display;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.Formfinding;
+using StructuralEmbodimentToolkit.Core.Formfinding;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,7 +14,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StructuralEmbodiment.Core
+namespace StructuralEmbodimentToolkit.Core
 {
     public static class Util
     {

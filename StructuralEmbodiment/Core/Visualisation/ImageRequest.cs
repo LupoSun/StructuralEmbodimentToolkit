@@ -11,7 +11,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StructuralEmbodiment.Core.Visualisation
+namespace StructuralEmbodimentToolkit.Core.Visualisation
 {
     internal class ImageRequest
     {

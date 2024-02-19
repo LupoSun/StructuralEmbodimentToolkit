@@ -1,9 +1,9 @@
 ﻿using Rhino.Geometry;
-using StructuralEmbodiment.Core.Formfinding;
+using StructuralEmbodimentToolkit.Core.Formfinding;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StructuralEmbodiment.Core.Materialisation
+namespace StructuralEmbodimentToolkit.Core.Materialisation
 {
     public class House
     {

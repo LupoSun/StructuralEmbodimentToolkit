@@ -13,10 +13,10 @@ using Rhino.Display;
 using Rhino;
 using Grasshopper.Kernel.Types;
 
-using StructuralEmbodiment.Core.Visualisation;
+using StructuralEmbodimentToolkit.Core.Visualisation;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class SDInitialiser_Legacy : GH_Component
     {

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 
-namespace StructuralEmbodiment.Core.Visualisation
+namespace StructuralEmbodimentToolkit.Core.Visualisation
 {
     internal class ImageGenerationSetting
     {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StructuralEmbodiment.Core.Formfinding
+namespace StructuralEmbodimentToolkit.Core.Formfinding
 {
     public abstract class Structure
     {

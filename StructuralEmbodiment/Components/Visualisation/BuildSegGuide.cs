@@ -13,7 +13,7 @@ using Rhino.Display;
 using Rhino;
 using Grasshopper.Kernel.Types;
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class BuildSegGuide : GH_Component 
     {

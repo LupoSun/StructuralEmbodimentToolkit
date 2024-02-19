@@ -6,12 +6,12 @@ using System.Security.Cryptography;
 using Grasshopper.Kernel;
 using Rhino;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.Formfinding;
-using StructuralEmbodiment.Core.Materialisation;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Core.Formfinding;
+using StructuralEmbodimentToolkit.Core.Materialisation;
+using StructuralEmbodimentToolkit.Properties;
 using static Rhino.DocObjects.PhysicallyBasedMaterial;
 
-namespace StructuralEmbodiment.Components.Materialisation
+namespace StructuralEmbodimentToolkit.Components.Materialisation
 {
     public class Materialiser : GH_Component
     {
@@ -84,7 +84,7 @@ namespace StructuralEmbodiment.Components.Materialisation
             if (structure is Bridge)
             {
                 var supports = new List<Point3d>(((Bridge)structure).Supports);
-                StructuralEmbodiment.Core.Util.RemoveClosestToCenter(supports);
+                StructuralEmbodimentToolkit.Core.Util.RemoveClosestToCenter(supports);
                 Dictionary<Point3d, List<Member>> connectedMembersDict = Bridge.FindConncectedTrails(supports,((Bridge)structure).Members);
 
                 List<Brep> trails = ((Bridge)structure).LoftTrails(connectedMembersDict, crossSection, multiplier, range, includeDeckEdges, tolerance * 10);

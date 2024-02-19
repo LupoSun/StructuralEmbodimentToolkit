@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StructuralEmbodiment.Core.GrasshopperAsyncComponent
+namespace StructuralEmbodimentToolkit.Core.GrasshopperAsyncComponent
 {
 
     /// <summary>

@@ -2,12 +2,20 @@
 	
   <PropertyGroup>
     <TargetFrameworks>net7-windows</TargetFrameworks>
-    <Version>1.0</Version>
-    <Title>StructuralEmbodiment</Title>
-    <Description>Description of StructuralEmbodiment</Description>
+    <Version>0.9.0</Version>
+    <Title>StructuralEmbodiment Toolkit</Title>
+    <Description>
+		The Structural Embodiment Toolkit enhances conceptual structural design by streamlining form-finding, materialisation, and visualisation processes, ensuring realistic structure dimensions and site models. It improves interaction with conventional render-based methods like Vray and integrates Stable Diffusion WebUI with access to Multi-ControlNet for advanced visualisation in Grasshopper. This toolkit unifies design workflows, blending traditional techniques with deep learning methods.
+	</Description>
     <TargetExt>.gha</TargetExt>
 	<UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
+	
+  <ItemGroup>
+    <Compile Remove="dist\**" />
+    <EmbeddedResource Remove="dist\**" />
+    <None Remove="dist\**" />
+  </ItemGroup>
 	
   <ItemGroup>
     <None Remove="Resources\FF_BuildStructureCEM.png" />

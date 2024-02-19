@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StructuralEmbodiment.Core.Visualisation
+namespace StructuralEmbodimentToolkit.Core.Visualisation
 {
     public enum GenerationMode
     {

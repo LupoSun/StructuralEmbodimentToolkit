@@ -1,9 +1,9 @@
 ﻿using Grasshopper.Kernel;
 using Rhino.Geometry;
-using StructuralEmbodiment.Properties;
+using StructuralEmbodimentToolkit.Properties;
 using System;
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class SetCamera : GH_Component
     {

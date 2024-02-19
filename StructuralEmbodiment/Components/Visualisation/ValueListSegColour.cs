@@ -1,11 +1,11 @@
 ﻿using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
-using StructuralEmbodiment.Core.Visualisation;
+using StructuralEmbodimentToolkit.Core.Visualisation;
 using System;
 using System.Collections.Generic;
 
 
-namespace StructuralEmbodiment.Components.Visualisation
+namespace StructuralEmbodimentToolkit.Components.Visualisation
 {
     public class ValueListSegColour : Grasshopper.Kernel.Special.GH_ValueList, ISE_ValueList
     {

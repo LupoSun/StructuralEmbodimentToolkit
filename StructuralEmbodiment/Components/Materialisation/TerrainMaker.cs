@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Rhino;
 using Rhino.Geometry;
-using StructuralEmbodiment.Core.Materialisation;
+using StructuralEmbodimentToolkit.Core.Materialisation;
 using System.Linq;
-using StructuralEmbodiment.Properties;
-using StructuralEmbodiment.Core.Formfinding;
+using StructuralEmbodimentToolkit.Properties;
+using StructuralEmbodimentToolkit.Core.Formfinding;
 
-namespace StructuralEmbodiment.Components.Materialisation
+namespace StructuralEmbodimentToolkit.Components.Materialisation
 {
     public class TerrainMaker : GH_Component
     {
@@ -105,7 +105,7 @@ namespace StructuralEmbodiment.Components.Materialisation
 
 
                 //Setting the optional parameters
-                width = StructuralEmbodiment.Core.Util.AveragePoint(deckStartPoints).DistanceTo(StructuralEmbodiment.Core.Util.AveragePoint(deckEndPoints))/3*2;
+                width = StructuralEmbodimentToolkit.Core.Util.AveragePoint(deckStartPoints).DistanceTo(StructuralEmbodimentToolkit.Core.Util.AveragePoint(deckEndPoints))/3*2;
                 length = width;
                 depth = width / 4;
                 slope = width / 4;

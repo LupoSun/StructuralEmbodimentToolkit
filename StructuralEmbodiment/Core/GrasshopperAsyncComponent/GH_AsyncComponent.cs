@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Timer = System.Timers.Timer;
 
-namespace StructuralEmbodiment.Core.GrasshopperAsyncComponent
+namespace StructuralEmbodimentToolkit.Core.GrasshopperAsyncComponent
 {
     /// <summary>
     /// Inherit your component from this class to make all the async goodness available.
