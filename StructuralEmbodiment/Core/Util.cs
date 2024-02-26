@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using Rhino;
 using Rhino.Display;
 using Rhino.Geometry;
@@ -62,22 +61,6 @@ namespace StructuralEmbodimentToolkit.Core
             }
         }
 
-        public static bool HaveSameDirectionVect(Curve curve1, Curve curve2)
-        {
-            // Get normalized tangent vectors at the start of the curves
-            Vector3d tan1 = curve1.TangentAtStart;
-            tan1.Unitize();
-
-            Vector3d tan2 = curve2.TangentAtStart;
-            tan2.Unitize();
-
-            // Compute the dot product
-            double dot = tan1 * tan2;
-
-            // Check if dot product is close to 1 (same direction) or -1 (opposite direction)
-            const double tolerance = 0.1; // Define a suitable tolerance
-            return dot > 1 - tolerance;
-        }
 
         public static bool HaveSameDirection(Curve curve1, Curve curve2)
         {
@@ -219,32 +202,6 @@ namespace StructuralEmbodimentToolkit.Core
 
         }
 
-        /*
-         * Obsolete
-         */
-        public static async Task<JObject> GetInfoJOBJ(string serverUrl, string goal, HttpClient client)
-        {
-            string url = serverUrl + goal;
-            HttpResponseMessage response;
-            try { response = await client.GetAsync(url); }
-            catch (HttpRequestException e)
-            {
-                throw new Exception("HTTP request failed for getting information from " + goal, e);
-            }
-
-            if (response.IsSuccessStatusCode)
-            {
-                string jsonResponse = await response.Content.ReadAsStringAsync();
-                dynamic decodedResponse = JsonConvert.SerializeObject(jsonResponse);
-                return decodedResponse;
-            }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                throw new HttpRequestException($"Get ControlNet modules failed with status code {response.StatusCode}: {response.ReasonPhrase}\n{errorContent}");
-            }
-        }
-
         public static async Task<JToken> GetInfo(string serverUrl, string goal, HttpClient client)
         {
             string url = serverUrl + goal;
@@ -291,12 +248,6 @@ namespace StructuralEmbodimentToolkit.Core
                 // Convert the byte array to a Base64 string
                 return Convert.ToBase64String(imageBytes);
             }
-        }
-
-        public static JObject BuildPayload(params object[] settings)
-        {
-            var payload = JObject.FromObject(settings);
-            return payload;
         }
 
         public static JObject AddControlNet(JObject payload, object controlNetSettings)
@@ -417,8 +368,8 @@ namespace StructuralEmbodimentToolkit.Core
 
         public static Interval AdjustIntervalTo180(Interval angleRange)
         {
-            double startAngle = NormalizeAndClampAngle(angleRange.T0);
-            double endAngle = NormalizeAndClampAngle(angleRange.T1);
+            double startAngle = NormaliseAndClampAngle(angleRange.T0);
+            double endAngle = NormaliseAndClampAngle(angleRange.T1);
 
             // Adjust if start is greater than end
             if (startAngle > endAngle)
@@ -431,9 +382,9 @@ namespace StructuralEmbodimentToolkit.Core
             return new Interval(startAngle, endAngle);
         }
 
-        private static double NormalizeAndClampAngle(double angle)
+        private static double NormaliseAndClampAngle(double angle)
         {
-            // Normalize angle to 0 to 360 range
+            // Normalise angle to 0 to 360 range
             angle = angle % 360;
             if (angle < 0)
                 angle += 360;
@@ -675,7 +626,7 @@ namespace StructuralEmbodimentToolkit.Core
 
             return grayscale;
         }
-        public static void CustomizeWebuiUserBat(string template, string outputFilePath, List<string> argsToAdd)
+        public static void CustomiseWebuiUserBat(string template, string outputFilePath, List<string> argsToAdd)
         {
             // Read the contents of the template file
             //string[] lines = File.ReadAllLines(templateFilePath);

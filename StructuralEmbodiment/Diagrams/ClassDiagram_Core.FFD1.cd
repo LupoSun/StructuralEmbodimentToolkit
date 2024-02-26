@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="StructuralEmbodimentToolkit.Core.Formfinding.Structure">
+    <Position X="2.25" Y="5.75" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAgAAAAAAAAAEAAAAhAA=</HashCode>
+      <FileName>Core\Formfinding\Structure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Core.Formfinding.Member">
+    <Position X="2.25" Y="3" Width="6.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAQgAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAIAgA=</HashCode>
+      <FileName>Core\Formfinding\Structure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="StructuralEmbodimentToolkit.Core.Formfinding.MemberType">
+    <Position X="2.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAgAAAAAAAQAAIAAAAAIAAAABAAAAAAAA=</HashCode>
+      <FileName>Core\Formfinding\MemberType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="StructuralEmbodimentToolkit.Core.Formfinding.EdgeType">
+    <Position X="4" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAgAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Formfinding\EdgeType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

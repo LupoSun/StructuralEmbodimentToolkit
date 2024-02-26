@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.RhinoVisualiser">
+    <Position X="0.5" Y="0.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAIAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Components\Visualisation\RhinoVisualiser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.ViewRandomiser">
+    <Position X="0.5" Y="4" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAIEBAAAAgAAAAAAABAAAAEAABAABAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Components\Visualisation\ViewRandomiser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.SetCamera">
+    <Position X="5.5" Y="0.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Components\Visualisation\SetCamera.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -36,9 +36,9 @@ namespace StructuralEmbodimentToolkit.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("• Preprocessor", "• PP", "Preprocessor for the guiding image", GH_ParamAccess.item);
-            pManager.AddTextParameter("• CN Model", "CNM", "ControlNet model", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Control Weight", "CW", "Control Weight", GH_ParamAccess.item,1);
+            pManager.AddTextParameter("• Preprocessor", "• Preprocessor", "Preprocessor for the guiding image", GH_ParamAccess.item);
+            pManager.AddTextParameter("• CN Model", "• CN Model", "ControlNet model", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Control Weight", "Control Weight", "Control Weight", GH_ParamAccess.item,1);
 
             pManager[2].Optional = true;
 
@@ -49,8 +49,8 @@ namespace StructuralEmbodimentToolkit.Components.Visualisation
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Guide", "G", "Guides for image Generation", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Guiding Image", "GImg", "Guiding image", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Guide", "Guide", "Guides for image Generation", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Guiding Image", "Guiding Image", "Guiding image", GH_ParamAccess.item);
         }
 
         /// <summary>

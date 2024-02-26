@@ -34,7 +34,7 @@ namespace StructuralEmbodimentToolkit.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("• Settings", "• S", "Settings for image Generation", GH_ParamAccess.item);
+            pManager.AddGenericParameter("• Settings", "• Settings", "Settings for image Generation", GH_ParamAccess.item);
 
         }
 
@@ -43,7 +43,7 @@ namespace StructuralEmbodimentToolkit.Components.Visualisation
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Images", "I", "Generated Images",GH_ParamAccess.list);
+            pManager.AddGenericParameter("Images", "Images", "Generated Images",GH_ParamAccess.list);
         }
 
 

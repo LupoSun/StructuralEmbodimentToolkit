@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="StructuralEmbodimentToolkit.Core.Visualisation.ImageGenerationSetting">
+    <Position X="0.75" Y="0.5" Width="8.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAQAAQAQEYAAAAAAAABAAAQQAgAAAAQAAAAQ=</HashCode>
+      <FileName>Core\Visualisation\ImageGenerationSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Core.Visualisation.ImageRequest">
+    <Position X="0.75" Y="10" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAhABAAAEAAAAAAQ=</HashCode>
+      <FileName>Core\Visualisation\ImageRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Core.Visualisation.SDWebUISetting">
+    <Position X="0.75" Y="13.25" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAACAAAABAAQAEAAACAAAABABAAwACQAAAIAAQAAw=</HashCode>
+      <FileName>Core\Visualisation\SDWebUISetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Core.Visualisation.ControlNetSetting">
+    <Position X="0.75" Y="5.5" Width="8.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAIAAAEAAAAAAAAQAAEACAEgAACAAABAAE=</HashCode>
+      <FileName>Core\Visualisation\ControlNetSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="StructuralEmbodimentToolkit.Core.Visualisation.ISE_ValueList">
+    <Position X="6" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Visualisation\ISE_ValueList.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="StructuralEmbodimentToolkit.Core.Visualisation.GenerationMode">
+    <Position X="6.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAAAA=</HashCode>
+      <FileName>Core\Visualisation\GenerationMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

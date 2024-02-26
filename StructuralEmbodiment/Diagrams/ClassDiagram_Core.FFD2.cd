@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="StructuralEmbodimentToolkit.Core.Formfinding.Roof">
+    <Position X="0.5" Y="1" Width="14" />
+    <TypeIdentifier>
+      <HashCode>AABAAQCAAAgAAAAAAACIAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Core\Formfinding\Roof.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Core.Formfinding.Bridge">
+    <Position X="0.5" Y="5" Width="10.75" />
+    <TypeIdentifier>
+      <HashCode>MIAABAAQAAggAAAEAAAAAAQAAAAAggQEQAEAAAYIIkg=</HashCode>
+      <FileName>Core\Formfinding\Bridge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

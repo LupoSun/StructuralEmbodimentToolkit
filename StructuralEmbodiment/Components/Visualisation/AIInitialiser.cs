@@ -30,9 +30,9 @@ namespace StructuralEmbodimentToolkit.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("• SD Location", "• SD", "Path to StableDiffusion WebUI folder", GH_ParamAccess.item);
-            pManager.AddTextParameter("User URL", "CA", "Customised Adress to access the api. By default http://127.0.0.1:7860", GH_ParamAccess.item);
-            pManager.AddTextParameter("Additional Arguments", "AA", "Additional Arguments for the WebUI, refer to https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings#all-command-line-arguments", GH_ParamAccess.list);
+            pManager.AddTextParameter("• SD Location", "• SD Location", "Path to StableDiffusion WebUI folder", GH_ParamAccess.item);
+            pManager.AddTextParameter("User URL", "User URL", "Customised Adress to access the api. By default http://127.0.0.1:7860", GH_ParamAccess.item);
+            pManager.AddTextParameter("Additional Arguments", "Additional Arguments", "Additional Arguments for the WebUI, refer to https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings#all-command-line-arguments", GH_ParamAccess.list);
 
             pManager[0].Optional = true;
             pManager[1].Optional = true;

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="StructuralEmbodimentToolkit.Core.Materialisation.House">
+    <Position X="0.5" Y="2.25" Width="10.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAgAQAAAAgAAAAEAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Core\Materialisation\House.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Core.Materialisation.Terrain">
+    <Position X="0.5" Y="7.5" Width="16.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAIABCAAAAIAAAEABAAAgABAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Core\Materialisation\Terrain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="StructuralEmbodimentToolkit.Core.Materialisation.HouseType">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAA=</HashCode>
+      <FileName>Core\Materialisation\HouseType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="StructuralEmbodimentToolkit.Core.Materialisation.TerrainType">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAACAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Core\Materialisation\TerrainType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

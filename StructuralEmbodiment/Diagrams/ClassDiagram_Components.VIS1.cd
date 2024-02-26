@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildDepthGuide">
+    <Position X="0.5" Y="19" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAABA=</HashCode>
+      <FileName>Components\Visualisation\BuildDepthGuide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildDepthGuide_ButtonAttributes">
+    <Position X="5" Y="19" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAgAAAAAAAAIABAAAAAAAEA=</HashCode>
+      <FileName>Components\Visualisation\BuildDepthGuide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildGenericGuide">
+    <Position X="0.5" Y="26.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAgAAAAEAABA=</HashCode>
+      <FileName>Components\Visualisation\BuildGenericGuide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildGenericGuide_ButtonAttributes">
+    <Position X="5" Y="26.5" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAgAAAAAAAAIABAAAAAAAEA=</HashCode>
+      <FileName>Components\Visualisation\BuildGenericGuide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildLineGuide">
+    <Position X="0.5" Y="22.75" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAQAAAABAAAAEAABAAAAAAAAAAAAEAABA=</HashCode>
+      <FileName>Components\Visualisation\BuildLineGuide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildLineGuide_ButtonAttributes">
+    <Position X="5" Y="22.75" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAwAAAABAAAAAAAgAAAAAAAAIABAAAAAAAEA=</HashCode>
+      <FileName>Components\Visualisation\BuildLineGuide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildSegGuide">
+    <Position X="0.5" Y="15.25" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAABAAAAEAABAAAAAAAAAAAAEAABA=</HashCode>
+      <FileName>Components\Visualisation\BuildSegGuide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructuralEmbodimentToolkit.Components.Visualisation.BuildSegGuide_ButtonAttributes">
+    <Position X="5" Y="15.25" Width="5.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAwAAAABAAAAAAAgAAAAAAAAIABAAAAAAAEA=</HashCode>
+      <FileName>Components\Visualisation\BuildSegGuide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

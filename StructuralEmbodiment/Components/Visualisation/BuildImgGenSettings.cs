@@ -29,19 +29,19 @@ namespace StructuralEmbodimentToolkit.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("• Prompt", "• P", "Describe the image to generate", GH_ParamAccess.item);
-            pManager.AddTextParameter("Negative Prompt", "NP", "Describe the image not to generate", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Random Seed", "RS", "The random seed for the generation", GH_ParamAccess.item, -1);
-            pManager.AddIntegerParameter("Batch Size", "BS", "Number of images in one geration", GH_ParamAccess.item, 1);
-            pManager.AddIntegerParameter("Steps", "ST", "Number of sampling steps", GH_ParamAccess.item, 20);
-            pManager.AddNumberParameter("CFG Scale", "CFG", "Classifier Free Guidance Scale - how strongly the image should conform to prompt - lower values produce more creative results", GH_ParamAccess.item, 7);
-            pManager.AddIntegerParameter("Width", "W", "Pixel width of the image", GH_ParamAccess.item, 512);
-            pManager.AddIntegerParameter("Height", "H", "Pixel height of the image", GH_ParamAccess.item, 512);
+            pManager.AddTextParameter("• Prompt", "• Prompt", "Describe the image to generate", GH_ParamAccess.item);
+            pManager.AddTextParameter("Negative Prompt", "Negative Prompt", "Describe the image not to generate", GH_ParamAccess.item);
+            pManager.AddIntegerParameter("Random Seed", "Random Seed", "The random seed for the generation", GH_ParamAccess.item, -1);
+            pManager.AddIntegerParameter("Batch Size", "Batch Size", "Number of images in one geration", GH_ParamAccess.item, 1);
+            pManager.AddIntegerParameter("Steps", "Steps", "Number of sampling steps", GH_ParamAccess.item, 20);
+            pManager.AddNumberParameter("CFG Scale", "CFG Scale", "Classifier Free Guidance Scale - how strongly the image should conform to prompt - lower values produce more creative results", GH_ParamAccess.item, 7);
+            pManager.AddIntegerParameter("Width", "Width", "Pixel width of the image", GH_ParamAccess.item, 512);
+            pManager.AddIntegerParameter("Height", "Height", "Pixel height of the image", GH_ParamAccess.item, 512);
             pManager.AddTextParameter("SD Model", "SDM", "StableDiffusion model", GH_ParamAccess.item);
-            pManager.AddTextParameter("Sampler", "SP", "Sampling method", GH_ParamAccess.item);
+            pManager.AddTextParameter("Sampler", "Sampler", "Sampling method", GH_ParamAccess.item);
             pManager.AddTextParameter("LoRAs", "LoRAs", "LoRA models", GH_ParamAccess.list);
-            pManager.AddNumberParameter("LoRA Multipliers", "LoRA M", "LoRA multipliers", GH_ParamAccess.list);
-            pManager.AddGenericParameter("Guides", "G", "Guidances for generation", GH_ParamAccess.list);
+            pManager.AddNumberParameter("LoRA Multipliers", "LoRA Multipliers", "LoRA multipliers", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Guides", "Guides", "Guidances for generation", GH_ParamAccess.list);
 
             pManager[1].Optional = true;
             pManager[2].Optional = true;
@@ -63,7 +63,7 @@ namespace StructuralEmbodimentToolkit.Components.Visualisation
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Settings", "IGS", "Settings for image Generation", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Settings", "Settings", "Settings for image Generation", GH_ParamAccess.item);
         }
 
 

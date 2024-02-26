@@ -31,9 +31,9 @@ namespace StructuralEmbodimentToolkit.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddBooleanParameter("Guide by Curves", "GD", "Guide the image generation through depths", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Guide by Depth", "GC", "Guide the image generation through curves", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Build", "B", "Build the guidanes", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Guide by Curves", "Guide by Curves", "Guide the image generation through depths", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Guide by Depth", "Guide by Depth", "Guide the image generation through curves", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Build", "Build", "Build the guidanes", GH_ParamAccess.item);
 
             pManager[0].Optional = true;
             pManager[1].Optional = true;
@@ -45,8 +45,8 @@ namespace StructuralEmbodimentToolkit.Components.Visualisation
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Guides", "G", "Guides for image Generation", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Images", "Img", "Guiding images", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Guides", "Guides", "Guides for image Generation", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Images", "Images", "Guiding images", GH_ParamAccess.list);
         }
 
         /// <summary>

@@ -36,8 +36,8 @@ namespace StructuralEmbodimentToolkit.Components.Visualisation
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("CN Model", "CNM", "ControlNet model", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Weight", "CW", "Control Weight", GH_ParamAccess.item, 1);
+            pManager.AddTextParameter("CN Model", "CN Model", "ControlNet model", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Weight", "Weight", "Control Weight", GH_ParamAccess.item, 1);
 
             pManager[0].Optional = true;
             pManager[1].Optional = true;
@@ -48,8 +48,8 @@ namespace StructuralEmbodimentToolkit.Components.Visualisation
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Depth Guide", "DptG", "Guides for image Generation", GH_ParamAccess.item);
-            pManager.AddGenericParameter("Image", "GImg", "Guiding image", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Depth Guide", "Depth Guide", "Guides for image Generation", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Image", "Image", "Guiding image", GH_ParamAccess.item);
         }
 
         /// <summary>
